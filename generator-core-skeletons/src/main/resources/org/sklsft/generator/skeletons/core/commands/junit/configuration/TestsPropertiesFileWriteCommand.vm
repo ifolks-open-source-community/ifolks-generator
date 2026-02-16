@@ -1,0 +1,15 @@
+# Spring profiles
+spring.profiles.active=junit
+
+# Logger settings
+log.level=INFO
+
+# Access logs settings
+accessLog.traceRequestBody=true
+accessLog.traceResponseBody=true
+accessLog.traceSentBody=true
+accessLog.traceReceivedBody=true
+accessLog.printErrorStack=true
+
+# Hibernate settings
+hibernate.showSql=false

@@ -1,0 +1,41 @@
+package org.ifolks.generator.persistence.backup.datasource.impl;
+
+import java.util.Map;
+
+import org.apache.commons.dbcp.BasicDataSource;
+import org.ifolks.generator.model.exception.DataSourceNotFoundException;
+import org.ifolks.generator.persistence.backup.datasource.interfaces.InputDataSourceProvider;
+
+/**
+ * Simple implementation of a {@link InputDataSourceProvider} with a Map of {@link BasicDataSource}
+ * @author Nicolas Thibault
+ *
+ */
+public class InputDataSourceProviderImpl implements InputDataSourceProvider {
+
+	/*
+	 * properties
+	 */
+	private Map<String, BasicDataSource> dataSources;
+	
+	
+	/*
+	 * constructor
+	 */
+	public InputDataSourceProviderImpl(Map<String, BasicDataSource> dataSources) {
+		this.dataSources = dataSources;
+	}
+
+	
+	@Override
+	public BasicDataSource getDataSource(String dataSourceName) throws DataSourceNotFoundException {
+
+		BasicDataSource result = dataSources.get(dataSourceName);
+		
+		if (result == null) {
+			throw new DataSourceNotFoundException("Unable to find input DataSource : " + dataSourceName);
+		}
+		
+		return result;
+	}
+}

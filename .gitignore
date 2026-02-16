@@ -1,0 +1,12 @@
+target/
+launchers/
+
+.classpath
+.project
+
+.settings/
+.metadata/
+.recommenders/
+
+*.class
+

@@ -1,0 +1,8 @@
+You are using iFolks generator version 1.0.0-SNAPSHOT
+
+Use one of the following commands :
+. init : to setup a project from scratch.
+. generate : to write lines of code once your skeleton.xml file has been edited.
+. builddb : to create your database scheme once your code has been generated.
+
+Visit our web site : generator.ifolks.org for more information.

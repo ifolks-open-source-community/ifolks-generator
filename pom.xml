@@ -1,0 +1,259 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.ifolks.generator</groupId>
+	<artifactId>generator-root</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>Generator - Root</name>
+	<description>Root module of iFolks Generator</description>
+	<url>http://ifolks-open-source-community.github.io/ifolks-generator</url>
+
+	<packaging>pom</packaging>
+	
+	<parent>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-parent</artifactId>
+	    <version>3.2.1</version>
+	</parent>
+
+	<modules>
+		<module>generator-model</module>
+		<module>generator-persistence</module>
+		<module>generator-skeletons</module>
+		<module>generator-core-skeletons</module>
+		<module>generator-rest-skeletons</module>
+		<module>generator-angular-skeletons</module>
+		<module>generator-components</module>
+		<module>generator-services</module>
+		<module>generator-bash</module>
+		<module>generator-tests</module>
+	</modules>
+	
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>	
+		<developer>
+			<id>nthibault</id>
+			<name>Nicolas Thibault</name>
+			<email>nicolas.thibault@ymail.com</email>
+		</developer>
+	</developers>
+	
+	<scm>
+		<connection>scm:git:git@github.com/ifolks-open-source-community/ifolks-generator.git</connection>
+		<developerConnection>scm:git:git@github.com/ifolks-open-source-community/ifolks-generator.git</developerConnection>
+		<url>git@github.com/ifolks-open-source-community/ifolks-generator.git</url>
+	</scm>
+	
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<encoding>UTF-8</encoding>
+		<java.version>17</java.version>
+		<maven.compiler.release.version>17</maven.compiler.release.version>
+			
+		<velocity.version>2.3</velocity.version>
+		
+		<postgresql.version>42.4.3</postgresql.version>
+		<ojdbc.version>12.2.0.1</ojdbc.version>
+		
+		<commons.lang.version>2.5</commons.lang.version>
+		<commons.dbcp.version>1.4</commons.dbcp.version>
+		<commons.io.version>2.7</commons.io.version>
+		<commons.csv.version>1.8</commons.csv.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.ifolks.generator</groupId>
+				<artifactId>generator-model</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.ifolks.generator</groupId>
+				<artifactId>generator-persistence</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.ifolks.generator</groupId>
+				<artifactId>generator-skeletons</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.ifolks.generator</groupId>
+				<artifactId>generator-core-skeletons</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.ifolks.generator</groupId>
+				<artifactId>generator-angular-skeletons</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.ifolks.generator</groupId>
+				<artifactId>generator-rest-skeletons</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.ifolks.generator</groupId>
+				<artifactId>generator-components</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.ifolks.generator</groupId>
+				<artifactId>generator-services</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+				
+			
+			<!-- postgresql drivers -->
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${postgresql.version}</version>
+			 </dependency>
+			 
+			 <!-- oracle drivers-->
+			 <dependency>
+				<groupId>com.oracle.database.jdbc</groupId>
+				<artifactId>ojdbc8</artifactId>
+				<version>${ojdbc.version}</version>
+			</dependency>		
+			
+			<!-- apache velocity-->
+			<dependency>
+				<groupId>org.apache.velocity</groupId>
+    			<artifactId>velocity-engine-core</artifactId>
+				<version>${velocity.version}</version>
+			</dependency>
+			
+			
+			<!-- apache commons -->
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>${commons.lang.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>commons-dbcp</groupId>
+				<artifactId>commons-dbcp</artifactId>
+				<version>${commons.dbcp.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>${commons.io.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.apache.commons</groupId>
+			    <artifactId>commons-csv</artifactId>
+			    <version>${commons.csv.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<verbose>true</verbose>
+					<fork>true</fork>
+					<release>${maven.compiler.release.version}</release>
+					<encoding>${encoding}</encoding>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.8</version>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>					
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.9.1</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+								<configuration>
+                    				<additionalparam>-Xdoclint:none</additionalparam>
+                				</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.5</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>				
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

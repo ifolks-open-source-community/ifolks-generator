@@ -1,0 +1,48 @@
+button {
+  background: none;
+  border:none;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight:400;
+  font-size: 16px;
+  color: #767676;
+  cursor:pointer;
+
+  &.accordion {
+    cursor: unset;
+  }
+}
+
+.app-navigation-sublinks {
+  max-height: 0px;
+  list-style-type: none;
+  overflow: hidden;
+  margin-block-start: 0.5em;;
+  padding-inline-start: 2em;
+
+  li {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight:400;
+    font-size: 14px;
+    color: #767676;
+    padding: 12px 0 12px 0;
+  }
+
+  a {
+    font-family: inherit;
+    font-weight: inherit;
+    font-size: inherit;
+
+  }
+
+  &.openNavList {
+    max-height: 2000px;
+  }
+}
+
+.link-text:hover {
+  color: #d2204c!important;
+}
+
+.link-text-active {
+  color: #d2204c!important;
+}

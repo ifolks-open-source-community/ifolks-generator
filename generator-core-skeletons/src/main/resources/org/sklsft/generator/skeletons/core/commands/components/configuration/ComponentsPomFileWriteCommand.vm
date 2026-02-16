@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+	http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>${project.domainName}.${project.projectName}</groupId>
+		<artifactId>${project.projectName}-root</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>${project.model.componentsArtefactName}</artifactId>
+	<name>${project.model.componentsArtefactName}</name>
+
+	<packaging>jar</packaging>
+
+	<dependencies>
+	
+		<dependency>
+			<groupId>${project.domainName}.${project.projectName}</groupId>
+			<artifactId>${project.model.persistenceArtefactName}</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>${project.domainName}.${project.projectName}</groupId>
+			<artifactId>${project.model.apiArtefactName}</artifactId>
+		</dependency>
+		
+		<!-- ifolks commons -->
+		<dependency>
+			<groupId>org.ifolks.commons</groupId>
+			<artifactId>commons-text</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.ifolks.commons</groupId>
+			<artifactId>commons-mapper</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.ifolks.commons</groupId>
+			<artifactId>commons-log</artifactId>
+		</dependency>
+		
+		
+		<!-- jackson time support -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+		
+		
+		<!-- Spring transactions -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+		</dependency>
+		
+		<!-- Spring security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+		</dependency>
+		
+	</dependencies>
+
+</project>

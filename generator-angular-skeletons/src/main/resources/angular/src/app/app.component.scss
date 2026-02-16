@@ -1,0 +1,20 @@
+
+::ng-deep .notification-error-style {
+  background-color: white;
+  color:darkred;
+  .mat-button-wrapper {
+    color:darkred;
+  }
+}
+
+::ng-deep .notification-info-style {
+  background-color: white;
+  color:darkgreen;
+  .mat-button-wrapper {
+    color:darkgreen;
+  }
+}
+
+.app-body{
+  min-height:100%;
+}

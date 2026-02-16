@@ -1,0 +1,79 @@
+package org.ifolks.generator.services.impl;
+
+import java.util.Set;
+
+import org.ifolks.generator.model.domain.Package;
+import org.ifolks.generator.model.domain.Project;
+import org.ifolks.generator.model.domain.database.Table;
+import org.ifolks.generator.model.metadata.PersistenceMode;
+import org.ifolks.generator.model.util.folder.FolderUtil;
+import org.ifolks.generator.persistence.backup.command.impl.BackupCommandFactory;
+import org.ifolks.generator.persistence.backup.command.interfaces.BackupCommand;
+import org.ifolks.generator.persistence.backup.datasource.interfaces.InputDataSourceProvider;
+import org.ifolks.generator.persistence.backup.file.impl.BackupFileLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+
+/**
+ * The populator aims at populating the project database following a plan given in the backupPath<br>
+ * The plan consists of a root folder withs several steps<br>
+ * Each step will execute several {@link BackupCommand}, potentially one per table<br>
+ * We can give a list of the tables to be considered if we want to restrict the population to these tables<br>
+ * 
+ * @author Nicolas Thibault
+ *
+ */
+@Component
+public class Populator {
+
+	private static final Logger logger = LoggerFactory.getLogger(Populator.class);
+	
+	@Autowired
+	private BackupCommandFactory commandFactory;
+	
+	@Autowired
+	private BackupFileLocator backupLocator;
+	
+	
+	public void populate(InputDataSourceProvider inputDataSourceProvider, Project project, Set<String> tables, String backupPath) {
+
+		logger.info("start populating database");
+
+		int maxSteps = FolderUtil.resolveMaxStep(backupPath);
+
+		for(int step=1; step<=maxSteps; step++){
+			logger.info("start bulding step " + step);
+			for (Package myPackage:project.model.packages) {
+				logger.info("start populating package : " + myPackage.name);
+
+				for (Table table:myPackage.tables) {
+
+					if (tables == null || tables.contains(table.originalName)) {
+
+						logger.info("start populating table : " + table.name);
+						
+						PersistenceMode mode = backupLocator.resolvePersistenceModeOrNull(backupPath, step, table);
+						
+						if (mode != null) {							
+							BackupCommand command = commandFactory.getBackupCommand(table, mode, inputDataSourceProvider);								
+							String path = backupLocator.getBackupFilePath(backupPath, step, table, mode);										
+							command.execute(path);								
+							logger.info("populating table : " + table.name + " completed");
+							
+						} else {
+							logger.warn("populating table : " + table.name + " : no backup found");
+						}
+					} else {
+						logger.info("table : " + table.name + " skipped");
+					}
+				}
+				logger.info("populating package " + myPackage.name + " completed");
+			}
+		}
+		logger.info("populating database completed");
+
+	}
+}
