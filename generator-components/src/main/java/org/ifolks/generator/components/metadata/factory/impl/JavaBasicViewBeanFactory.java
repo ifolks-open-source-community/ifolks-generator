@@ -26,11 +26,11 @@ public class JavaBasicViewBeanFactory implements BasicViewBeanFactory {
 				
 		BasicViewBean basicViewBean = new BasicViewBean();
 		
-		basicViewBean.className = bean.className + "BasicView";
+		basicViewBean.recordName = bean.className + "BasicView";
 		basicViewBean.objectName = bean.objectName + "BasicView";
 		
-		basicViewBean.baseMapperClassName = basicViewBean.className + "BaseMapper";
-		basicViewBean.mapperClassName = basicViewBean.className + "Mapper";
+		basicViewBean.baseMapperClassName = basicViewBean.recordName + "BaseMapper";
+		basicViewBean.mapperClassName = basicViewBean.recordName + "Mapper";
 		basicViewBean.mapperObjectName = basicViewBean.objectName + "Mapper";
 		
 		basicViewBean.filter.className = bean.className + "Filter";
@@ -54,11 +54,11 @@ public class JavaBasicViewBeanFactory implements BasicViewBeanFactory {
 		
 		Bean bean = oneToMany.referenceBean;
 		
-		basicViewBean.className = bean.className + "BasicView";
+		basicViewBean.recordName = bean.className + "BasicView";
 		basicViewBean.objectName = bean.objectName + "BasicView";
 		
-		basicViewBean.baseMapperClassName = basicViewBean.className + "BaseMapper";
-		basicViewBean.mapperClassName = basicViewBean.className + "Mapper";
+		basicViewBean.baseMapperClassName = basicViewBean.recordName + "BaseMapper";
+		basicViewBean.mapperClassName = basicViewBean.recordName + "Mapper";
 		basicViewBean.mapperObjectName = basicViewBean.objectName + "Mapper";
 		
 		basicViewBean.filter.className = bean.className + "Filter";

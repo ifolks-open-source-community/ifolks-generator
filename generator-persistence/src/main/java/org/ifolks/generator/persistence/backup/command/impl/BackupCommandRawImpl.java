@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Implementation of a {@link BackupCommand} that 
- * <li>reads a className in the file
+ * <li>reads a recordName in the file
  * <li>finds the corresponding component in a spring context
  * <li>execute the component as a Command
  * 

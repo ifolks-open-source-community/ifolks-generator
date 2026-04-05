@@ -40,7 +40,7 @@ public class TsOneToManyListComponentFileWriteCommand extends TsFileWriteCommand
 		imports.add("import { ScrollView } from \"src/app/core/models/ScrollView\";");
 		imports.add("import { SelectItem } from \"src/app/core/models/SelectItem\";");
 		
-		imports.add("import { " + referenceBean.basicViewBean.className + " } from '" + referenceBean.myPackage.tsModelsSourcePath + "/views/basic/" + referenceBean.basicViewBean.className + "';");
+		imports.add("import { " + referenceBean.basicViewBean.recordName + " } from '" + referenceBean.myPackage.tsModelsSourcePath + "/views/basic/" + referenceBean.basicViewBean.recordName + "';");
 		imports.add("import { " + referenceBean.fullViewBean.className + " } from '" + referenceBean.myPackage.tsModelsSourcePath + "/views/full/" + referenceBean.fullViewBean.className + "';");
 		imports.add("import { " + referenceBean.formBean.className + " } from '" + referenceBean.myPackage.tsModelsSourcePath + "/forms/" + referenceBean.formBean.className + "';");
 		imports.add("import { " + referenceBean.basicViewBean.filter.className + " } from '" + referenceBean.myPackage.tsModelsSourcePath + "/filters/" + referenceBean.basicViewBean.filter.className + "';");
@@ -82,8 +82,8 @@ public class TsOneToManyListComponentFileWriteCommand extends TsFileWriteCommand
         writeLine("id:" + parentBean.idTsType + ";");
         writeLine("activePath:string;");
         writeLine("scrollForm: ScrollForm<" + referenceBean.basicViewBean.filter.className + ", " + referenceBean.basicViewBean.sortingClassName + "> = new ScrollForm();");
-		writeLine("scrollView: ScrollView<" + referenceBean.basicViewBean.className + "> = new ScrollView();");
-        writeLine("dataSource:MatTableDataSource<" + referenceBean.basicViewBean.className + ">;");
+		writeLine("scrollView: ScrollView<" + referenceBean.basicViewBean.recordName + "> = new ScrollView();");
+        writeLine("dataSource:MatTableDataSource<" + referenceBean.basicViewBean.recordName + ">;");
         writeLine("@ViewChild(MatPaginator) paginator: MatPaginator;");
         writeLine("@ViewChild(MatSort) sort: MatSort");
         writeLine("pageSizeOptions: number[] = [10, 20, 50, 100];");

@@ -34,7 +34,7 @@ public class TsListComponentFileWriteCommand extends TsFileWriteCommand {
 		imports.add("import { ScrollView } from \"src/app/core/models/ScrollView\";");
 		imports.add("import { SelectItem } from \"src/app/core/models/SelectItem\";");
 		
-		imports.add("import { " + bean.basicViewBean.className + " } from '" + bean.myPackage.tsModelsSourcePath + "/views/basic/" + bean.basicViewBean.className + "';");
+		imports.add("import { " + bean.basicViewBean.recordName + " } from '" + bean.myPackage.tsModelsSourcePath + "/views/basic/" + bean.basicViewBean.recordName + "';");
 		imports.add("import { " + bean.fullViewBean.className + " } from '" + bean.myPackage.tsModelsSourcePath + "/views/full/" + bean.fullViewBean.className + "';");
 		imports.add("import { " + bean.formBean.className + " } from '" + bean.myPackage.tsModelsSourcePath + "/forms/" + bean.formBean.className + "';");
 		imports.add("import { " + bean.basicViewBean.filter.className + " } from '" + bean.myPackage.tsModelsSourcePath + "/filters/" + bean.basicViewBean.filter.className + "';");
@@ -72,8 +72,8 @@ public class TsListComponentFileWriteCommand extends TsFileWriteCommand {
         skipLine();
 
         writeLine("scrollForm: ScrollForm<" + bean.basicViewBean.filter.className + ", " + bean.basicViewBean.sortingClassName + "> = new ScrollForm();");
-		writeLine("scrollView: ScrollView<" + bean.basicViewBean.className + "> = new ScrollView();");
-        writeLine("dataSource:MatTableDataSource<" + bean.basicViewBean.className + ">;");
+		writeLine("scrollView: ScrollView<" + bean.basicViewBean.recordName + "> = new ScrollView();");
+        writeLine("dataSource:MatTableDataSource<" + bean.basicViewBean.recordName + ">;");
         writeLine("@ViewChild(MatPaginator) paginator: MatPaginator;");
         writeLine("@ViewChild(MatSort) sort: MatSort");
         writeLine("pageSizeOptions: number[] = [10, 20, 50, 100];");

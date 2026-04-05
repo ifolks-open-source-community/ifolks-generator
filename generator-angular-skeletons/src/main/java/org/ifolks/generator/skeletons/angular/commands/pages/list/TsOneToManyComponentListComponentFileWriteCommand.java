@@ -41,7 +41,7 @@ public class TsOneToManyComponentListComponentFileWriteCommand extends TsFileWri
 		imports.add("import { ScrollView } from \"src/app/core/models/ScrollView\";");
 		imports.add("import { SelectItem } from \"src/app/core/models/SelectItem\";");
 		
-		imports.add("import { " + oneToManyComponent.referenceBean.basicViewBean.className + " } from '" + oneToManyComponent.referenceBean.myPackage.tsModelsSourcePath + "/views/basic/" + oneToManyComponent.referenceBean.basicViewBean.className + "';");
+		imports.add("import { " + oneToManyComponent.referenceBean.basicViewBean.recordName + " } from '" + oneToManyComponent.referenceBean.myPackage.tsModelsSourcePath + "/views/basic/" + oneToManyComponent.referenceBean.basicViewBean.recordName + "';");
 		imports.add("import { " + oneToManyComponent.referenceBean.fullViewBean.className + " } from '" + oneToManyComponent.referenceBean.myPackage.tsModelsSourcePath + "/views/full/" + oneToManyComponent.referenceBean.fullViewBean.className + "';");
 		imports.add("import { " + oneToManyComponent.referenceBean.formBean.className + " } from '" + oneToManyComponent.referenceBean.myPackage.tsModelsSourcePath + "/forms/" + oneToManyComponent.referenceBean.formBean.className + "';");
 		imports.add("import { " + oneToManyComponent.referenceBean.basicViewBean.filter.className + " } from '" + oneToManyComponent.referenceBean.myPackage.tsModelsSourcePath + "/filters/" + oneToManyComponent.referenceBean.basicViewBean.filter.className + "';");
@@ -83,8 +83,8 @@ public class TsOneToManyComponentListComponentFileWriteCommand extends TsFileWri
         writeLine("id:" + parentBean.idTsType + ";");
         writeLine("activePath:string;");
         writeLine("scrollForm: ScrollForm<" + referenceBean.basicViewBean.filter.className + ", " + referenceBean.basicViewBean.sortingClassName + "> = new ScrollForm();");
-		writeLine("scrollView: ScrollView<" + referenceBean.basicViewBean.className + "> = new ScrollView();");
-        writeLine("dataSource:MatTableDataSource<" + referenceBean.basicViewBean.className + ">;");
+		writeLine("scrollView: ScrollView<" + referenceBean.basicViewBean.recordName + "> = new ScrollView();");
+        writeLine("dataSource:MatTableDataSource<" + referenceBean.basicViewBean.recordName + ">;");
         writeLine("@ViewChild(MatPaginator) paginator: MatPaginator;");
         writeLine("@ViewChild(MatSort) sort: MatSort");
         writeLine("pageSizeOptions: number[] = [10, 20, 50, 100];");

@@ -16,7 +16,7 @@ public class TsBasicViewBeanFileWriteCommand extends TsFileWriteCommand {
 	 */
 	public TsBasicViewBeanFileWriteCommand(Bean bean) {
         
-		super(bean.myPackage.model.project.workspaceFolder + File.separator + bean.myPackage.model.tsUiArtefactName + File.separator + bean.myPackage.tsModelsPath + File.separator + "views" + File.separator + "basic" , bean.basicViewBean.className);
+		super(bean.myPackage.model.project.workspaceFolder + File.separator + bean.myPackage.model.tsUiArtefactName + File.separator + bean.myPackage.tsModelsPath + File.separator + "views" + File.separator + "basic" , bean.basicViewBean.recordName);
 		
 		this.bean = bean;
 		
@@ -38,7 +38,7 @@ public class TsBasicViewBeanFileWriteCommand extends TsFileWriteCommand {
         writeLine(" * <br/>write modifications between specific code marks");
         writeLine(" * <br/>processed by ifolks-generator");
         writeLine(" */");
-        writeLine("export class " + this.bean.basicViewBean.className + " {");
+        writeLine("export class " + this.bean.basicViewBean.recordName + " {");
         skipLine();
 
         createProperties();

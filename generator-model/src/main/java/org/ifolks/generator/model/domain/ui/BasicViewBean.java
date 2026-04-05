@@ -6,7 +6,7 @@ import java.util.List;
 
 public class BasicViewBean {
 	
-	public String className;
+	public String recordName;
 	public String objectName;
 	
 	
