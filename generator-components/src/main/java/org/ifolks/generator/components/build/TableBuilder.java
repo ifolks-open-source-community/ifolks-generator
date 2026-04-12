@@ -5,10 +5,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import org.apache.commons.dbcp.BasicDataSource;
-import org.ifolks.generator.components.resolvers.DatabaseHandlerDiscovery;
-import org.ifolks.generator.persistence.backup.file.impl.SimpleScriptFileReaderImpl;
-import org.ifolks.generator.persistence.backup.file.interfaces.SimpleScriptFileReader;
-import org.ifolks.generator.persistence.build.JdbcRawCommand;
+import org.ifolks.generator.components.build.commands.JdbcRawCommand;
+import org.ifolks.generator.components.database.DatabaseHandlerDiscovery;
+import org.ifolks.generator.components.population.files.SimpleScriptFileReader;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.database.Table;
 import org.ifolks.generator.model.exception.InvalidFileException;
@@ -28,7 +27,7 @@ public class TableBuilder {
 	 */
 	public TableBuilder(Project project, BasicDataSource dataSource) {
 		this.dataSource = dataSource;
-		this.scriptFileReader = new SimpleScriptFileReaderImpl();
+		this.scriptFileReader = new SimpleScriptFileReader();
 		scriptRootPath = project.workspaceFolder + File.separator + DatabaseHandlerDiscovery.getBuildScriptFolder(dataSource);
 	}
 	

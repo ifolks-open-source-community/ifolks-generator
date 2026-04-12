@@ -1,12 +1,12 @@
 package org.ifolks.generator.bl.services;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.metadata.ProjectMetaData;
 import org.ifolks.generator.model.metadata.validation.ProjectValidationReport;
 import org.ifolks.generator.services.interfaces.ProjectLoader;
 import org.ifolks.generator.services.interfaces.ProjectMetaDataService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

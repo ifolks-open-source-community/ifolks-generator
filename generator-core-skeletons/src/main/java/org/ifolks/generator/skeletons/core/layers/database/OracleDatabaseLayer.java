@@ -1,13 +1,13 @@
 package org.ifolks.generator.skeletons.core.layers.database;
 
+import org.ifolks.generator.model.domain.Package;
+import org.ifolks.generator.model.domain.Project;
+import org.ifolks.generator.model.domain.database.Table;
 import org.ifolks.generator.skeletons.core.commands.database.configuration.oracle.OracleMainDefinitionFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.database.oracle.OracleTableDefinitionFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.database.oracle.OracleTableFkDefinitionFileWriteCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
-import org.ifolks.generator.model.domain.Package;
-import org.ifolks.generator.model.domain.Project;
-import org.ifolks.generator.model.domain.database.Table;
 
 public class OracleDatabaseLayer extends AbstractLayer {
 	

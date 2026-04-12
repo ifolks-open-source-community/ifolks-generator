@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.business.OneToManyComponent;
 import org.ifolks.generator.model.domain.business.OneToOneComponent;
@@ -15,6 +14,7 @@ import org.ifolks.generator.model.domain.ui.ViewProperty;
 import org.ifolks.generator.model.metadata.RelationType;
 import org.ifolks.generator.model.metadata.SelectionMode;
 import org.ifolks.generator.model.util.naming.JavaClassNaming;
+import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 
 
 public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {

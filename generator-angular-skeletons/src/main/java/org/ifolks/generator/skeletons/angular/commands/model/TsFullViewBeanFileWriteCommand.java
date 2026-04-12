@@ -51,7 +51,7 @@ super(bean.myPackage.model.project.workspaceFolder + File.separator + bean.myPac
     private void createProperties() {
     	
         writeLine("id: " + bean.idTsType + ";");
-        writeLine("form: " + bean.formBean.className + ";");
+        writeLine("form: " + bean.formBean.className + " = new " + bean.formBean.className + "();");
         writeLine("canUpdate: boolean;");
         writeLine("canDelete: boolean;");
         skipLine();

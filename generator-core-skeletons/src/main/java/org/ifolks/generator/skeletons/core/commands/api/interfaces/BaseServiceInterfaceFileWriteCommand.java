@@ -3,7 +3,6 @@ package org.ifolks.generator.skeletons.core.commands.api.interfaces;
 import java.io.File;
 import java.io.IOException;
 
-import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.business.OneToManyComponent;
 import org.ifolks.generator.model.domain.business.OneToOneComponent;
@@ -11,6 +10,7 @@ import org.ifolks.generator.model.domain.business.Property;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
 import org.ifolks.generator.model.metadata.RelationType;
 import org.ifolks.generator.model.metadata.SelectionMode;
+import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 
 public class BaseServiceInterfaceFileWriteCommand extends JavaFileWriteCommand {
 
@@ -87,8 +87,6 @@ public class BaseServiceInterfaceFileWriteCommand extends JavaFileWriteCommand {
 		createLoadOneToManyComponentList();
 		createScrollOneToManyComponent();
 		createLoadOneToManyComponent();
-		createCreateObject();
-		createCreateOneToManyComponent();
 		createSaveObject();
 		createSaveOneToOneComponent();
 		createSaveOneToManyComponent();
@@ -98,8 +96,6 @@ public class BaseServiceInterfaceFileWriteCommand extends JavaFileWriteCommand {
 		createDeleteObject();
 		createDeleteOneToOneComponent();
 		createDeleteOneToManyComponent();
-		createDeleteObjectList();
-		createDeleteOneToManyComponentList();
 
 		writeLine("}");
 
@@ -246,28 +242,6 @@ public class BaseServiceInterfaceFileWriteCommand extends JavaFileWriteCommand {
 		}
 	}
 
-	private void createCreateObject() {
-		writeLine("/**");
-		writeLine(" * create object");
-		writeLine(" */");
-		writeLine(this.bean.fullViewBean.className + " create();");
-		writeLine("public static final String GET_NEW_URL = \"/" + bean.urlPiece + "/new\";");
-		skipLine();
-	}
-
-	private void createCreateOneToManyComponent() {
-		for (OneToManyComponent oneToManyComponent : this.bean.oneToManyComponentList) {
-			Bean currentBean = oneToManyComponent.referenceBean;
-
-			writeLine("/**");
-			writeLine(" * create one to many component " + currentBean.objectName);
-			writeLine(" */");
-			writeLine(currentBean.fullViewBean.className + " create" + currentBean.className + "(" + bean.idType + " id);");
-			writeLine("public static final String GET_NEW_" + currentBean.table.originalName + "_URL = \"/" + bean.urlPiece + "/{id}/" + currentBean.urlPiece + "/new\";");
-			skipLine();
-		}
-	}
-
 	private void createSaveObject() {
 		writeLine("/**");
 		writeLine(" * save object");
@@ -369,28 +343,6 @@ public class BaseServiceInterfaceFileWriteCommand extends JavaFileWriteCommand {
 			writeLine(" */");
 			writeLine("void delete" + currentBean.className + "(" + currentBean.idType + " id);");
 			writeLine("public static final String DELETE_" + currentBean.table.originalName + "_URL = \"/" + currentBean.urlPiece + "/{id}\";");
-			skipLine();
-		}
-	}
-
-	private void createDeleteObjectList() {
-		writeLine("/**");		
-		writeLine(" * delete object list");		
-		writeLine(" */");
-		writeLine("void deleteList(List<" + bean.idType + "> idList);");
-		writeLine("public static final String DELETE_LIST_URL = \"/" + bean.urlPiece + "/delete\";");
-		skipLine();
-	}
-
-	private void createDeleteOneToManyComponentList() {
-		for (OneToManyComponent oneToManyComponent : this.bean.oneToManyComponentList) {
-			Bean currentBean = oneToManyComponent.referenceBean;
-
-			writeLine("/**");
-			writeLine(" * delete one to many component " + currentBean.objectName + " list");
-			writeLine(" */");
-			writeLine("void delete" + currentBean.className + "List(List<" + currentBean.idType + "> idList);");
-			writeLine("public static final String DELETE_" + currentBean.table.originalName + "_LIST_URL = \"/" + currentBean.urlPiece + "/delete\";");
 			skipLine();
 		}
 	}

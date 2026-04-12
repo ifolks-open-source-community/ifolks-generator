@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import org.ifolks.generator.model.backup.check.BackupPlanPostExecutionWarning;
-import org.ifolks.generator.model.backup.check.BackupPlanPreExecutionWarning;
+import org.ifolks.generator.model.population.check.PopulationPlanPostExecutionWarning;
+import org.ifolks.generator.model.population.check.PopulationPlanPreExecutionWarning;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,19 +14,19 @@ public class PopulatorPrompter {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PopulatorPrompter.class);
 	
-	public void printPreExecutionWarnings(List<BackupPlanPreExecutionWarning> warnings){
+	public void printPreExecutionWarnings(List<PopulationPlanPreExecutionWarning> warnings){
 		logger.warn(warnings.size() + " warnings have been generated");
 		
-		for(BackupPlanPreExecutionWarning w : warnings){
+		for(PopulationPlanPreExecutionWarning w : warnings){
 			logger.warn(printPreExecutionWarning(w));
 		}
 		
 	}
 	
-	public void printPostExecutionWarnings(List<BackupPlanPostExecutionWarning> warnings){
+	public void printPostExecutionWarnings(List<PopulationPlanPostExecutionWarning> warnings){
 		logger.warn(warnings.size() + " warnings have been generated");
 		
-		for(BackupPlanPostExecutionWarning w : warnings){
+		for(PopulationPlanPostExecutionWarning w : warnings){
 			logger.warn(printPostExecutionWarning(w));
 		}
 		
@@ -43,16 +43,16 @@ public class PopulatorPrompter {
 		}
 	}
 	
-	private String printPreExecutionWarning(BackupPlanPreExecutionWarning w){
+	private String printPreExecutionWarning(PopulationPlanPreExecutionWarning w){
 		String firstPart = w.getType().getDescription() + w.getTable().originalName;
-		if(w.getStep()==BackupPlanPreExecutionWarning.NO_STEP){
+		if(w.getStep()==PopulationPlanPreExecutionWarning.NO_STEP){
 			return firstPart;
 		}else{
 			return firstPart + " on step " + w.getStep();
 		}
 	}
 	
-	private String printPostExecutionWarning(BackupPlanPostExecutionWarning w){
+	private String printPostExecutionWarning(PopulationPlanPostExecutionWarning w){
 		return w.getType().getDescription() + w.getTable().originalName;
 	}
 }

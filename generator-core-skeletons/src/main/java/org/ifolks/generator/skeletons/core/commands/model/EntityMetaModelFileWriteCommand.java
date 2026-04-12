@@ -3,7 +3,6 @@ package org.ifolks.generator.skeletons.core.commands.model;
 import java.io.File;
 import java.io.IOException;
 
-import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.business.OneToMany;
 import org.ifolks.generator.model.domain.business.OneToManyComponent;
@@ -11,6 +10,7 @@ import org.ifolks.generator.model.domain.business.OneToOne;
 import org.ifolks.generator.model.domain.business.OneToOneComponent;
 import org.ifolks.generator.model.domain.business.Property;
 import org.ifolks.generator.model.util.naming.JavaClassNaming;
+import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 
 
 /**

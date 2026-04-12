@@ -1,5 +1,9 @@
 package org.ifolks.generator.skeletons.rest.layers;
 
+import org.ifolks.generator.model.domain.Package;
+import org.ifolks.generator.model.domain.Project;
+import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.rest.commands.SpringRestBaseControllerCommand;
 import org.ifolks.generator.skeletons.rest.commands.SpringRestControllerCommand;
 import org.ifolks.generator.skeletons.rest.commands.configuration.SpringRestApplicationConfigFileWriteCommand;
@@ -8,10 +12,6 @@ import org.ifolks.generator.skeletons.rest.commands.configuration.SpringRestExec
 import org.ifolks.generator.skeletons.rest.commands.configuration.SpringRestLocalPropertiesFileWriteCommand;
 import org.ifolks.generator.skeletons.rest.commands.configuration.SpringRestLogbackFileWriteCommand;
 import org.ifolks.generator.skeletons.rest.commands.configuration.SpringRestPropertiesFileWriteCommand;
-import org.ifolks.generator.model.domain.Package;
-import org.ifolks.generator.model.domain.Project;
-import org.ifolks.generator.model.domain.business.Bean;
-import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 
 public class SpringRestControllerLayer extends AbstractLayer {

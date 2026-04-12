@@ -4,14 +4,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Set;
 
+import org.ifolks.generator.components.population.commands.impl.PopulationCommandFactory;
+import org.ifolks.generator.components.population.commands.interfaces.PopulationCommand;
+import org.ifolks.generator.components.population.files.PopulationFileLocator;
 import org.ifolks.generator.model.domain.Package;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.metadata.PersistenceMode;
 import org.ifolks.generator.model.util.folder.FolderUtil;
-import org.ifolks.generator.persistence.backup.command.impl.BackupCommandFactory;
-import org.ifolks.generator.persistence.backup.command.interfaces.BackupCommand;
-import org.ifolks.generator.persistence.backup.file.impl.BackupFileLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +32,10 @@ public class JunitPopulator {
 	private static final Logger logger = LoggerFactory.getLogger(JunitPopulator.class);
 	
 	@Autowired
-	private BackupCommandFactory commandFactory;
+	private PopulationCommandFactory commandFactory;
 	
 	@Autowired
-	private BackupFileLocator backupLocator;
+	private PopulationFileLocator backupLocator;
 	
 	
 	public void populate(Project project, Set<String> packages, String backupPath) {
@@ -61,8 +61,8 @@ public class JunitPopulator {
 							String path = backupLocator.getBackupFilePath(backupPath, step, bean.table, PersistenceMode.CSV);
 							
 							if (Files.exists(Paths.get(path))) {
-								BackupCommand command = commandFactory.getBackupCommand(bean.table, PersistenceMode.CSV, null);
-								command.execute(path);
+								PopulationCommand command = commandFactory.getPopulationCommand(bean, PersistenceMode.CSV, null);
+								command.execute(path, bean);
 								logger.info("populating table : " + bean.table.name + " completed");
 							} else {
 								logger.warn("populating table : " + bean.table.name + " : no backup found");

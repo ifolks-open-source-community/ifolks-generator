@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.business.OneToOneComponent;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
+import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 
 public class OneToOneComponentPopulatorCommandFileWriteCommand extends JavaFileWriteCommand {
 
@@ -33,8 +33,7 @@ public class OneToOneComponentPopulatorCommandFileWriteCommand extends JavaFileW
 		javaImports.add("import java.time.LocalDate;");
 		javaImports.add("import java.math.BigDecimal;");
 		
-		javaImports.add("import org.ifolks.generator.persistence.backup.command.interfaces.BackupArgumentsCommand;");
-		javaImports.add("import org.ifolks.generator.persistence.backup.reader.model.BackupArguments;");
+		javaImports.add("import org.ifolks.generator.components.population.commands.interfaces.ServiceCommand;");
 		
 		javaImports.add("import org.slf4j.Logger;");
 		javaImports.add("import org.slf4j.LoggerFactory;");
@@ -46,12 +45,7 @@ public class OneToOneComponentPopulatorCommandFileWriteCommand extends JavaFileW
         javaImports.add("import " + referenceBean.myPackage.formsPackageName + "." + referenceBean.formBean.className + ";");
         javaImports.add("import " + parentBean.myPackage.fullViewsPackageName + "." + parentBean.fullViewBean.className + ";");
         javaImports.add("import " + parentBean.myPackage.serviceInterfacePackageName + "." + parentBean.serviceInterfaceName + ";");
-        
-        javaImports.add("import org.ifolks.commons.mapper.impl.ObjectArrayToBeanMapperImpl;");
-		javaImports.add("import org.ifolks.commons.mapper.impl.StringArrayToBeanMapperImpl;");
-		javaImports.add("import org.ifolks.commons.mapper.interfaces.ObjectArrayToBeanMapper;");
-		javaImports.add("import org.ifolks.commons.mapper.impl.StringToObjectConverter;");
-		
+        javaImports.add("import " + this.referenceBean.myPackage.formMapperPackageName + "." + referenceBean.formBean.mapperClassName + ";");
 	}
 
 	@Override
@@ -64,12 +58,12 @@ public class OneToOneComponentPopulatorCommandFileWriteCommand extends JavaFileW
         skipLine();
 
         writeLine("/**");
-        writeLine(" * auto generated view command class file");
+        writeLine(" * auto generated bean populator command class file");
         writeLine(" * <br/>no modification should be done to this file");
 		writeLine(" * <br/>processed by ifolks-generator");
 		writeLine(" */");
 		writeLine("@Component");
-        writeLine("public class " + oneToOneComponent.referenceBean.className + "Command implements BackupArgumentsCommand {");
+        writeLine("public class " + oneToOneComponent.referenceBean.className + "Command implements ServiceCommand {");
         skipLine();
         
         writeLine("/*");
@@ -82,18 +76,14 @@ public class OneToOneComponentPopulatorCommandFileWriteCommand extends JavaFileW
         writeLine("private " + oneToOneComponent.parentBean.serviceInterfaceName + " " + parentBean.serviceObjectName + ";");
         skipLine();
         
+        writeLine("@Autowired");
+        writeLine("private " + this.oneToOneComponent.referenceBean.formBean.mapperClassName + " " + this.oneToOneComponent.referenceBean.formBean.mapperObjectName + ";");
+        skipLine();
+        
         writeLine("@Override");
-        writeLine("public void execute(BackupArguments arguments) {");
+        writeLine("public void execute(List<Object[]> data) {");
         
-        writeLine("ObjectArrayToBeanMapper<" + referenceBean.formBean.className + "> mapper;");
-		
-        writeLine("if (arguments.isArgumentsTyped()) {");
-        writeLine("mapper = new ObjectArrayToBeanMapperImpl<" + referenceBean.formBean.className + ">(" + referenceBean.formBean.className + ".class);");
-        writeLine("} else {");
-        writeLine("mapper = new StringArrayToBeanMapperImpl<" + referenceBean.formBean.className + ">(" + referenceBean.formBean.className + ".class);");
-        writeLine("}");
-        
-        writeLine("for (Object[] args:arguments.getArguments()) {");
+        writeLine("for (Object[] args:data) {");
         writeLine("String message = " + CHAR_34 + "execute " + parentBean.serviceObjectName + ".save - args : " + CHAR_34 + ";");
                 
         writeLine("for (Object arg:args) {");
@@ -106,13 +96,13 @@ public class OneToOneComponentPopulatorCommandFileWriteCommand extends JavaFileW
         
         List<ViewProperty> properties = parentBean.referenceViewProperties;
         
-        writeLine(referenceBean.formBean.className + " " + referenceBean.formBean.objectName + " = mapper.mapFrom(new " + referenceBean.formBean.className + "(), Arrays.copyOfRange(args," + properties.size() + ",args.length));");
+        writeLine(referenceBean.formBean.className + " " + referenceBean.formBean.objectName + " = " + this.oneToOneComponent.referenceBean.formBean.mapperObjectName + ".toForm(Arrays.copyOfRange(args," + properties.size() + ",args.length));");
         skipLine();               
         
         int i = 0;
         for (ViewProperty property:properties) {
         	String type = property.javaType;        	
-        	writeLine(type + " arg" + i + " = arguments.isArgumentsTyped()?(" + type + ")args[" + i + "]:(" + type + ")(StringToObjectConverter.getObjectFromString((String)args[" + i + "], " + type + ".class));");
+        	writeLine(type + " arg" + i + " = (" + type + ")args[" + i + "];");
         	i++;
         }
         
@@ -124,7 +114,7 @@ public class OneToOneComponentPopulatorCommandFileWriteCommand extends JavaFileW
         writeLine(");");
         skipLine();
         
-        writeLine("this." + parentBean.serviceObjectName + ".save" + referenceBean.className + "(" + parentBean.fullViewBean.objectName + ".getId(), " + referenceBean.formBean.objectName + ");");
+        writeLine("this." + parentBean.serviceObjectName + ".save" + referenceBean.className + "(" + parentBean.fullViewBean.objectName + ".id(), " + referenceBean.formBean.objectName + ");");
         writeLine("} catch (Exception e) {");
         writeLine("logger.error(message + " + CHAR_34 + "failed : " + CHAR_34 + " + e.getClass().getSimpleName() + " + CHAR_34 + " - " + CHAR_34 + " + e.getMessage(), e);");
         writeLine("}");

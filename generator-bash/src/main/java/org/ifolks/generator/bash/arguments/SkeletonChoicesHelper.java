@@ -2,8 +2,8 @@ package org.ifolks.generator.bash.arguments;
 
 import java.util.TreeMap;
 
-import org.ifolks.generator.components.resolvers.SkeletonResolver;
 import org.ifolks.generator.skeletons.Skeleton;
+import org.ifolks.generator.skeletons.SkeletonResolver;
 
 /**
  * The choices of the skeleton are available through a built map in the {@link SkeletonResolver}

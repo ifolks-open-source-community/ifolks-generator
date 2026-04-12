@@ -1,5 +1,8 @@
 package org.ifolks.generator.skeletons.core.layers;
 
+import org.ifolks.generator.model.domain.Package;
+import org.ifolks.generator.model.domain.Project;
+import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.skeletons.core.commands.api.configuration.ApiPomFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.api.interfaces.BaseServiceInterfaceFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.api.interfaces.ServiceInterfaceFileWriteCommand;
@@ -10,9 +13,6 @@ import org.ifolks.generator.skeletons.core.commands.api.model.FullViewBeanFileWr
 import org.ifolks.generator.skeletons.core.commands.api.model.SortingFileWriteCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
-import org.ifolks.generator.model.domain.Package;
-import org.ifolks.generator.model.domain.Project;
-import org.ifolks.generator.model.domain.business.Bean;
 
 public class ApiLayer extends AbstractLayer {
 	

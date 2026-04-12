@@ -97,7 +97,7 @@ public class JavaModelFactory implements ModelFactory {
         model.populatorArtefactName = project.projectName + "-populator";
         model.testsArtefactName = project.projectName + "-tests";
         model.restArtefactName = project.projectName + "-rest";
-        model.restClientArtefactName = project.projectName + "-rest-client";
+
         model.webappArtefactName = project.projectName + "-webapp";
         model.tsUiArtefactName = project.projectName + "-ui";
 
@@ -118,8 +118,6 @@ public class JavaModelFactory implements ModelFactory {
         model.processorPackageName = model.componentsPackageName + ".processor";
        
         model.servicesPackageName = project.domainName + "." + project.projectName + ".services";
-        
-        model.restClientPackageName = project.domainName + "." + project.projectName + ".rest.client";
        
         model.restControllerPackageName = project.domainName + "." + project.projectName + ".rest.controller";
         
@@ -156,7 +154,7 @@ public class JavaModelFactory implements ModelFactory {
 	
 	
 	private void buildViews(Model model) {
-		for (Package pack:model.getPackages()) {
+		for (Package pack:model.packages) {
 			for (Bean bean:pack.beans) {
 				
 				if (bean.detailMode == null) {

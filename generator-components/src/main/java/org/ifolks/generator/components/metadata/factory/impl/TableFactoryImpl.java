@@ -1,7 +1,7 @@
 package org.ifolks.generator.components.metadata.factory.impl;
 
+import org.ifolks.generator.components.database.DatabaseHandlerDiscovery;
 import org.ifolks.generator.components.metadata.factory.interfaces.TableFactory;
-import org.ifolks.generator.components.resolvers.DatabaseHandlerDiscovery;
 import org.ifolks.generator.model.domain.Model;
 import org.ifolks.generator.model.domain.Package;
 import org.ifolks.generator.model.domain.database.Column;

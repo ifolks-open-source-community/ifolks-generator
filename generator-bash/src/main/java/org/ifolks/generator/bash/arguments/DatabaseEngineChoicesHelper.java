@@ -2,7 +2,7 @@ package org.ifolks.generator.bash.arguments;
 
 import java.util.TreeMap;
 
-import org.ifolks.generator.components.resolvers.DatabaseHandlerDiscovery;
+import org.ifolks.generator.components.database.DatabaseHandlerDiscovery;
 import org.ifolks.generator.skeletons.database.DatabaseHandler;
 
 /**

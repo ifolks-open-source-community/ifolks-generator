@@ -3,7 +3,9 @@ package org.ifolks.generator.skeletons.rest;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ifolks.generator.components.resolvers.DatabaseHandlerDiscovery;
+import org.ifolks.generator.components.database.DatabaseHandlerDiscovery;
+import org.ifolks.generator.model.domain.Project;
+import org.ifolks.generator.skeletons.Skeleton;
 import org.ifolks.generator.skeletons.core.layers.ApiLayer;
 import org.ifolks.generator.skeletons.core.layers.BusinessComponentLayer;
 import org.ifolks.generator.skeletons.core.layers.HibernateBusinessModelLayer;
@@ -11,12 +13,10 @@ import org.ifolks.generator.skeletons.core.layers.HibernateDaoLayer;
 import org.ifolks.generator.skeletons.core.layers.JunitLayer;
 import org.ifolks.generator.skeletons.core.layers.PopulatorLayer;
 import org.ifolks.generator.skeletons.core.layers.ServiceLayer;
-import org.ifolks.generator.skeletons.rest.layers.SpringRestControllerLayer;
-import org.ifolks.generator.skeletons.rest.layers.SpringRestRootLayer;
-import org.ifolks.generator.model.domain.Project;
-import org.ifolks.generator.skeletons.Skeleton;
 import org.ifolks.generator.skeletons.database.DatabaseHandler;
 import org.ifolks.generator.skeletons.layers.Layer;
+import org.ifolks.generator.skeletons.rest.layers.SpringRestControllerLayer;
+import org.ifolks.generator.skeletons.rest.layers.SpringRestRootLayer;
 
 
 public class SpringHibernateRestSkeleton implements Skeleton {

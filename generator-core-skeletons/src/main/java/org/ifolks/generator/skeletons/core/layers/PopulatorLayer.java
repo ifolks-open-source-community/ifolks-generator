@@ -1,5 +1,10 @@
 package org.ifolks.generator.skeletons.core.layers;
 
+import org.ifolks.generator.model.domain.Package;
+import org.ifolks.generator.model.domain.Project;
+import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.model.domain.business.OneToManyComponent;
+import org.ifolks.generator.model.domain.business.OneToOneComponent;
 import org.ifolks.generator.skeletons.core.commands.population.BeanPopulatorCommandFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.population.BeanPopulatorFileTemplateCommandFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.population.OneToManyComponentPopulatorCommandFileWriteCommand;
@@ -15,11 +20,6 @@ import org.ifolks.generator.skeletons.core.commands.population.resources.Populat
 import org.ifolks.generator.skeletons.core.commands.population.resources.PopulatorLauncherFileWriteCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
-import org.ifolks.generator.model.domain.Package;
-import org.ifolks.generator.model.domain.Project;
-import org.ifolks.generator.model.domain.business.Bean;
-import org.ifolks.generator.model.domain.business.OneToManyComponent;
-import org.ifolks.generator.model.domain.business.OneToOneComponent;
 
 public class PopulatorLayer extends AbstractLayer {
 	

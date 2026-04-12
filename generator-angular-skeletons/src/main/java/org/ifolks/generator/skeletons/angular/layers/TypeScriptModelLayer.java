@@ -1,13 +1,13 @@
 package org.ifolks.generator.skeletons.angular.layers;
 
+import org.ifolks.generator.model.domain.Package;
+import org.ifolks.generator.model.domain.Project;
+import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.skeletons.angular.commands.model.TsBasicViewBeanFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.model.TsFilterFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.model.TsFormBeanFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.model.TsFullViewBeanFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.model.TsSortingFileWriteCommand;
-import org.ifolks.generator.model.domain.Package;
-import org.ifolks.generator.model.domain.Project;
-import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 

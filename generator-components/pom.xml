@@ -14,15 +14,71 @@
 	<packaging>jar</packaging>
 
 	<dependencies>
-
+		
 		<dependency>
 			<groupId>org.ifolks.generator</groupId>
-			<artifactId>generator-persistence</artifactId>
+			<artifactId>generator-model</artifactId>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.ifolks.generator</groupId>
 			<artifactId>generator-skeletons</artifactId>
+		</dependency>
+		
+		<!-- annotations spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+		
+		<!-- used for jdbc commands -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+		</dependency>
+		
+		
+		<!-- apache velocity-->
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+    		<artifactId>velocity-engine-core</artifactId>
+		</dependency>
+		
+		<!-- apache commons -->
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+		</dependency>
+		
+		<!-- Junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
 		</dependency>
 		
 	</dependencies>

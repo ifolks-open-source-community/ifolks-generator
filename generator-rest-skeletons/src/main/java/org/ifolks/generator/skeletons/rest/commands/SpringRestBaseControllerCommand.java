@@ -102,8 +102,6 @@ private Bean bean;
 		createLoadOneToManyComponentList();
 		createScrollOneToManyComponent();
 		createLoadOneToManyComponent();
-		createCreateObject();
-		createCreateOneToManyComponent();
 		createSaveObject();
 		createSaveOneToOneComponent();
 		createSaveOneToManyComponent();
@@ -113,9 +111,7 @@ private Bean bean;
 		createDeleteObject();
 		createDeleteOneToOneComponent();
 		createDeleteOneToManyComponent();
-		createDeleteObjectList();
-		createDeleteOneToManyComponentList();
-
+		
 		writeLine("}");
 
 	}
@@ -289,32 +285,6 @@ private Bean bean;
 		}
 	}
 
-	private void createCreateObject() {
-		writeLine("/**");
-		writeLine(" * create object");
-		writeLine(" */");
-		writeLine("@RequestMapping(value = {" + bean.serviceInterfaceName + ".GET_NEW_URL}, method = RequestMethod.GET)");
-		writeLine("public @ResponseBody " + this.bean.fullViewBean.className + " create() {");
-		writeLine("return " + bean.serviceObjectName + ".create();");
-		writeLine("}");
-		skipLine();
-	}
-
-	private void createCreateOneToManyComponent() {
-		for (OneToManyComponent oneToManyComponent : this.bean.oneToManyComponentList) {
-			Bean currentBean = oneToManyComponent.referenceBean;
-
-			writeLine("/**");
-			writeLine(" * create one to many component " + currentBean.objectName);
-			writeLine(" */");
-			writeLine("@RequestMapping(value = {" + bean.serviceInterfaceName + ".GET_NEW_" + currentBean.table.originalName + "_URL}, method = RequestMethod.GET)");
-			writeLine("public @ResponseBody " +  currentBean.fullViewBean.className + " create" + currentBean.className + "(@PathVariable(\"id\") " + bean.idType + " id) {");
-			writeLine("return " + bean.serviceObjectName + ".create" + currentBean.className + "(id);");
-			writeLine("}");
-			skipLine();
-		}
-	}
-
 	private void createSaveObject() {
 		writeLine("/**");
 		writeLine(" * save object");		
@@ -433,32 +403,6 @@ private Bean bean;
 			writeLine("@RequestMapping(value = {" + bean.serviceInterfaceName + ".DELETE_" + currentBean.table.originalName + "_URL}, method = RequestMethod.DELETE)");
 			writeLine("public @ResponseBody void delete" + currentBean.className + "(@PathVariable(\"id\")" + currentBean.idType + " id) {");			
 			writeLine(bean.serviceObjectName + ".delete" + currentBean.className + "(id);");
-			writeLine("}");
-			skipLine();
-		}
-	}
-
-	private void createDeleteObjectList() {
-		writeLine("/**");		
-		writeLine(" * delete object list");		
-		writeLine(" */");
-		writeLine("@RequestMapping(value = {" + bean.serviceInterfaceName + ".DELETE_LIST_URL}, method = RequestMethod.POST)");
-		writeLine("public @ResponseBody void deleteList(@RequestBody List<" + bean.idType + "> idList) {");
-		writeLine(bean.serviceObjectName + ".deleteList(idList);");
-		writeLine("}");
-		skipLine();
-	}
-
-	private void createDeleteOneToManyComponentList() {
-		for (OneToManyComponent oneToManyComponent : this.bean.oneToManyComponentList) {
-			Bean currentBean = oneToManyComponent.referenceBean;
-
-			writeLine("/**");
-			writeLine(" * delete one to many component " + currentBean.objectName + " list");
-			writeLine(" */");
-			writeLine("@RequestMapping(value = {" + bean.serviceInterfaceName + ".DELETE_" + currentBean.table.originalName + "_LIST_URL}, method = RequestMethod.POST)");
-			writeLine("public @ResponseBody void delete" + currentBean.className + "List(@RequestBody List<" + currentBean.idType + "> idList) {");
-			writeLine(bean.serviceObjectName + ".delete" + currentBean.className + "List(idList);");
 			writeLine("}");
 			skipLine();
 		}

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.ifolks.generator.components.build.DatabaseCleaner;
 import org.ifolks.generator.components.build.TableBuilder;
-import org.ifolks.generator.components.resolvers.DatabaseHandlerDiscovery;
+import org.ifolks.generator.components.database.DatabaseHandlerDiscovery;
 import org.ifolks.generator.model.domain.Package;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.database.Table;

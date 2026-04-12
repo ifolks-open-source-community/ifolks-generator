@@ -3,10 +3,10 @@ package org.ifolks.generator.skeletons.core.commands.population;
 import java.io.File;
 import java.io.IOException;
 
-import org.ifolks.generator.skeletons.commands.impl.typed.CsvFileWriteCommand;
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.business.OneToOneComponent;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
+import org.ifolks.generator.skeletons.commands.impl.typed.CsvFileWriteCommand;
 
 public class OneToOneComponentPopulatorFileTemplateCommandFileWriteCommand extends CsvFileWriteCommand {
 

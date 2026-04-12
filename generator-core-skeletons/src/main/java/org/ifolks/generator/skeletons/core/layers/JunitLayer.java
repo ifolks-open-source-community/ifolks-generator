@@ -1,5 +1,6 @@
 package org.ifolks.generator.skeletons.core.layers;
 
+import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.skeletons.core.commands.junit.configuration.LogbackTestFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.junit.configuration.SpringJUnitPersistenceConfigFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.junit.configuration.SpringTestsConfigFileWriteCommand;
@@ -9,7 +10,6 @@ import org.ifolks.generator.skeletons.core.commands.junit.resources.JUnitDataIni
 import org.ifolks.generator.skeletons.core.commands.junit.resources.SetupTestFileWriteCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
-import org.ifolks.generator.model.domain.Project;
 
 public class JunitLayer extends AbstractLayer {
 	

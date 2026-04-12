@@ -4,11 +4,11 @@ import java.io.File;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.ifolks.generator.bash.prompt.ValidationPrompter;
+import org.ifolks.generator.components.metadata.persistence.interfaces.ProjectMetaDataDao;
+import org.ifolks.generator.components.population.datasources.OutputDataSourceProvider;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.metadata.ProjectMetaData;
 import org.ifolks.generator.model.metadata.validation.ProjectValidationReport;
-import org.ifolks.generator.persistence.backup.datasource.interfaces.OutputDataSourceProvider;
-import org.ifolks.generator.persistence.metadata.interfaces.ProjectMetaDataDao;
 import org.ifolks.generator.services.interfaces.DatabaseBuilder;
 import org.ifolks.generator.services.interfaces.ProjectLoader;
 import org.ifolks.generator.services.interfaces.ProjectMetaDataService;

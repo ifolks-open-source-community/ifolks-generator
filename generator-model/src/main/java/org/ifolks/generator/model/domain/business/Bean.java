@@ -10,6 +10,7 @@ import org.ifolks.generator.model.domain.ui.FormBean;
 import org.ifolks.generator.model.domain.ui.FullViewBean;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
 import org.ifolks.generator.model.exception.PropertyNotFoundException;
+import org.ifolks.generator.model.metadata.DataType;
 import org.ifolks.generator.model.metadata.DetailMode;
 
 /**
@@ -114,5 +115,19 @@ public class Bean {
 			}
 		}
 		throw new PropertyNotFoundException("Property : " + columnName + " not found");
+	}
+	
+	public List<DataType> getPopulationTypes() {
+		List<DataType> result = new ArrayList<>();
+		
+		if (isComponent) {
+			for (ViewProperty property:parentBean.referenceViewProperties) {
+				result.add(property.dataType);
+			}
+		}
+		for (ViewProperty property:formBean.properties) {
+			result.add(property.dataType);
+		}
+		return result;
 	}
 }

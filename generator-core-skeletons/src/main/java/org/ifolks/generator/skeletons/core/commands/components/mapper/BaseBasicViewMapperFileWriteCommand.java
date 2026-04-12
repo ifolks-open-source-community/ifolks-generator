@@ -95,7 +95,7 @@ public class BaseBasicViewMapperFileWriteCommand extends JavaFileWriteCommand {
 
 	private void createToView() {
 		writeLine("/**");
-		writeLine(" * mapping object to view");
+		writeLine(" * mapping entity to view");
 		writeLine(" */");
 		writeLine("public " + this.bean.basicViewBean.recordName + " toView(" + this.bean.className + " "
 				+ this.bean.objectName + ") {");

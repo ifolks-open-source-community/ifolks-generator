@@ -1,0 +1,29 @@
+package org.ifolks.generator.components.population.files;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import org.springframework.stereotype.Component;
+
+/**
+ * simply converts a sript file to its content as a String
+ * @author Nicolas Thibault
+ *
+ */
+@Component
+public class SimpleScriptFileReader {
+
+	public String readScript(String scriptFilePath, Charset charset) throws IOException {
+		Path path  = Paths.get(scriptFilePath);
+		byte[] bytes = Files.readAllBytes(path);
+        return new String(bytes,charset);
+	}
+	
+	public String readScript(String scriptFilePath) throws IOException {
+		return readScript(scriptFilePath, StandardCharsets.UTF_8);
+	}
+}

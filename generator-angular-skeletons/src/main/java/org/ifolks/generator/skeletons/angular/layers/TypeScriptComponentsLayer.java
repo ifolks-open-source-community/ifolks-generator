@@ -1,5 +1,11 @@
 package org.ifolks.generator.skeletons.angular.layers;
 
+import org.ifolks.generator.model.domain.Package;
+import org.ifolks.generator.model.domain.Project;
+import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.model.domain.business.OneToMany;
+import org.ifolks.generator.model.domain.business.OneToManyComponent;
+import org.ifolks.generator.model.domain.business.OneToOneComponent;
 import org.ifolks.generator.skeletons.angular.commands.pages.TsAppRoutingModuleFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.pages.TsModuleFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.pages.TsRoutingModuleFileWriteCommand;
@@ -30,12 +36,6 @@ import org.ifolks.generator.skeletons.angular.commands.pages.modal.ScssOneToMany
 import org.ifolks.generator.skeletons.angular.commands.pages.modal.TsModalComponentFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.pages.modal.TsOneToManyComponentModalComponentFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.pages.modal.TsOneToManyModalComponentFileWriteCommand;
-import org.ifolks.generator.model.domain.Package;
-import org.ifolks.generator.model.domain.Project;
-import org.ifolks.generator.model.domain.business.Bean;
-import org.ifolks.generator.model.domain.business.OneToMany;
-import org.ifolks.generator.model.domain.business.OneToManyComponent;
-import org.ifolks.generator.model.domain.business.OneToOneComponent;
 import org.ifolks.generator.skeletons.commands.impl.ResourcesFileWriteCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;

@@ -38,7 +38,6 @@ public class Model {
 	public String populatorArtefactName;
 	public String testsArtefactName;	
 	public String restArtefactName;
-	public String restClientArtefactName;
 	public String webappArtefactName;
 	public String tsUiArtefactName;
 
@@ -61,7 +60,6 @@ public class Model {
 	public String processorPackageName;
 	
 	public String servicesPackageName;
-	public String restClientPackageName;
 	
 	public String restControllerPackageName;
 	
@@ -76,15 +74,16 @@ public class Model {
 	public String junitPackageName;
 
 	
+
 	/*
-	 * getters and setters
+	 * getters and setters (only for velocity)
 	 */
 	public Project getProject() {
 		return project;
 	}
 	public void setProject(Project project) {
 		this.project = project;
-	}	
+	}
 	public String getJavaSourcesFolder() {
 		return javaSourcesFolder;
 	}
@@ -174,12 +173,6 @@ public class Model {
 	}
 	public void setRestArtefactName(String restArtefactName) {
 		this.restArtefactName = restArtefactName;
-	}
-	public String getRestClientArtefactName() {
-		return restClientArtefactName;
-	}
-	public void setRestClientArtefactName(String restClientArtefactName) {
-		this.restClientArtefactName = restClientArtefactName;
 	}
 	public String getWebappArtefactName() {
 		return webappArtefactName;
@@ -277,12 +270,6 @@ public class Model {
 	public void setServicesPackageName(String servicesPackageName) {
 		this.servicesPackageName = servicesPackageName;
 	}
-	public String getRestClientPackageName() {
-		return restClientPackageName;
-	}
-	public void setRestClientPackageName(String restClientPackageName) {
-		this.restClientPackageName = restClientPackageName;
-	}
 	public String getRestControllerPackageName() {
 		return restControllerPackageName;
 	}
@@ -337,6 +324,8 @@ public class Model {
 	public void setJunitPackageName(String junitPackageName) {
 		this.junitPackageName = junitPackageName;
 	}
+
+
 	/**
      * run through all the tables until it is found
      * @param tableName

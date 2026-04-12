@@ -3,9 +3,9 @@ package org.ifolks.generator.skeletons.angular.commands.pages.details;
 import java.io.File;
 import java.io.IOException;
 
-import org.ifolks.generator.skeletons.angular.commands.pages.AngularHtmlFileWriteCommand;
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
+import org.ifolks.generator.skeletons.angular.commands.pages.AngularHtmlFileWriteCommand;
 
 
 public class HtmlDetailsComponentFileWriteCommand extends AngularHtmlFileWriteCommand {

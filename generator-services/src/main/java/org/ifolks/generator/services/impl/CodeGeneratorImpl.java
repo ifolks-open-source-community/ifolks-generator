@@ -1,9 +1,9 @@
 package org.ifolks.generator.services.impl;
 
-import org.ifolks.generator.components.resolvers.SkeletonResolver;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.services.interfaces.CodeGenerator;
 import org.ifolks.generator.skeletons.Skeleton;
+import org.ifolks.generator.skeletons.SkeletonResolver;
 import org.ifolks.generator.skeletons.layers.Layer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 import org.slf4j.Logger;

@@ -77,15 +77,10 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
 		createLoadObjectList();
 		createScroll();
 		createLoadObject();
-//		if (bean.cardinality>0) {
-//			createFindObject();
-//		}
 		createLoadOneToOneComponent();
 		createLoadOneToManyComponentList();
 		createScrollOneToManyComponent();
 		createLoadOneToManyComponent();
-		createCreateObject();
-		createCreateOneToManyComponent();
 		createSaveObject();
 		createSaveOneToOneComponent();
 		createSaveOneToManyComponent();
@@ -95,8 +90,6 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
 		createDeleteObject();
 		createDeleteOneToOneComponent();
 		createDeleteOneToManyComponent();
-//		createDeleteObjectList();
-//		createDeleteOneToManyComponentList();
 		
 		skipLine();
 		writeNotOverridableContent();
@@ -190,18 +183,6 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
 	}
     
     
-    private void createCreateObject() {
-		writeLine("/**");
-		writeLine(" * create object");
-		writeLine(" */");
-		writeLine("public create() {");	
-        writeLine("return this.http.get<" + this.bean.fullViewBean.className + ">(environment.restApiUrl + '/" + bean.urlPiece + "/new');");
-		writeLine("}");
-		skipLine();
-
-	}
-    
-    
     private void createSaveObject() {
         writeLine("/**");
         writeLine(" * save object");        
@@ -288,22 +269,6 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
             writeLine("public load" + currentBean.className + "(id: " + bean.idTsType + ") {");            
             writeLine("return this.http.get<" + currentBean.fullViewBean.className + ">(environment.restApiUrl + '/" + bean.urlPiece + "/' + id + '/" + currentBean.urlPiece + "', this.httpOptions);");
             writeLine("}");
-            skipLine();
-        }
-    }
-
-
-    private void createCreateOneToManyComponent() {
-        for (OneToManyComponent oneToManyComponent : this.bean.oneToManyComponentList) {
-            Bean currentBean = oneToManyComponent.referenceBean;
-
-            writeLine("/**");
-            writeLine(" * create one to many component " + currentBean.objectName);
-            writeLine(" */");
-            writeLine("public create" + currentBean.className + "(id:" + bean.idTsType + ") {");
-            writeLine("return this.http.get<" + currentBean.fullViewBean.className + ">(environment.restApiUrl + '/" + bean.urlPiece + "/' + id + '/" + currentBean.urlPiece + "/new', this.httpOptions);");
-            writeLine("}");
-            skipLine();
             skipLine();
         }
     }

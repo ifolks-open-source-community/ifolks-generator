@@ -3,8 +3,8 @@ package org.ifolks.generator.skeletons.core.commands.services;
 import java.io.File;
 import java.io.IOException;
 
-import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 
 public class ServiceImplFileWriteCommand extends JavaFileWriteCommand {
 

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum PersistenceMode {
-	TXT(".txt"),
+
 	CSV(".csv"),
     XML(".xml"),
     CMD(".raw");

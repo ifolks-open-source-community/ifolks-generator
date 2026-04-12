@@ -1,5 +1,8 @@
 package org.ifolks.generator.skeletons.core.layers;
 
+import org.ifolks.generator.model.domain.Package;
+import org.ifolks.generator.model.domain.Project;
+import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.skeletons.core.commands.components.configuration.ComponentsPomFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.components.configuration.SpringComponentsConfigFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.components.mapper.BaseBasicViewMapperFileWriteCommand;
@@ -16,9 +19,6 @@ import org.ifolks.generator.skeletons.core.commands.components.statemanager.Base
 import org.ifolks.generator.skeletons.core.commands.components.statemanager.StateManagerImplFileWriteCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
-import org.ifolks.generator.model.domain.Package;
-import org.ifolks.generator.model.domain.Project;
-import org.ifolks.generator.model.domain.business.Bean;
 
 public class BusinessComponentLayer extends AbstractLayer {
 	

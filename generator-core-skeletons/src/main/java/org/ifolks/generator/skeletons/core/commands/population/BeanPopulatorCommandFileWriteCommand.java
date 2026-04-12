@@ -3,8 +3,8 @@ package org.ifolks.generator.skeletons.core.commands.population;
 import java.io.File;
 import java.io.IOException;
 
-import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 
 public class BeanPopulatorCommandFileWriteCommand extends JavaFileWriteCommand {
 
@@ -21,9 +21,11 @@ public class BeanPopulatorCommandFileWriteCommand extends JavaFileWriteCommand {
 	protected void fetchSpecificImports() {
 		
 		javaImports.add("import java.util.List;");
+		javaImports.add("import java.util.Date;");
+		javaImports.add("import java.time.LocalDate;");
+		javaImports.add("import java.math.BigDecimal;");
 		
-		javaImports.add("import org.ifolks.generator.persistence.backup.command.interfaces.BackupArgumentsCommand;");
-		javaImports.add("import org.ifolks.generator.persistence.backup.reader.model.BackupArguments;");
+		javaImports.add("import org.ifolks.generator.components.population.commands.interfaces.ServiceCommand;");
 		
 		javaImports.add("import org.slf4j.Logger;");
 		javaImports.add("import org.slf4j.LoggerFactory;");		
@@ -32,11 +34,10 @@ public class BeanPopulatorCommandFileWriteCommand extends JavaFileWriteCommand {
 		javaImports.add("import org.springframework.stereotype.Component;");
 		
         javaImports.add("import " + this.bean.myPackage.formsPackageName + "." + this.bean.formBean.className + ";");
+        javaImports.add("import " + this.bean.myPackage.formMapperPackageName + "." + this.bean.formBean.mapperClassName + ";");
         javaImports.add("import " + this.bean.myPackage.serviceInterfacePackageName + "." + this.bean.serviceInterfaceName + ";");
         
-        javaImports.add("import org.ifolks.commons.mapper.impl.ObjectArrayToBeanMapperImpl;");
-		javaImports.add("import org.ifolks.commons.mapper.impl.StringArrayToBeanMapperImpl;");
-		javaImports.add("import org.ifolks.commons.mapper.interfaces.ObjectArrayToBeanMapper;");
+
 	}
 
 	@Override
@@ -54,7 +55,7 @@ public class BeanPopulatorCommandFileWriteCommand extends JavaFileWriteCommand {
 		writeLine(" * <br/>processed by ifolks-generator");
 		writeLine(" */");
 		writeLine("@Component");
-        writeLine("public class " + bean.className + "Command implements BackupArgumentsCommand {");
+        writeLine("public class " + bean.className + "Command implements ServiceCommand {");
         skipLine();
         
         writeLine("/*");
@@ -66,19 +67,15 @@ public class BeanPopulatorCommandFileWriteCommand extends JavaFileWriteCommand {
         writeLine("@Autowired");
         writeLine("private " + this.bean.serviceInterfaceName + " " + this.bean.serviceObjectName + ";");
         skipLine();
+        
+        writeLine("@Autowired");
+        writeLine("private " + this.bean.formBean.mapperClassName + " " + this.bean.formBean.mapperObjectName + ";");
+        skipLine();
 
         writeLine("@Override");
-        writeLine("public void execute(BackupArguments arguments) {");
-                
-        writeLine("ObjectArrayToBeanMapper<" + bean.formBean.className + "> mapper;");
-		
-        writeLine("if (arguments.isArgumentsTyped()) {");
-        writeLine("mapper = new ObjectArrayToBeanMapperImpl<" + bean.formBean.className + ">(" + bean.formBean.className + ".class);");
-        writeLine("} else {");
-        writeLine("mapper = new StringArrayToBeanMapperImpl<" + bean.formBean.className + ">(" + bean.formBean.className + ".class);");
-        writeLine("}");
+        writeLine("public void execute(List<Object[]> data) {");
         
-        writeLine("for (Object[] args : arguments.getArguments()) {");
+        writeLine("for (Object[] args : data) {");
         writeLine("String message = " + CHAR_34 + "execute " + bean.serviceObjectName + ".save - args : " + CHAR_34 + ";");
         writeLine("for (Object arg:args) {");
         writeLine("message += " + CHAR_34 + "[" + CHAR_34 + " + arg + " + CHAR_34 + "]" + CHAR_34 + ";");
@@ -87,7 +84,7 @@ public class BeanPopulatorCommandFileWriteCommand extends JavaFileWriteCommand {
         skipLine();
                 
         writeLine("try {");
-        writeLine(bean.formBean.className + " " + bean.formBean.objectName + " = mapper.mapFrom(new " + bean.formBean.className + "(), args);");
+        writeLine(bean.formBean.className + " " + bean.formBean.objectName + " = " + this.bean.formBean.mapperObjectName + ".toForm(args);");
         skipLine();
         
         writeLine("this." + bean.serviceObjectName + ".save(" + this.bean.formBean.objectName + ");");

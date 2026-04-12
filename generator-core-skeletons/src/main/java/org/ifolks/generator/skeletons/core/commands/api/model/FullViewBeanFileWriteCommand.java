@@ -3,8 +3,8 @@ package org.ifolks.generator.skeletons.core.commands.api.model;
 import java.io.File;
 import java.io.IOException;
 
-import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 
 
 public class FullViewBeanFileWriteCommand extends JavaFileWriteCommand {
@@ -28,7 +28,6 @@ public class FullViewBeanFileWriteCommand extends JavaFileWriteCommand {
 		javaImports.add("import java.math.BigDecimal;");
 		javaImports.add("import java.io.Serializable;");
 		javaImports.add("import javax.validation.constraints.NotNull;");
-		javaImports.add("import org.ifolks.commons.api.model.FullView;");
 		javaImports.add("import " + this.bean.myPackage.formsPackageName + "." + this.bean.formBean.className + ";");
 	}
 	
@@ -43,23 +42,12 @@ public class FullViewBeanFileWriteCommand extends JavaFileWriteCommand {
 		skipLine();
 
 		writeLine("/**");
-		writeLine(" * auto generated view bean class file");
+		writeLine(" * auto generated full view record");
 		writeLine(" * <br/>basic representation of what is going to be considered as model in MVC patterns");
 		writeLine(" * <br/>write modifications between specific code marks");
 		writeLine(" * <br/>processed by ifolks-generator");
 		writeLine(" */");
-		writeLine("public class " + this.bean.fullViewBean.className + " extends FullView<" + bean.idType + ", " + bean.formBean.className + "> {");
-		skipLine();
-
-		writeLine("private static final long serialVersionUID = 1L;");
-		skipLine();
-		
-		writeLine("/*");
-		writeLine(" * no argument constructor");
-		writeLine(" */");
-		writeLine("public " + this.bean.fullViewBean.className + "(){");
-		writeLine("this.form = new " + this.bean.formBean.className + "();");
-		writeLine("}");
+		writeLine("public record " + this.bean.fullViewBean.className + " (" + bean.idType + " id, boolean canUpdate, boolean canDelete, " + bean.formBean.className + " form) {");
 		skipLine();
 		
 		writeNotOverridableContent();

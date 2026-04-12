@@ -3,13 +3,13 @@ package org.ifolks.generator.skeletons.core.commands.database.oracle;
 import java.io.File;
 import java.io.IOException;
 
-import org.ifolks.generator.components.resolvers.DatabaseHandlerDiscovery;
-import org.ifolks.generator.skeletons.commands.impl.typed.SqlFileWriteCommand;
-import org.ifolks.generator.skeletons.core.database.OracleHandler;
+import org.ifolks.generator.components.database.DatabaseHandlerDiscovery;
 import org.ifolks.generator.model.domain.database.Column;
 import org.ifolks.generator.model.domain.database.Table;
 import org.ifolks.generator.model.metadata.DataType;
 import org.ifolks.generator.model.metadata.IdGeneratorType;
+import org.ifolks.generator.skeletons.commands.impl.typed.SqlFileWriteCommand;
+import org.ifolks.generator.skeletons.core.database.OracleHandler;
 
 public class OracleTableDefinitionFileWriteCommand extends SqlFileWriteCommand {
 

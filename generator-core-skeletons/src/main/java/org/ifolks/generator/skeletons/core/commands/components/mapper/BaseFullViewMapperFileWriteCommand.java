@@ -3,8 +3,8 @@ package org.ifolks.generator.skeletons.core.commands.components.mapper;
 import java.io.File;
 import java.io.IOException;
 
-import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 
 public class BaseFullViewMapperFileWriteCommand extends JavaFileWriteCommand {
 
@@ -24,10 +24,11 @@ public class BaseFullViewMapperFileWriteCommand extends JavaFileWriteCommand {
 	protected void fetchSpecificImports() {
 
 		javaImports.add("import org.springframework.beans.factory.annotation.Autowired;");
-		javaImports.add("import org.ifolks.commons.mapper.impl.FullViewMapper;");
+		javaImports.add("import org.springframework.stereotype.Component;");
 
         javaImports.add("import " + this.bean.myPackage.omPackageName + "." + this.bean.className + ";");
 		javaImports.add("import " + this.bean.myPackage.formsPackageName + "." + this.bean.formBean.className + ";");
+		javaImports.add("import " + this.bean.myPackage.formMapperPackageName + "." + this.bean.formBean.mapperClassName + ";");
 		javaImports.add("import " + this.bean.myPackage.fullViewsPackageName + "." + this.bean.fullViewBean.className + ";");
 		if (this.bean.isComponent) {
 			javaImports.add("import " + this.bean.parentBean.myPackage.rightsManagerImplPackageName + "." + this.bean.parentBean.rightsManagerClassName + ";");
@@ -56,7 +57,8 @@ public class BaseFullViewMapperFileWriteCommand extends JavaFileWriteCommand {
         writeLine(" */");
         skipLine();
 
-        writeLine("public class " + this.bean.fullViewBean.baseMapperClassName + " extends FullViewMapper<" + this.bean.fullViewBean.className + ", " + bean.idType + ", " + this.bean.formBean.className + ", " + this.bean.className + "> {");
+        writeLine("@Component");
+        writeLine("public class " + this.bean.fullViewBean.baseMapperClassName + " {");
         skipLine();
         
         if (this.bean.isComponent) {
@@ -74,40 +76,41 @@ public class BaseFullViewMapperFileWriteCommand extends JavaFileWriteCommand {
 			writeLine("protected " + this.bean.stateManagerClassName + " " + this.bean.stateManagerObjectName + ";");
 		}
         skipLine();
-
         
-        writeLine("public " + this.bean.fullViewBean.baseMapperClassName + "() {");
-		writeLine("super(" + this.bean.fullViewBean.className + ".class, " + this.bean.className + ".class);");
-		writeLine("}");
-		skipLine();
+        writeLine("@Autowired");
+        writeLine("protected " + this.bean.formBean.mapperClassName + " formMapper;");
+        skipLine();
+
+        writeLine("/**");
+		writeLine(" * mapping entity to view");
+		writeLine(" */");
+		writeLine("public " + this.bean.fullViewBean.className + " toView(" + this.bean.className + " " + this.bean.objectName + ") {");
 		
-		writeLine("@Override");
-		writeLine("public " + this.bean.fullViewBean.className + " mapFrom(" + this.bean.fullViewBean.className + " " + this.bean.fullViewBean.objectName + ", " 
-				 + this.bean.className + " " + this.bean.objectName + ") {");
-		writeLine(this.bean.fullViewBean.objectName + " = " + "super.mapFrom(" + this.bean.fullViewBean.objectName + ", " + this.bean.objectName + ");");
-		
+		writeLine(bean.idType + " id = " + bean.objectName + ".getId();");
+        writeLine(this.bean.formBean.className + " form = formMapper.toForm(" + this.bean.objectName + ");");
+
 		if (this.bean.isComponent) {
-			writeLine(this.bean.fullViewBean.objectName + ".setCanUpdate(" 
+			writeLine("boolean canUpdate = " 
 					+ this.bean.parentBean.rightsManagerObjectName +".canUpdate" + this.bean.className + "(" + this.bean.objectName + ") && "
-					+ this.bean.parentBean.stateManagerObjectName +".canUpdate" + this.bean.className + "(" + this.bean.objectName + "));");
+					+ this.bean.parentBean.stateManagerObjectName +".canUpdate" + this.bean.className + "(" + this.bean.objectName + ");");
 			
-			writeLine(this.bean.fullViewBean.objectName + ".setCanDelete(" 
+			writeLine("boolean canDelete = " 
 					+ this.bean.parentBean.rightsManagerObjectName + ".canDelete" + bean.className + "(" + this.bean.objectName + ")" 
 					+ " && "
-					+ this.bean.parentBean.stateManagerObjectName + ".canDelete" + bean.className + "(" + this.bean.objectName + "));");
+					+ this.bean.parentBean.stateManagerObjectName + ".canDelete" + bean.className + "(" + this.bean.objectName + ");");
 		} 
 		else {
-			writeLine(this.bean.fullViewBean.objectName + ".setCanUpdate(" 
+			writeLine("boolean canUpdate = " 
 					+ this.bean.rightsManagerObjectName +".canUpdate(" + this.bean.objectName + ") && "
-					+ this.bean.stateManagerObjectName +".canUpdate(" + this.bean.objectName + "));");
+					+ this.bean.stateManagerObjectName +".canUpdate(" + this.bean.objectName + ");");
 			
-			writeLine(this.bean.fullViewBean.objectName + ".setCanDelete(" 
+			writeLine("boolean canDelete = " 
 					+ this.bean.rightsManagerObjectName + ".canDelete(" + this.bean.objectName + ")" 
 					+ " && "
-					+ this.bean.stateManagerObjectName + ".canDelete(" + this.bean.objectName + "));");
+					+ this.bean.stateManagerObjectName + ".canDelete(" + this.bean.objectName + ");");
 		}		
 		
-		writeLine("return " + this.bean.fullViewBean.objectName + ";");
+		writeLine("return new " + this.bean.fullViewBean.className + "(id, canUpdate, canDelete, form);");
 		writeLine("}");
 		skipLine();
 		

@@ -118,11 +118,7 @@ public class JavaPackageFactory implements PackageFactory {
 		myPackage.baseServiceInterfacePackageName = model.serviceInterfacePackageName + "." + myPackage.name + ".base";
 		myPackage.serviceInterfacePackageName = model.serviceInterfacePackageName + "." + myPackage.name;
 		myPackage.baseServiceImplPackageName = model.servicesPackageName + "." + myPackage.name + ".base";
-		myPackage.serviceImplPackageName = model.servicesPackageName + "." + myPackage.name;
-		myPackage.baseRestClientPackageName = model.restClientPackageName + "." + myPackage.name + ".base";
-		myPackage.restClientPackageName = model.restClientPackageName + "." + myPackage.name;
-		
-		
+		myPackage.serviceImplPackageName = model.servicesPackageName + "." + myPackage.name;		
 		
 		myPackage.baseFormMapperPackageName = model.mapperPackageName + "." + myPackage.name + ".forms.base";
 		myPackage.formMapperPackageName = model.mapperPackageName + "." + myPackage.name + ".forms";

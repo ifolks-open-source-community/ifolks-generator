@@ -3,9 +3,9 @@ package org.ifolks.generator.skeletons.core.commands.api.model;
 import java.io.File;
 import java.io.IOException;
 
-import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
+import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 
 
 public class FormBeanFileWriteCommand extends JavaFileWriteCommand {
@@ -42,56 +42,37 @@ public class FormBeanFileWriteCommand extends JavaFileWriteCommand {
         skipLine();
 
         writeLine("/**");
-        writeLine(" * auto generated form bean class file");
+        writeLine(" * auto generated form bean record file");
         writeLine(" * <br/>basic representation of what is going to be considered as model in MVC patterns");
         writeLine(" * <br/>write modifications between specific code marks");
         writeLine(" * <br/>processed by ifolks-generator");
         writeLine(" */");
-        writeLine("public class " + this.bean.formBean.className + " implements Serializable {");
-        skipLine();
-
-        writeLine("private static final long serialVersionUID = 1L;");
-        skipLine();
-
+        writeLine("public record " + this.bean.formBean.className + " (");
+        
         createProperties();
-        createGettersAndSetters();
+        
+        skipLine();
+        writeLine(") {");
+        skipLine();
+
         writeNotOverridableContent();
         
         writeLine("}");
 
     }
 
-    private void createProperties()
-    {
-        writeLine("/*");
-        writeLine(" * properties");
-        writeLine(" */");
-
+    private void createProperties() {
+        boolean first = true;
         for (ViewProperty property:this.bean.formBean.properties) {
-        	if (!property.nullable) {
-        		writeLine("@NotNull");
+        	if (first) {
+        		first = false;
+        	} else {
+        		writeLine(",");
         	}
-        	writeLine("private " + property.javaType + " " + property.name + ";");
+        	if (!property.nullable) {
+        		write("@NotNull ");
+        	}
+        	write(property.javaType + " " + property.name);
         }
-        skipLine();
-
     }
-
-    private void createGettersAndSetters()
-    {
-        writeLine("/*");
-        writeLine(" * getters and setters");
-        writeLine(" */");
-
-        for (ViewProperty property:this.bean.formBean.properties) {
-            writeLine("public " + property.javaType + " get" + property.capName + "() {");
-            writeLine("return this." + property.name + ";");
-            writeLine("}");
-            
-            writeLine("public void set" + property.capName + "(" + property.javaType + " " + property.name + ") {");
-            writeLine("this." + property.name + " = " + property.name + ";");
-            writeLine("}");
-        }
-        skipLine();
-	}
 }

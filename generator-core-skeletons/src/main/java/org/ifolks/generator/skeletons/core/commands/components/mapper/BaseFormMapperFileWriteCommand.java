@@ -6,10 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.business.Property;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
+import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 
 public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {
 
@@ -31,8 +31,11 @@ public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {
 
 		this.daoSet = new HashSet<>();
 
+		javaImports.add("import java.util.Date;");
+		javaImports.add("import java.time.LocalDate;");
+		javaImports.add("import java.math.BigDecimal;");
 		javaImports.add("import org.springframework.beans.factory.annotation.Autowired;");
-		javaImports.add("import org.ifolks.commons.mapper.impl.BasicMapperImpl;");
+		javaImports.add("import org.springframework.stereotype.Component;");
 		javaImports.add("import org.ifolks.commons.api.exception.repository.ObjectNotFoundException;");
 		javaImports.add("import " + this.bean.myPackage.omPackageName + "." + this.bean.className + ";");
 		javaImports.add("import " + this.bean.myPackage.formsPackageName + "." + this.bean.formBean.className + ";");
@@ -75,13 +78,9 @@ public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {
 		writeLine(" * <br/>no modification should be done to this file");
 		writeLine(" * <br/>processed by ifolks-generator");
 		writeLine(" */");
-		write("public class " + this.bean.formBean.baseMapperClassName);	
-		writeLine(" extends BasicMapperImpl<" + bean.formBean.className + ", " + bean.className + "> {");
+		writeLine("@Component");
+		writeLine("public class " + this.bean.formBean.baseMapperClassName + " {");
 		skipLine();
-		
-		writeLine("public " + this.bean.formBean.baseMapperClassName + "() {");
-		writeLine("super(" + this.bean.formBean.className + ".class, " + this.bean.className + ".class);");
-		writeLine("}");
 		skipLine();
 
 		writeLine("/*");
@@ -114,34 +113,75 @@ public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {
 
 		skipLine();
 
-		createMappingFrom();
-		createMappingTo();
+		createObjectArryToForm();
+		createToForm();
+		createToEntity();
 
 		writeLine("}");
 
 	}
 
-	private void createMappingFrom() {
+	private void createObjectArryToForm() {
 		writeLine("/**");
-		writeLine(" * mapping form from object");
+		writeLine(" * mapping object arry to form");
 		writeLine(" */");
-		writeLine("@Override");
-		writeLine("public " + this.bean.formBean.className + " mapFrom(" + this.bean.formBean.className + " " + this.bean.formBean.objectName + ", " + this.bean.className + " "
-				+ this.bean.objectName + ") {");
+		writeLine("public " + this.bean.formBean.className + " toForm(Object[] args) {");
+
+        skipLine();
+		writeLine("return new " + this.bean.formBean.className + " (");
+        
+        boolean first = true;
+        int i = 0;
+        for (ViewProperty property:this.bean.formBean.properties) {
+        	if (first) {
+        		first = false;
+        	} else {
+        		writeLine(",");
+        	}
+        	write("(" + property.javaType + ")args[" + i + "]" );
+        	i++;
+        }
+        writeLine(");");
+
+		writeLine("}");
+		skipLine();
 		
-		writeLine(this.bean.formBean.objectName + " = super.mapFrom(" + this.bean.formBean.objectName + ", " + this.bean.objectName + ");");
+		
+	}
+
+	private void createToForm() {
+		writeLine("/**");
+		writeLine(" * mapping entity to form");
+		writeLine(" */");
+		writeLine("public " + this.bean.formBean.className + " toForm(" + this.bean.className + " " + this.bean.objectName + ") {");
 		
 		for (Property property : this.bean.properties) {			
-			if (property.referenceBean != null && property.visibility.isDetailVisible() && !property.relation.isComponentLink()) {
-				if (property.embedded) {
-					writeMapEmbeddedToView(property);
-				} else {
-					writeMapReferenceToView(property);
-				}					
+			if (property.visibility.isDetailVisible() && !property.relation.isComponentLink()) {
+				if (property.referenceBean != null) {
+                    if (property.embedded) {
+                        writeMapEmbeddedToView(property);
+                    } else {
+                        writeMapReferenceToView(property);
+                    }					
+                } else {
+                    writeLine(property.javaType + " " + property.name + " = " + this.bean.objectName + "." + property.getterName + "();");
+                }
 			}
 		}
 
-		writeLine("return " + this.bean.formBean.objectName + ";");
+        skipLine();
+		writeLine("return new " + this.bean.formBean.className + " (");
+        
+        boolean first = true;
+        for (ViewProperty property:this.bean.formBean.properties) {
+        	if (first) {
+        		first = false;
+        	} else {
+        		writeLine(",");
+        	}
+        	write(property.name);
+        }
+        writeLine(");");
 
 		writeLine("}");
 		skipLine();
@@ -149,67 +189,75 @@ public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {
 	}
 	
 	private void writeMapReferenceToView(Property property) {
-		
 		List<ViewProperty> referencePropertyList = property.referenceBean.referenceViewProperties;
 		if (property.nullable) {
+			for (ViewProperty viewProperty : referencePropertyList) {
+				writeLine(viewProperty.javaType + " " + property.name + viewProperty.capName + " = null;");
+			}
 			writeLine("if (" + this.bean.objectName + "." + property.getterName + "() != null) {");
-			for (ViewProperty referenceProperty : referencePropertyList) {
-				writeLine(this.bean.formBean.objectName + "." + property.setterName + referenceProperty.capName + "(" + this.bean.objectName + "." + property.getterName + "()." + referenceProperty.mappingPath
-						+ ");");
+			for (ViewProperty viewProperty : referencePropertyList) {
+				writeLine(property.name + viewProperty.capName + " = " + this.bean.objectName + "."
+						+ property.getterName + "()." + viewProperty.mappingPath + ";");
 			}
 			writeLine("}");
 
 		} else {
-			for (ViewProperty findProperty : referencePropertyList) {
-				writeLine(this.bean.formBean.objectName + "." + property.setterName + findProperty.capName + "(" + this.bean.objectName + "." + property.getterName + "()." + findProperty.mappingPath
-						+ ");");
+			for (ViewProperty viewProperty : referencePropertyList) {
+				writeLine(viewProperty.javaType + " " + property.name + viewProperty.capName + " = "
+						+ this.bean.objectName + "." + property.getterName + "()." + viewProperty.mappingPath + ";");
 			}
 		}
 	}
 	
 	private void writeMapEmbeddedToView(Property property) {
-		
 		Bean embeddedBean = property.referenceBean;
-		
-		for (Property embeddedProperty : embeddedBean.properties) {	
+
+		for (Property embeddedProperty : embeddedBean.properties) {
 			if (embeddedProperty.visibility.isDetailVisible()) {
 				if (embeddedProperty.referenceBean != null) {
 					List<ViewProperty> referencePropertyList = embeddedProperty.referenceBean.referenceViewProperties;
 					if (embeddedProperty.nullable) {
-						writeLine("if (" + this.bean.objectName + "." + property.getterName + "()." + embeddedProperty.getterName + "() != null) {");
-						for (ViewProperty referenceProperty : referencePropertyList) {
-							writeLine(this.bean.formBean.objectName + "." + embeddedProperty.setterName + referenceProperty.capName + "(" + this.bean.objectName + "." + property.getterName + "()." + embeddedProperty.getterName + "()." + referenceProperty.mappingPath
-									+ ");");
+						for (ViewProperty viewProperty : referencePropertyList) {
+							writeLine(viewProperty.javaType + " " + embeddedProperty.name + viewProperty.capName
+									+ " = null;");
+						}
+						writeLine("if (" + this.bean.objectName + "." + property.getterName + "()."
+								+ embeddedProperty.getterName + "() != null) {");
+						for (ViewProperty viewProperty : referencePropertyList) {
+							writeLine(embeddedProperty.name + viewProperty.capName + " = " + this.bean.objectName + "."
+									+ property.getterName + "()." + embeddedProperty.getterName + "()."
+									+ viewProperty.mappingPath + ";");
 						}
 						writeLine("}");
-	
+
 					} else {
-						for (ViewProperty referenceProperty : referencePropertyList) {
-							writeLine(this.bean.formBean.objectName + "." + embeddedProperty.setterName + referenceProperty.capName + "(" + this.bean.objectName + "." + property.getterName + "()." + embeddedProperty.getterName + "()." + referenceProperty.mappingPath
-									+ ");");
+						for (ViewProperty viewProperty : referencePropertyList) {
+							writeLine(viewProperty.javaType + " " + embeddedProperty.name + viewProperty.capName + " = "
+									+ this.bean.objectName + "." + property.getterName + "()."
+									+ embeddedProperty.getterName + "()." + viewProperty.mappingPath + ";");
 						}
 					}
 				} else {
-					writeLine(this.bean.formBean.objectName + "." + embeddedProperty.setterName + "(" + this.bean.objectName + "." + property.getterName + "()." + embeddedProperty.getterName + "());");
+					writeLine(embeddedProperty.javaType + " " + embeddedProperty.name + " = " + this.bean.objectName
+							+ "." + property.getterName + "()." + embeddedProperty.getterName + "();");
 				}
 			}
 		}
 	}
 	
-	private void createMappingTo() {
+	private void createToEntity() {
 
 		writeLine("/**");
-		writeLine(" * mapping view to object");
+		writeLine(" * mapping form to entity");
 		writeLine(" */");
-		writeLine("@Override");
-		writeLine("public " + this.bean.className + " mapTo(" + this.bean.formBean.className + " " + this.bean.formBean.objectName + ", " + this.bean.className + " "
+		writeLine("public " + this.bean.className + " toEntity(" + this.bean.formBean.className + " " + this.bean.formBean.objectName + ", " + this.bean.className + " "
 				+ this.bean.objectName + ") {");
-		
-		writeLine(this.bean.objectName + " = super.mapTo(" + this.bean.formBean.objectName + ", " + this.bean.objectName + ");");
 
 		for (Property property : this.bean.properties) {
-			if (property.referenceBean != null && property.visibility.isDetailVisible() && !property.relation.isComponentLink()) {
-				if (property.embedded) {
+			if (property.visibility.isDetailVisible() && !property.relation.isComponentLink()) {
+                if (property.referenceBean == null) {
+                    writeLine(this.bean.objectName + "." + property.setterName + "(" + this.bean.formBean.objectName + "." + property.name + "());");
+                } else if (property.embedded) {
 					writeMapEmbeddedToObject(property);
 				} else {
 					writeMapReferenceToObject(property);
@@ -229,7 +277,7 @@ public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {
 		write(this.bean.objectName + "." + property.setterName + "(" + property.referenceBean.daoObjectName + ".find(");
 		for (ViewProperty refProperty:property.referenceBean.referenceViewProperties) {
 			if (start) start = false; else write(", ");
-			write(this.bean.formBean.objectName + "." + property.getterName + refProperty.capName + "()");
+			write(this.bean.formBean.objectName + "." + property.name + refProperty.capName + "()");
 		}
 		writeLine("));");		
 	}
@@ -253,12 +301,12 @@ public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {
 					boolean start = true;
 					for (ViewProperty refProperty : referencePropertyList) {
 						if (start) start = false; else write(", ");
-						write(this.bean.formBean.objectName + "." + embeddedProperty.getterName + refProperty.capName + "()");
+						write(this.bean.formBean.objectName + "." + embeddedProperty.name + refProperty.capName + "()");
 					}
 					writeLine("));");
 					
 				} else {
-					writeLine(embeddedBean.objectName + "." + embeddedProperty.setterName + "(" + bean.formBean.objectName + "." + embeddedProperty.getterName + "());");
+					writeLine(embeddedBean.objectName + "." + embeddedProperty.setterName + "(" + bean.formBean.objectName + "." + embeddedProperty.name + "());");
 				}
 			}
 		}

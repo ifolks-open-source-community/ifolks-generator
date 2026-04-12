@@ -1,10 +1,10 @@
 package org.ifolks.generator.services.impl;
 
-import org.ifolks.generator.components.resolvers.DatabaseHandlerDiscovery;
-import org.ifolks.generator.components.validation.ProjectMetaDataValidator;
+import org.ifolks.generator.components.database.DatabaseHandlerDiscovery;
+import org.ifolks.generator.components.metadata.persistence.interfaces.ProjectMetaDataDao;
+import org.ifolks.generator.components.metadata.validation.ProjectMetaDataValidator;
 import org.ifolks.generator.model.metadata.ProjectMetaData;
 import org.ifolks.generator.model.metadata.validation.ProjectValidationReport;
-import org.ifolks.generator.persistence.metadata.interfaces.ProjectMetaDataDao;
 import org.ifolks.generator.services.interfaces.ProjectLoader;
 import org.ifolks.generator.services.interfaces.ProjectMetaDataService;
 import org.ifolks.generator.skeletons.database.DatabaseHandler;

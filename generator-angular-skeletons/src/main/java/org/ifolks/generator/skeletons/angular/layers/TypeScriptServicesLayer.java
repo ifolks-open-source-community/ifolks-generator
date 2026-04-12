@@ -1,9 +1,9 @@
 package org.ifolks.generator.skeletons.angular.layers;
 
-import org.ifolks.generator.skeletons.angular.commands.services.TsRestClientFileWriteCommand;
 import org.ifolks.generator.model.domain.Package;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.skeletons.angular.commands.services.TsRestClientFileWriteCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 

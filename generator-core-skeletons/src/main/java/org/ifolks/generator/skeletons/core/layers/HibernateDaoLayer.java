@@ -1,5 +1,8 @@
 package org.ifolks.generator.skeletons.core.layers;
 
+import org.ifolks.generator.model.domain.Package;
+import org.ifolks.generator.model.domain.Project;
+import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.skeletons.core.commands.persistence.BaseDaoHibernateImplFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.persistence.BaseDaoInterfaceFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.persistence.DaoImplFileWriteCommand;
@@ -8,9 +11,6 @@ import org.ifolks.generator.skeletons.core.commands.persistence.configuration.Pe
 import org.ifolks.generator.skeletons.core.commands.persistence.configuration.SpringLocalPersistenceConfigFileWriteCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
-import org.ifolks.generator.model.domain.Package;
-import org.ifolks.generator.model.domain.Project;
-import org.ifolks.generator.model.domain.business.Bean;
 
 public class HibernateDaoLayer extends AbstractLayer {
 	

@@ -1,9 +1,9 @@
 package org.ifolks.generator.skeletons.core.database;
 
+import org.ifolks.generator.model.metadata.datasources.DataSourceMetaData;
 import org.ifolks.generator.skeletons.core.layers.database.PostgresDatabaseLayer;
 import org.ifolks.generator.skeletons.database.DatabaseHandler;
 import org.ifolks.generator.skeletons.layers.Layer;
-import org.ifolks.generator.model.metadata.datasources.DataSourceMetaData;
 
 public class PostgresqlHandler implements DatabaseHandler {
 

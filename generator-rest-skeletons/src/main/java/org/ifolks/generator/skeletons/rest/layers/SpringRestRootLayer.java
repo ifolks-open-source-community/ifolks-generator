@@ -1,8 +1,8 @@
 package org.ifolks.generator.skeletons.rest.layers;
 
-import org.ifolks.generator.skeletons.rest.commands.configuration.SpringRestRootPomFileWriteCommand;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
+import org.ifolks.generator.skeletons.rest.commands.configuration.SpringRestRootPomFileWriteCommand;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 
 public class SpringRestRootLayer extends AbstractLayer {

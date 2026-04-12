@@ -10,8 +10,7 @@ public class ViewProperty {
 
 	public String name;
 	public String capName;
-	public String getterName;
-	public String setterName;
+
 	public DataType dataType;
 	public String javaType;
 	public String tsType;

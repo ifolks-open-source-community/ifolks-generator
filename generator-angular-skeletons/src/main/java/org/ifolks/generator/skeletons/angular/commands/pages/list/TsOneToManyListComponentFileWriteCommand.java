@@ -182,12 +182,10 @@ public class TsOneToManyListComponentFileWriteCommand extends TsFileWriteCommand
         skipLine();
         
         writeLine("create(): void {");
-        writeLine("this.service.create().subscribe((t) => {");
         writeLine("let ref = this.dialog.open(" + referenceBean.className + "ModalComponent);");
-        writeLine("ref.componentInstance.view = t;");
+        writeLine("ref.componentInstance.view = new " + referenceBean.fullViewBean.className + "();");
         writeLine("ref.componentInstance.parentId = this.id;");
         writeLine("ref.afterClosed().subscribe(result => {this.refresh();});");
-        writeLine("});");
         writeLine("}");
         skipLine();
         
