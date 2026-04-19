@@ -24,5 +24,4 @@ public interface ProjectMetaDataDao {
 	
 	void persistProjectMetaData(ProjectMetaData projectMetaData);
 	
-	void persistDatasourceContext(ProjectMetaData projectMetaData);
 }

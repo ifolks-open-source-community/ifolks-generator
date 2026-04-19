@@ -1,4 +1,4 @@
-package org.ifolks.generator.services.impl;
+package org.ifolks.generator.services;
 
 import java.util.Set;
 

@@ -2,7 +2,8 @@ package org.ifolks.generator.components.population.datasources;
 
 import java.util.Map;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import javax.sql.DataSource;
+
 import org.ifolks.generator.model.exception.DataSourceNotFoundException;
 
 /**
@@ -16,20 +17,20 @@ public class InputDataSourceProvider {
 	/*
 	 * properties
 	 */
-	private Map<String, BasicDataSource> dataSources;
+	private Map<String, DataSource> dataSources;
 	
 	
 	/*
 	 * constructor
 	 */
-	public InputDataSourceProvider(Map<String, BasicDataSource> dataSources) {
+	public InputDataSourceProvider(Map<String, DataSource> dataSources) {
 		this.dataSources = dataSources;
 	}
 
 
-	public BasicDataSource getDataSource(String dataSourceName) throws DataSourceNotFoundException {
+	public DataSource getDataSource(String dataSourceName) throws DataSourceNotFoundException {
 
-		BasicDataSource result = dataSources.get(dataSourceName);
+		DataSource result = dataSources.get(dataSourceName);
 		
 		if (result == null) {
 			throw new DataSourceNotFoundException("Unable to find input DataSource : " + dataSourceName);

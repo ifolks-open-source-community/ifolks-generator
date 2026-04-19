@@ -20,11 +20,6 @@
 			<artifactId>generator-services</artifactId>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.ifolks.generator</groupId>
-			<artifactId>generator-angular-skeletons</artifactId>
-		</dependency>
-		
 	
 		<!-- gestion des logs -->		
 		<dependency>

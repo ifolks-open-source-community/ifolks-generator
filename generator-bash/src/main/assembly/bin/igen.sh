@@ -6,7 +6,7 @@
 ###############################################################################
 
 
-IGEN_VERSION=5.0.0-M1
+IGEN_VERSION=1.0.0-SNAPSHOT
 IGEN_RUNNABLE_JAR="$IGEN_HOME/boot/generator-bash-$IGEN_VERSION.jar"
 IGEN_LIB=$IGEN_HOME/lib
 IGEN_CLASSPATH=$IGEN_RUNNABLE_JAR:$IGEN_LIB/*

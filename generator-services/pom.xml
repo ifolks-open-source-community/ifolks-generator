@@ -17,7 +17,7 @@
 		
 		<dependency>
 			<groupId>org.ifolks.generator</groupId>
-			<artifactId>generator-components</artifactId>
+			<artifactId>generator-angular-skeletons</artifactId>
 		</dependency>
 		
 		

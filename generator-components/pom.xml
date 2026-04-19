@@ -42,11 +42,6 @@
 			<artifactId>spring-jdbc</artifactId>
 		</dependency>
 		
-		<dependency>
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-		</dependency>
-		
 		
 		<!-- apache velocity-->
 		<dependency>

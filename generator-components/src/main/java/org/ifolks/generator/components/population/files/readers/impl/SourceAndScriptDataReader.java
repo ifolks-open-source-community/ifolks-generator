@@ -11,7 +11,6 @@ import org.ifolks.generator.components.population.converters.DbObjectToObjectCon
 import org.ifolks.generator.components.population.files.readers.interfaces.DataReader;
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.database.Table;
-import org.ifolks.generator.model.domain.ui.ViewProperty;
 import org.ifolks.generator.model.exception.ReadBackupFailureException;
 import org.ifolks.generator.model.metadata.DataType;
 import org.springframework.jdbc.core.JdbcTemplate;

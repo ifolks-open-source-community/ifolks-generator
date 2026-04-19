@@ -4,7 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import javax.sql.DataSource;
+
 import org.ifolks.generator.components.build.commands.JdbcRawCommand;
 import org.ifolks.generator.components.database.DatabaseHandlerDiscovery;
 import org.ifolks.generator.components.population.files.SimpleScriptFileReader;
@@ -19,9 +20,9 @@ public class DatabaseCleaner {
 	@Autowired
 	private SimpleScriptFileReader scriptFileReader;	
 
-	public void cleanDatabase(BasicDataSource dataSource, Project project) throws IOException, InvalidFileException, SQLException {
+	public void cleanDatabase(DataSource dataSource, Project project, String engineName) throws IOException, InvalidFileException, SQLException {
 		
-		String scriptFilePath = project.workspaceFolder + File.separator + DatabaseHandlerDiscovery.getBuildScriptFolder(dataSource) + File.separator + "MAIN.sql";
+		String scriptFilePath = project.workspaceFolder + File.separator + DatabaseHandlerDiscovery.getBuildScriptFolder(engineName) + File.separator + "MAIN.sql";
 		String script = scriptFileReader.readScript(scriptFilePath);
 			
 		new JdbcRawCommand(dataSource, script).execute();

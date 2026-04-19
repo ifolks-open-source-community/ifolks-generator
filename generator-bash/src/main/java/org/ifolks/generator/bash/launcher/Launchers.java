@@ -10,8 +10,7 @@ public enum Launchers {
 
 	HELP("help", HelpLauncher.class, null),
 	PROJECT_INITIALIZER("init", ProjectInitializerLauncher.class, ProjectInitializerPrompter.class),
-	CODE_GENERATOR("generate", CodeGeneratorLauncher.class, null),
-	DATABASE_BUILDER("builddb", DatabaseBuilderLauncher.class, null);
+	CODE_GENERATOR("generate", CodeGeneratorLauncher.class, null);
 	
 	
 	private static final Map<String, Launchers> reverseMap = new HashMap<>();

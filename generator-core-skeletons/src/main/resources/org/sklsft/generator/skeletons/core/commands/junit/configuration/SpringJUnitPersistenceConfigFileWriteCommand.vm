@@ -22,26 +22,26 @@ public class JUnitPersistenceConfig {
 
 	@Bean
     public DataSource dataSource() {
-        BasicDataSource result = new BasicDataSource();
-        result.setDriverClassName("org.hsqldb.jdbcDriver");
-        result.setUrl("jdbc:hsqldb:mem:${project.projectName}");
-        result.setUsername("sa");
-        result.setPassword("");
-        return result;
+		HikariConfig config = new HikariConfig();	    
+	    config.setJdbcUrl("jdbc:hsqldb:mem:demo");
+	    config.setUsername("sa");
+	    config.setPassword("");
+	    config.setDriverClassName("org.hsqldb.jdbcDriver");
+		return new HikariDataSource(config);
     }
 	
 	@Bean
-	public LocalSessionFactoryBean sessionFactory() throws NamingException {
-		LocalSessionFactoryBean result = new LocalSessionFactoryBean();
-		
-		result.setPackagesToScan("${project.domainName}.${project.projectName}");
-		result.setDataSource(dataSource());
-		
-		Properties hibernateProperties = new Properties();
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean result = new LocalContainerEntityManagerFactoryBean();
+        result.setDataSource(dataSource());
+        result.setPackagesToScan("${project.model.modelPackageName}");
+        result.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+
+        Properties hibernateProperties = new Properties();
 		hibernateProperties.setProperty("hibernate.show_sql", env.getProperty("hibernate.showSql"));
 		hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
-		result.setHibernateProperties(hibernateProperties);
-		
-		return result;
-	}
+        result.setJpaProperties(hibernateProperties);
+
+        return result;
+    }
 }

@@ -1,4 +1,4 @@
-package org.ifolks.generator.bash.prompt;
+package org.ifolks.generator.components.population.prompt;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +14,7 @@ public class PopulatorPrompter {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PopulatorPrompter.class);
 	
-	public void printPreExecutionWarnings(List<PopulationPlanPreExecutionWarning> warnings){
+	public static void printPreExecutionWarnings(List<PopulationPlanPreExecutionWarning> warnings){
 		logger.warn(warnings.size() + " warnings have been generated");
 		
 		for(PopulationPlanPreExecutionWarning w : warnings){
@@ -23,7 +23,7 @@ public class PopulatorPrompter {
 		
 	}
 	
-	public void printPostExecutionWarnings(List<PopulationPlanPostExecutionWarning> warnings){
+	public static void printPostExecutionWarnings(List<PopulationPlanPostExecutionWarning> warnings){
 		logger.warn(warnings.size() + " warnings have been generated");
 		
 		for(PopulationPlanPostExecutionWarning w : warnings){
@@ -32,7 +32,7 @@ public class PopulatorPrompter {
 		
 	}
 	
-	public void promptForConfirmation() throws IOException{
+	public static void promptForConfirmation() throws IOException{
 		System.out.println("Do you wish to continue? [Y/n]");
 		BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 		String input = bufferRead.readLine();
@@ -43,7 +43,7 @@ public class PopulatorPrompter {
 		}
 	}
 	
-	private String printPreExecutionWarning(PopulationPlanPreExecutionWarning w){
+	private static String printPreExecutionWarning(PopulationPlanPreExecutionWarning w){
 		String firstPart = w.getType().getDescription() + w.getTable().originalName;
 		if(w.getStep()==PopulationPlanPreExecutionWarning.NO_STEP){
 			return firstPart;
@@ -52,7 +52,7 @@ public class PopulatorPrompter {
 		}
 	}
 	
-	private String printPostExecutionWarning(PopulationPlanPostExecutionWarning w){
+	private static String printPostExecutionWarning(PopulationPlanPostExecutionWarning w){
 		return w.getType().getDescription() + w.getTable().originalName;
 	}
 }

@@ -1,7 +1,6 @@
-package org.ifolks.generator.services.impl;
+package org.ifolks.generator.services;
 
 import org.ifolks.generator.model.domain.Project;
-import org.ifolks.generator.services.interfaces.CodeGenerator;
 import org.ifolks.generator.skeletons.Skeleton;
 import org.ifolks.generator.skeletons.SkeletonResolver;
 import org.ifolks.generator.skeletons.layers.Layer;
@@ -16,12 +15,11 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class CodeGeneratorImpl implements CodeGenerator {
+public class CodeGenerator  {
 	
-	private static final Logger logger = LoggerFactory.getLogger(CodeGeneratorImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(CodeGenerator.class);
 	
-	
-	@Override
+
 	public void initResources(Project project) {
 
 		Skeleton skeleton = SkeletonResolver.getSkeleton(project);
@@ -36,8 +34,7 @@ public class CodeGeneratorImpl implements CodeGenerator {
 		}		
 	}
 
-	
-	@Override
+
 	public void initConfiguration(Project project) {
 
 		Skeleton skeleton = SkeletonResolver.getSkeleton(project);
@@ -53,7 +50,6 @@ public class CodeGeneratorImpl implements CodeGenerator {
 	}
 
 
-	@Override
 	public void generateCode(Project project) {
 
 		Skeleton skeleton = SkeletonResolver.getSkeleton(project);

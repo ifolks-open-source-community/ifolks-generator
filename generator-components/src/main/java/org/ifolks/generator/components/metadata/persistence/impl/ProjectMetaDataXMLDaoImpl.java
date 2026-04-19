@@ -19,7 +19,6 @@ import org.ifolks.generator.model.exception.ProjectAlreadyConfiguredException;
 import org.ifolks.generator.model.exception.ProjectInitFailureException;
 import org.ifolks.generator.model.exception.ProjectNotFoundException;
 import org.ifolks.generator.model.metadata.ProjectMetaData;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
@@ -35,9 +34,6 @@ import jakarta.xml.bind.Unmarshaller;
  */
 @Component(value="projectMetaDataXmlDao")
 public class ProjectMetaDataXMLDaoImpl implements ProjectMetaDataDao {
-	
-	@Autowired
-	private DataSourceContextInitializer dataSourceContextInitializer;
 
 
 	@Override
@@ -140,16 +136,5 @@ public class ProjectMetaDataXMLDaoImpl implements ProjectMetaDataDao {
 					outputStream.write(bytes, 0, read);
 			}
 		}	
-	}
-
-
-	@Override
-	public void persistDatasourceContext(ProjectMetaData project) {
-		
-		try {
-			dataSourceContextInitializer.init(project.getDataSource(), project.getSourceFolder());
-		} catch (IOException e) {
-			throw new InvalidProjectMetaDataException("Failed to write datasource-context.xml", e);
-		}
 	}
 }

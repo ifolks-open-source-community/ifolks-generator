@@ -43,7 +43,8 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 		javaImports.add("import java.util.List;");
 		javaImports.add("import java.util.ArrayList;");
 		
-		javaImports.add("import jakarta.persistence.criteria.CriteriaBuilder;");
+		javaImports.add("import jakarta.persistence.TypedQuery;");
+		javaImports.add("import jakarta.persistence.criteria.CriteriaBuilder;");		
 		javaImports.add("import jakarta.persistence.criteria.CriteriaQuery;");
 		javaImports.add("import jakarta.persistence.criteria.Fetch;");
 		javaImports.add("import jakarta.persistence.criteria.Join;");
@@ -51,8 +52,6 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 		javaImports.add("import jakarta.persistence.criteria.Order;");
 		javaImports.add("import jakarta.persistence.criteria.Predicate;");
 		javaImports.add("import jakarta.persistence.criteria.Root;");
-		javaImports.add("import org.hibernate.Session;");
-		javaImports.add("import org.hibernate.query.Query;");
 		
 		javaImports.add("import static org.ifolks.commons.model.patterns.JpaCriteriaUtils.*;");
 		javaImports.add("import org.ifolks.commons.api.model.OrderType;");
@@ -142,11 +141,9 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 		writeLine(" * load object list eagerly");
 		writeLine(" */");
 		writeLine("@Override");
-		writeLine("@SuppressWarnings({\"unused\",\"unchecked\"})");
 		writeLine("public List<" + this.bean.className + "> loadListEagerly() {");
 		
-		writeLine("Session session = this.sessionFactory.getCurrentSession();");
-		writeLine("CriteriaBuilder builder = session.getCriteriaBuilder();");
+		writeLine("CriteriaBuilder builder = entityManager.getCriteriaBuilder();");
 		writeLine("CriteriaQuery<" + this.bean.className + "> criteria = builder.createQuery(" + this.bean.className + ".class);");
 		skipLine();
 		
@@ -162,7 +159,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 		writeLine("addOrder(builder, orders, root.get(" + bean.className + "_.id), OrderType.DESC);");
 		writeLine("criteria.orderBy(orders);");
 		skipLine();
-		writeLine("return session.createQuery(criteria).getResultList();");
+		writeLine("return entityManager.createQuery(criteria).getResultList();");
 		writeLine("}");
 		skipLine();
 		
@@ -175,8 +172,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 				writeLine("@Override");
 				writeLine("public List<" + this.bean.className + "> loadListFrom" + property.capName + "(" + property.referenceBean.idType + " " + property.name + "Id) {");
 				
-				writeLine("Session session = this.sessionFactory.getCurrentSession();");
-				writeLine("CriteriaBuilder builder = session.getCriteriaBuilder();");
+				writeLine("CriteriaBuilder builder = entityManager.getCriteriaBuilder();");
 				writeLine("CriteriaQuery<" + this.bean.className + "> criteria = builder.createQuery(" + this.bean.className + ".class);");
 				skipLine();
 				
@@ -196,7 +192,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 				writeLine("addOrder(builder, orders, root.get(" + bean.className + "_.id), OrderType.DESC);");
 				writeLine("criteria.orderBy(orders);");
 				skipLine();
-				writeLine("return session.createQuery(criteria).getResultList();");
+				writeLine("return entityManager.createQuery(criteria).getResultList();");
 				writeLine("}");
 				skipLine();
 
@@ -205,11 +201,9 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 				writeLine(" * load object list eagerly from " + property.name);
 				writeLine(" */");
 				writeLine("@Override");
-				writeLine("@SuppressWarnings({\"unused\",\"unchecked\"})");
 				writeLine("public List<" + this.bean.className + "> loadListEagerlyFrom" + property.capName + "(" + property.referenceBean.idType + " " + property.name + "Id) {");
 				
-				writeLine("Session session = this.sessionFactory.getCurrentSession();");
-				writeLine("CriteriaBuilder builder = session.getCriteriaBuilder();");
+				writeLine("CriteriaBuilder builder = entityManager.getCriteriaBuilder();");
 				writeLine("CriteriaQuery<" + this.bean.className + "> criteria = builder.createQuery(" + this.bean.className + ".class);");
 				skipLine();
 				
@@ -232,7 +226,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 				writeLine("addOrder(builder, orders, root.get(" + bean.className + "_.id), OrderType.DESC);");
 				writeLine("criteria.orderBy(orders);");
 				skipLine();
-				writeLine("return session.createQuery(criteria).getResultList();");
+				writeLine("return entityManager.createQuery(criteria).getResultList();");
 				writeLine("}");
 				skipLine();
 
@@ -248,8 +242,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 		writeLine("@Override");
 		writeLine("public Long count(" + bean.basicViewBean.filter.className + " filter) {");
 		
-		writeLine("Session session = this.sessionFactory.getCurrentSession();");
-		writeLine("CriteriaBuilder builder = session.getCriteriaBuilder();");
+		writeLine("CriteriaBuilder builder = entityManager.getCriteriaBuilder();");
 		writeLine("CriteriaQuery<Long> criteria = builder.createQuery(Long.class);");
 		skipLine();
 		
@@ -268,7 +261,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 		skipLine();
 		
 		writeLine("criteria.select(builder.count(root));");	 
-		writeLine("return session.createQuery(criteria).getSingleResult();");
+		writeLine("return entityManager.createQuery(criteria).getSingleResult();");
 		writeLine("}");
 		skipLine();
 		
@@ -282,8 +275,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 				writeLine(" * count object list from " + property.referenceBean.objectName); 
 				writeLine(" */");
 				writeLine("public Long countFrom" + property.capName + "(" + property.referenceBean.idType + " " + property.name + "Id) {");
-				writeLine("Session session = this.sessionFactory.getCurrentSession();");
-				writeLine("CriteriaBuilder builder = session.getCriteriaBuilder();");
+				writeLine("CriteriaBuilder builder = entityManager.getCriteriaBuilder();");
 				writeLine("CriteriaQuery<Long> criteria = builder.createQuery(Long.class);");
 				skipLine();
 				
@@ -299,7 +291,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 				skipLine();
 				
 				writeLine("criteria.select(builder.count(root));");	 
-				writeLine("return session.createQuery(criteria).getSingleResult();");
+				writeLine("return entityManager.createQuery(criteria).getSingleResult();");
 				writeLine("}");
 				skipLine();
 				
@@ -308,8 +300,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 				writeLine(" * count filtered object list from " + property.referenceBean.objectName); 
 				writeLine(" */");
 				writeLine("public Long countFrom" + property.capName + "(" + property.referenceBean.idType + " " + property.name + "Id, " + bean.basicViewBean.filter.className + " filter) {");
-				writeLine("Session session = this.sessionFactory.getCurrentSession();");
-				writeLine("CriteriaBuilder builder = session.getCriteriaBuilder();");
+				writeLine("CriteriaBuilder builder = entityManager.getCriteriaBuilder();");
 				writeLine("CriteriaQuery<Long> criteria = builder.createQuery(Long.class);");
 				skipLine();
 				
@@ -334,7 +325,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 				skipLine();
 				
 				writeLine("criteria.select(builder.count(root));");	 
-				writeLine("return session.createQuery(criteria).getSingleResult();");
+				writeLine("return entityManager.createQuery(criteria).getSingleResult();");
 				writeLine("}");
 				skipLine();
 			}
@@ -347,11 +338,9 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 		writeLine(" * scroll filtered object list");
 		writeLine(" */");
 		writeLine("@Override");
-		writeLine("@SuppressWarnings(\"unchecked\")");
 		writeLine("public List<" + this.bean.className + "> scroll(" + bean.basicViewBean.filter.className + " filter, " + bean.basicViewBean.sortingClassName + " sorting, Long firstResult, Long maxResults) {");
 		
-		writeLine("Session session = this.sessionFactory.getCurrentSession();");
-		writeLine("CriteriaBuilder builder = session.getCriteriaBuilder();");
+		writeLine("CriteriaBuilder builder = entityManager.getCriteriaBuilder();");
 		writeLine("CriteriaQuery<" + this.bean.className + "> criteria = builder.createQuery(" + this.bean.className + ".class);");
 		skipLine();
 		
@@ -382,7 +371,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 		writeLine("criteria.orderBy(orders);");
 		skipLine();		
 		
-		writeLine("Query<" + this.bean.className + "> query = session.createQuery(criteria);");
+		writeLine("TypedQuery<" + this.bean.className + "> query = entityManager.createQuery(criteria);");
 		writeLine("if (firstResult != null){");
 		writeLine("query.setFirstResult(firstResult.intValue());");
 		writeLine("}");
@@ -400,10 +389,8 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 				writeLine(" * scroll filtered object list from " + property.referenceBean.objectName); 
 				writeLine(" */");
 				writeLine("@Override");
-				writeLine("@SuppressWarnings(\"unchecked\")");
 				writeLine("public List<" + this.bean.className + "> scrollFrom" + property.capName + "(" + property.referenceBean.idType + " " + property.name + "Id, " + bean.basicViewBean.filter.className + " filter, " + bean.basicViewBean.sortingClassName + " sorting, Long firstResult, Long maxResults) {");
-				writeLine("Session session = this.sessionFactory.getCurrentSession();");
-				writeLine("CriteriaBuilder builder = session.getCriteriaBuilder();");
+				writeLine("CriteriaBuilder builder = entityManager.getCriteriaBuilder();");
 				writeLine("CriteriaQuery<" + this.bean.className + "> criteria = builder.createQuery(" + this.bean.className + ".class);");
 				skipLine();
 				
@@ -438,7 +425,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 				writeLine("criteria.orderBy(orders);");
 				skipLine();		
 				
-				writeLine("Query<" + this.bean.className + "> query = session.createQuery(criteria);");
+				writeLine("TypedQuery<" + this.bean.className + "> query = entityManager.createQuery(criteria);");
 				writeLine("if (firstResult != null){");
 				writeLine("query.setFirstResult(firstResult.intValue());");
 				writeLine("}");
@@ -461,8 +448,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
             writeLine("@Override");
 			writeLine("public List<" + currentBean.className + "> load" + currentBean.className + "List(" + bean.idType + " " + bean.objectName + "Id) {");
 			
-			writeLine("Session session = this.sessionFactory.getCurrentSession();");
-			writeLine("CriteriaBuilder builder = session.getCriteriaBuilder();");
+			writeLine("CriteriaBuilder builder = entityManager.getCriteriaBuilder();");
 			writeLine("CriteriaQuery<" + currentBean.className + "> criteria = builder.createQuery(" + currentBean.className + ".class);");
 			skipLine();
 			
@@ -482,7 +468,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 			writeLine("addOrder(builder, orders, root.get(" + currentBean.className + "_.id), OrderType.DESC);");
 			writeLine("criteria.orderBy(orders);");
 			skipLine();
-			writeLine("return session.createQuery(criteria).getResultList();");
+			writeLine("return entityManager.createQuery(criteria).getResultList();");
 			writeLine("}");
 			skipLine();
         }
@@ -498,8 +484,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 			writeLine("@Override");
 			writeLine("public Long count" + currentBean.className + "(" + bean.idType + " " + bean.objectName + "Id) {");
 						
-			writeLine("Session session = this.sessionFactory.getCurrentSession();");
-			writeLine("CriteriaBuilder builder = session.getCriteriaBuilder();");
+			writeLine("CriteriaBuilder builder = entityManager.getCriteriaBuilder();");
 			writeLine("CriteriaQuery<Long> criteria = builder.createQuery(Long.class);");
 			skipLine();
 			
@@ -515,7 +500,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 			skipLine();
 			
 			writeLine("criteria.select(builder.count(root));");	 
-			writeLine("return session.createQuery(criteria).getSingleResult();");
+			writeLine("return entityManager.createQuery(criteria).getSingleResult();");
 			writeLine("}");
 			skipLine();
 			
@@ -525,8 +510,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 			writeLine("@Override");
 			writeLine("public Long count" + currentBean.className + "(" + bean.idType + " " + bean.objectName + "Id, " + currentBean.basicViewBean.filter.className + " filter) {");
 			
-			writeLine("Session session = this.sessionFactory.getCurrentSession();");
-			writeLine("CriteriaBuilder builder = session.getCriteriaBuilder();");
+			writeLine("CriteriaBuilder builder = entityManager.getCriteriaBuilder();");
 			writeLine("CriteriaQuery<Long> criteria = builder.createQuery(Long.class);");
 			skipLine();
 			
@@ -550,7 +534,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 			skipLine();
 			
 			writeLine("criteria.select(builder.count(root));");	 
-			writeLine("return session.createQuery(criteria).getSingleResult();");
+			writeLine("return entityManager.createQuery(criteria).getSingleResult();");
 			writeLine("}");
 			skipLine();
 		}
@@ -566,8 +550,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 			writeLine("@Override");
 			writeLine("public List<" + currentBean.className + "> scroll" + currentBean.className + "(" + bean.idType + " " + bean.objectName + "Id, " + currentBean.basicViewBean.filter.className + " filter, " + currentBean.basicViewBean.sortingClassName + " sorting, Long firstResult, Long maxResults) {");
 			
-			writeLine("Session session = this.sessionFactory.getCurrentSession();");
-			writeLine("CriteriaBuilder builder = session.getCriteriaBuilder();");
+			writeLine("CriteriaBuilder builder = entityManager.getCriteriaBuilder();");
 			writeLine("CriteriaQuery<" + currentBean.className + "> criteria = builder.createQuery(" + currentBean.className + ".class);");
 			skipLine();
 			
@@ -602,7 +585,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 			writeLine("criteria.orderBy(orders);");
 			skipLine();
 			
-			writeLine("Query<" + currentBean.className + "> query = session.createQuery(criteria);");
+			writeLine("TypedQuery<" + currentBean.className + "> query = entityManager.createQuery(criteria);");
 			writeLine("if (firstResult != null){");
 			writeLine("query.setFirstResult(firstResult.intValue());");
 			writeLine("}");
@@ -624,7 +607,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
             writeLine(" */");
             writeLine("@Override");
 			writeLine("public " + currentBean.className + " load" + currentBean.className + "(" + currentBean.idType + " id) {");
-			writeLine(currentBean.className + " " + currentBean.objectName + " = (" + currentBean.className + ")this.sessionFactory.getCurrentSession().get(" + currentBean.className + ".class,id);");
+			writeLine(currentBean.className + " " + currentBean.objectName + " = (" + currentBean.className + ")entityManager.find(" + currentBean.className + ".class,id);");
 			writeLine("if (" + currentBean.objectName + " == null) {");
 			writeLine("throw new ObjectNotFoundException(" + CHAR_34 + currentBean.className + ".notFound" + CHAR_34 + ");");
 			writeLine("} else {");
@@ -650,8 +633,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 		}
 		writeLine(") {");
 
-		writeLine("Session session = this.sessionFactory.getCurrentSession();");
-		writeLine("CriteriaBuilder builder = session.getCriteriaBuilder();");
+		writeLine("CriteriaBuilder builder = entityManager.getCriteriaBuilder();");
 		writeLine("CriteriaQuery<" + this.bean.className + "> criteria = builder.createQuery(" + this.bean.className + ".class);");
 		skipLine();
 			
@@ -671,7 +653,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 		
 		writeLine("criteria.select(root);");
 		skipLine();
-		writeLine("return session.createQuery(criteria).uniqueResult();");
+		writeLine("return entityManager.createQuery(criteria).getSingleResult();");
 		writeLine("}");
 		skipLine();
 		
@@ -760,8 +742,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 		writeLine(" */");
 		writeLine("@Override");
 		writeLine("public List<" + this.bean.className + "> search(String arg) {");
-		writeLine("Session session = this.sessionFactory.getCurrentSession();");
-		writeLine("CriteriaBuilder builder = session.getCriteriaBuilder();");
+		writeLine("CriteriaBuilder builder = entityManager.getCriteriaBuilder();");
 		writeLine("CriteriaQuery<" + this.bean.className + "> criteria = builder.createQuery(" + this.bean.className + ".class);");
 		skipLine();
 		
@@ -790,7 +771,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 		writeLine("criteria.select(root);");
 		skipLine();		
 		
-		writeLine("Query<" + this.bean.className + "> query = session.createQuery(criteria);");
+		writeLine("TypedQuery<" + this.bean.className + "> query = entityManager.createQuery(criteria);");
 		writeLine("query.setMaxResults(20);");
 		writeLine("return query.getResultList();");
 		writeLine("}");
@@ -807,7 +788,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 			writeLine("@Override");
 			writeLine("public void save" + currentBean.className + "(" + this.bean.className + " " + this.bean.objectName + ", " + currentBean.className + " " + currentBean.objectName + ") {");
 			writeLine(currentBean.objectName + "." + oneToManyComponent.referenceProperty.setterName + "(" + bean.objectName + ");");
-			writeLine("this.sessionFactory.getCurrentSession().save(" + currentBean.objectName + ");");
+			writeLine("entityManager.persist(" + currentBean.objectName + ");");
 			writeLine("}");
 			skipLine();
 		}
@@ -820,7 +801,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 			writeLine("@Override");
 			writeLine("public void save" + currentBean.className + "(" + this.bean.className + " " + this.bean.objectName + ", " + currentBean.className + " " + currentBean.objectName + ") {");
 			writeLine(currentBean.objectName + ".set" + bean.className + "(" + bean.objectName + ");");
-			writeLine("this.sessionFactory.getCurrentSession().save(" + currentBean.objectName + ");");
+			writeLine("entityManager.persist(" + currentBean.objectName + ");");
 			writeLine("}");
 			skipLine();
 		}
@@ -836,7 +817,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 			writeLine("@Override");
 			writeLine("public void delete" + currentBean.className + "(" + currentBean.className + " " + currentBean.objectName + ") {");
 			writeLine(currentBean.objectName + "." + oneToManyComponent.referenceProperty.getterName + "().get" + currentBean.className + "Collection().remove(" + currentBean.objectName + ");");
-			writeLine("this.sessionFactory.getCurrentSession().delete(" + currentBean.objectName + ");");
+			writeLine("entityManager.remove(" + currentBean.objectName + ");");
 			writeLine("}");
 			skipLine();
 		}
@@ -851,7 +832,7 @@ public class BaseDaoHibernateImplFileWriteCommand extends JavaFileWriteCommand {
 			
 			writeLine(bean.className + " " +  bean.objectName + " = " + currentBean.objectName + ".get" + bean.className + "();");
 			writeLine(bean.objectName + ".set" + currentBean.className + "(null);");			
-			writeLine("this.sessionFactory.getCurrentSession().delete(" + currentBean.objectName + ");");
+			writeLine("entityManager.remove(" + currentBean.objectName + ");");
 			writeLine("}");
 			skipLine();
 		}

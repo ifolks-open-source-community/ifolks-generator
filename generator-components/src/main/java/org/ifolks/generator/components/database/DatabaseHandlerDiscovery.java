@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import org.apache.commons.dbcp.BasicDataSource;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.skeletons.database.DatabaseHandler;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -17,7 +16,6 @@ import org.springframework.core.type.filter.AssignableTypeFilter;
 public class DatabaseHandlerDiscovery {
 	
 	public static Map<String, DatabaseHandler> handlersMap = new HashMap<>();
-	public static Map<String, DatabaseHandler> byDriverHandlersMap = new HashMap<>();
 	
 	public static Set<DatabaseHandler> handlers = new HashSet<>();
 	
@@ -25,7 +23,7 @@ public class DatabaseHandlerDiscovery {
 		ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
 		provider.addIncludeFilter(new AssignableTypeFilter(DatabaseHandler.class));
 		
-		String[] packagesToScan = ResourceBundle.getBundle("generator").getString("database.handlers.path").split(",");
+		String[] packagesToScan = ResourceBundle.getBundle("scan").getString("database.handlers.path").split(",");
 		
 		Set<BeanDefinition> defs = new HashSet<>();
 		
@@ -38,7 +36,6 @@ public class DatabaseHandlerDiscovery {
 			try {
 				DatabaseHandler handler = (DatabaseHandler) Class.forName(def.getBeanClassName()).getConstructor().newInstance();
 				handlersMap.put(handler.getName(), handler);
-				byDriverHandlersMap.put(handler.getDriverClassName(), handler);
 				handlers.add(handler);
 			} catch (Exception e) {
 				throw new IllegalArgumentException("Invalid DatabaseHandler : " + def.getBeanClassName(), e);
@@ -56,10 +53,6 @@ public class DatabaseHandlerDiscovery {
 		return getBuildScriptFolder(handler.getName());
 	}
 	
-	public static String getBuildScriptFolder(BasicDataSource dataSource) {
-		DatabaseHandler handler = byDriverHandlersMap.get(dataSource.getDriverClassName());
-		return getBuildScriptFolder(handler);
-	}
 	
 	public static DatabaseHandler getDatabaseHandler(String databaseEngine) {
 		return handlersMap.get(databaseEngine);

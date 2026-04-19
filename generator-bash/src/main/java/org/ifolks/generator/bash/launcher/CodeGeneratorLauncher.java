@@ -1,15 +1,17 @@
 package org.ifolks.generator.bash.launcher;
 
-import org.ifolks.generator.bash.prompt.ValidationPrompter;
+import org.ifolks.generator.bash.ApplicationConfig;
+import org.ifolks.generator.components.metadata.validation.prompt.ValidationPrompter;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.metadata.ProjectMetaData;
 import org.ifolks.generator.model.metadata.validation.ProjectValidationReport;
-import org.ifolks.generator.services.interfaces.CodeGenerator;
-import org.ifolks.generator.services.interfaces.ProjectLoader;
-import org.ifolks.generator.services.interfaces.ProjectMetaDataService;
+import org.ifolks.generator.services.CodeGenerator;
+import org.ifolks.generator.services.ProjectLoader;
+import org.ifolks.generator.services.ProjectMetaDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  * This class can be launched to execute code writing<br/>
@@ -43,7 +45,7 @@ public class CodeGeneratorLauncher {
 		}
 		String folderPath = args[0];
 
-		try (FileSystemXmlApplicationContext appContext = new FileSystemXmlApplicationContext("classpath:applicationContext-generator-bash.xml");) {
+		try (ConfigurableApplicationContext appContext = new AnnotationConfigApplicationContext(ApplicationConfig.class);) {
 			logger.info("Context loaded");
 
 			Project project;

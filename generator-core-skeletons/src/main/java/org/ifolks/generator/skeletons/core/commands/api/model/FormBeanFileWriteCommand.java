@@ -28,7 +28,7 @@ public class FormBeanFileWriteCommand extends JavaFileWriteCommand {
 		javaImports.add("import java.time.LocalDate;");
 		javaImports.add("import java.math.BigDecimal;");
         javaImports.add("import java.io.Serializable;");
-        javaImports.add("import javax.validation.constraints.NotNull;");
+        javaImports.add("import jakarta.validation.constraints.NotNull;");
 	}
 	
 	

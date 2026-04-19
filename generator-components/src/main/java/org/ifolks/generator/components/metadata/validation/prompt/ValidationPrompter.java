@@ -1,4 +1,4 @@
-package org.ifolks.generator.bash.prompt;
+package org.ifolks.generator.components.metadata.validation.prompt;
 
 import java.io.BufferedReader;
 import java.io.IOException;

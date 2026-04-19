@@ -4,7 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import javax.sql.DataSource;
+
 import org.ifolks.generator.components.build.commands.JdbcRawCommand;
 import org.ifolks.generator.components.database.DatabaseHandlerDiscovery;
 import org.ifolks.generator.components.population.files.SimpleScriptFileReader;
@@ -18,17 +19,17 @@ public class TableBuilder {
 	/*
 	 * properties
 	 */
-	private BasicDataSource dataSource;
+	private DataSource dataSource;
 	private SimpleScriptFileReader scriptFileReader;
 	private String scriptRootPath;
 	
 	/*
 	 * constructor
 	 */
-	public TableBuilder(Project project, BasicDataSource dataSource) {
+	public TableBuilder(Project project, DataSource dataSource, String engineName) {
 		this.dataSource = dataSource;
 		this.scriptFileReader = new SimpleScriptFileReader();
-		scriptRootPath = project.workspaceFolder + File.separator + DatabaseHandlerDiscovery.getBuildScriptFolder(dataSource);
+		scriptRootPath = project.workspaceFolder + File.separator + DatabaseHandlerDiscovery.getBuildScriptFolder(engineName);
 	}
 	
 

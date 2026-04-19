@@ -173,7 +173,7 @@ public class TsOneToOneComponentDetailsComponentFileWriteCommand extends TsFileW
         skipLine();
         
         writeLine("load(): void {");
-        writeLine("this.service.load" + referenceBean.className + "(this.id).subscribe((t) => {this.view=t;this.restoreForm();});");
+        writeLine("this.service.load" + referenceBean.className + "(this.id).subscribe((t) => {if(t){this.view=t}else{this.view = new " + referenceBean.fullViewBean.className + "()};this.restoreForm();});");
         for (ViewProperty property:this.referenceBean.formBean.properties) {
         	if (property.selectableBean!=null && property.selectableBean.selectionBehavior.selectionMode.equals(SelectionMode.DROPDOWN_OPTIONS)) {
         		writeLine("this.loadOptionsFor" + property.capName + "();");

@@ -24,7 +24,7 @@ public class SkeletonResolver {
 		ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
 		provider.addIncludeFilter(new AssignableTypeFilter(Skeleton.class));
 		
-		String[] packagesToScan = ResourceBundle.getBundle("generator").getString("skeletons.path").split(",");
+		String[] packagesToScan = ResourceBundle.getBundle("scan").getString("skeletons.path").split(",");
 		
 		Set<BeanDefinition> defs = new HashSet<>();
 		
@@ -37,7 +37,7 @@ public class SkeletonResolver {
 				Skeleton handler = (Skeleton) Class.forName(def.getBeanClassName()).getConstructor().newInstance();
 				skeletons.put(handler.getName(), handler);			
 			} catch (Exception e) {
-				throw new IllegalArgumentException("Invalid DatabaseHandler : " + def.getBeanClassName(), e);
+				throw new IllegalArgumentException("Invalid SkeletonHandler : " + def.getBeanClassName(), e);
 			}
 		}
 	}
