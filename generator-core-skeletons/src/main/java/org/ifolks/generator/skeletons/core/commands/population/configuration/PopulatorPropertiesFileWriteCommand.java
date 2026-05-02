@@ -9,6 +9,6 @@ import org.ifolks.generator.skeletons.commands.impl.templatized.ProjectTemplatiz
 public class PopulatorPropertiesFileWriteCommand extends ProjectTemplatizedFileWriteCommand {
 
 	public PopulatorPropertiesFileWriteCommand(Project project) {
-		super(project.workspaceFolder + File.separator + project.model.populatorArtefactName + File.separator + project.model.resourcesFolder, "application", FileType.PROPERTIES, project);
+		super(project.workspaceFolder + File.separator + project.model.populatorArtefactName + File.separator + project.model.resourcesFolder, "application-local", FileType.PROPERTIES, project);
 	}
 }

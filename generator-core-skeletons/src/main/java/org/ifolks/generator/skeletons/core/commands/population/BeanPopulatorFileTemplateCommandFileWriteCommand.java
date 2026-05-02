@@ -12,7 +12,7 @@ public class BeanPopulatorFileTemplateCommandFileWriteCommand extends CsvFileWri
 	private Bean bean;
 
     public BeanPopulatorFileTemplateCommandFileWriteCommand(Bean bean){
-        super(bean.myPackage.model.project.workspaceFolder + File.separator + "data-model" + File.separator + "population" + File.separator + "templates" + File.separator + bean.table.myPackage.name.toUpperCase().replace(".", File.separator),
+        super(bean.myPackage.model.project.workspaceFolder + File.separator + bean.myPackage.model.commandsArtefactName + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "population" + File.separator + "templates" + File.separator + bean.table.myPackage.name.toUpperCase().replace(".", File.separator),
         		bean.table.originalName);
         
         		this.bean = bean;

@@ -46,7 +46,7 @@ public class PopulationPreExecutionChecker {
 		
 		List<PopulationPlanPreExecutionWarning> result = new ArrayList<>();
 		
-		int maxStep = FolderUtil.resolveMaxStep(backupPath);
+		int maxStep = backupLocator.resolveMaxStep(backupPath);
 		
 		for (Package myPackage:project.model.packages) {
 			for (Table table:myPackage.tables) {

@@ -21,7 +21,7 @@ public class OracleTableDefinitionFileWriteCommand extends SqlFileWriteCommand {
 	 */
 	public OracleTableDefinitionFileWriteCommand(Table table) {
 
-		super(table.myPackage.model.project.workspaceFolder + File.separator + DatabaseHandlerDiscovery.getBuildScriptFolder(OracleHandler.NAME) + File.separator + "1" + File.separator + table.myPackage.name.toUpperCase().replace(".", File.separator), table.originalName);
+		super(table.myPackage.model.project.workspaceFolder + File.separator + DatabaseHandlerDiscovery.getBuildScriptFolder(OracleHandler.NAME, table.myPackage.model.project.projectName) + File.separator + "1" + File.separator + table.myPackage.name.toUpperCase().replace(".", File.separator), table.originalName);
 
 		this.table = table;
 	}

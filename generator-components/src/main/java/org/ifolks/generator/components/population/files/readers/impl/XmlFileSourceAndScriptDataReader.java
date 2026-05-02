@@ -33,6 +33,9 @@ import jakarta.xml.bind.Unmarshaller;
  * @author Nicolas Thibault
  *
  */
+import org.springframework.core.io.ResourceLoader;
+import java.io.InputStream;
+
 public class XmlFileSourceAndScriptDataReader implements DataReader {
 	
 	private static final String SCHEMA_LOCATION = "backup-1.0.xsd";
@@ -42,13 +45,14 @@ public class XmlFileSourceAndScriptDataReader implements DataReader {
 	 */
 	private InputDataSourceProvider inputSourceProvider;
 	private SourceAndScriptDataReader sourceAndScriptDataReader;
+	private ResourceLoader resourceLoader;
 	
 	/*
 	 * constructor
 	 */
-	public XmlFileSourceAndScriptDataReader(InputDataSourceProvider inputSourceProvider) {
+	public XmlFileSourceAndScriptDataReader(InputDataSourceProvider inputSourceProvider, ResourceLoader resourceLoader) {
 		this.inputSourceProvider = inputSourceProvider;
-		
+		this.resourceLoader = resourceLoader;
 	}
 
 	
@@ -77,13 +81,6 @@ public class XmlFileSourceAndScriptDataReader implements DataReader {
 	
 	private SourceAndScript parse(String scriptFilePath) throws IOException {
 
-		Path path = Paths.get(scriptFilePath);
-		
-		if (!Files.exists(path)) {
-			throw new PopulationFileNotFoundException("Unable to find backup file : " + scriptFilePath);
-		}
-		File file = path.toFile();
-		
 		try {
 			
 			JAXBContext jaxbContext = JAXBContext.newInstance(SourceAndScript.class);
@@ -93,7 +90,19 @@ public class XmlFileSourceAndScriptDataReader implements DataReader {
 	        Schema schema = schemaFactory.newSchema(getClass().getClassLoader().getResource(SCHEMA_LOCATION));
 	        jaxbUnmarshaller.setSchema(schema);
 			
-	        SourceAndScript sourceAndScript = (SourceAndScript) jaxbUnmarshaller.unmarshal(file);
+	        SourceAndScript sourceAndScript;
+	        if (scriptFilePath.startsWith("classpath:")) {
+				try (InputStream is = resourceLoader.getResource(scriptFilePath).getInputStream()) {
+					sourceAndScript = (SourceAndScript) jaxbUnmarshaller.unmarshal(is);
+				}
+	        } else {
+	        	Path path = Paths.get(scriptFilePath);
+	    		if (!Files.exists(path)) {
+	    			throw new PopulationFileNotFoundException("Unable to find backup file : " + scriptFilePath);
+	    		}
+	    		File file = path.toFile();
+	        	sourceAndScript = (SourceAndScript) jaxbUnmarshaller.unmarshal(file);
+	        }
 			
 			return sourceAndScript;
 			

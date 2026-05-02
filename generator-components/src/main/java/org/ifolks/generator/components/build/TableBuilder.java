@@ -14,30 +14,34 @@ import org.ifolks.generator.model.domain.database.Table;
 import org.ifolks.generator.model.exception.InvalidFileException;
 
 
+import java.nio.charset.Charset;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.StreamUtils;
+
 public class TableBuilder {
 
 	/*
 	 * properties
 	 */
 	private DataSource dataSource;
-	private SimpleScriptFileReader scriptFileReader;
+	private ResourceLoader resourceLoader;
 	private String scriptRootPath;
 	
 	/*
 	 * constructor
 	 */
-	public TableBuilder(Project project, DataSource dataSource, String engineName) {
+	public TableBuilder(Project project, DataSource dataSource, String engineName, ResourceLoader resourceLoader) {
 		this.dataSource = dataSource;
-		this.scriptFileReader = new SimpleScriptFileReader();
-		scriptRootPath = project.workspaceFolder + File.separator + DatabaseHandlerDiscovery.getBuildScriptFolder(engineName);
+		this.resourceLoader = resourceLoader;
+		scriptRootPath = "classpath:scripts/SQL/" + engineName + "/build";
 	}
 	
 
 	public void buildTable(Table table, int step) throws IOException, InvalidFileException, SQLException {
 		
-		String scriptFilePath = scriptRootPath + File.separator + step + File.separator + table.myPackage.name.toUpperCase().replace(".", File.separator) + File.separator + table.originalName + ".sql";
+		String scriptFilePath = scriptRootPath + "/" + step + "/" + table.myPackage.name.toUpperCase().replace(".", "/") + "/" + table.originalName + ".sql";
 		
-		String script = scriptFileReader.readScript(scriptFilePath);
+		String script = StreamUtils.copyToString(resourceLoader.getResource(scriptFilePath).getInputStream(), Charset.defaultCharset());
 			
 		new JdbcRawCommand(dataSource, script).execute();
 	}

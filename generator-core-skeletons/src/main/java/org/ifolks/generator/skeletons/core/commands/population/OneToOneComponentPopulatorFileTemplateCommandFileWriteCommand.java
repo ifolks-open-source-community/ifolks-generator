@@ -13,11 +13,11 @@ public class OneToOneComponentPopulatorFileTemplateCommandFileWriteCommand exten
 	private Bean referenceBean;
     private Bean parentBean;
 
-    public OneToOneComponentPopulatorFileTemplateCommandFileWriteCommand(OneToOneComponent OneToOneComponent){
-    	super(OneToOneComponent.referenceBean.myPackage.model.project.workspaceFolder + File.separator + "data-model" + File.separator + "population" + File.separator + "templates" + File.separator + OneToOneComponent.referenceBean.table.myPackage.name.toUpperCase().replace(".", File.separator),
-    			OneToOneComponent.referenceBean.table.originalName);
-    			referenceBean = OneToOneComponent.referenceBean;
-    			parentBean = OneToOneComponent.parentBean;
+    public OneToOneComponentPopulatorFileTemplateCommandFileWriteCommand(OneToOneComponent oneToOneComponent){
+    	super(oneToOneComponent.referenceBean.myPackage.model.project.workspaceFolder + File.separator + oneToOneComponent.referenceBean.myPackage.model.commandsArtefactName + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "population" + File.separator + "templates" + File.separator + oneToOneComponent.referenceBean.table.myPackage.name.toUpperCase().replace(".", File.separator),
+    			oneToOneComponent.referenceBean.table.originalName);
+    			referenceBean = oneToOneComponent.referenceBean;
+    			parentBean = oneToOneComponent.parentBean;
     }
 
 

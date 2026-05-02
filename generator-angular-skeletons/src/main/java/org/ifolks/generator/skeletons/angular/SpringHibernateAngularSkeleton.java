@@ -11,6 +11,7 @@ import org.ifolks.generator.skeletons.angular.layers.TypeScriptModelLayer;
 import org.ifolks.generator.skeletons.angular.layers.TypeScriptServicesLayer;
 import org.ifolks.generator.skeletons.core.layers.ApiLayer;
 import org.ifolks.generator.skeletons.core.layers.BusinessComponentLayer;
+import org.ifolks.generator.skeletons.core.layers.CommandsLayer;
 import org.ifolks.generator.skeletons.core.layers.HibernateBusinessModelLayer;
 import org.ifolks.generator.skeletons.core.layers.HibernateDaoLayer;
 import org.ifolks.generator.skeletons.core.layers.JunitLayer;
@@ -26,7 +27,7 @@ public class SpringHibernateAngularSkeleton implements Skeleton {
 
 	@Override
 	public String getName() {
-		return "SPRING_HIBERNATE_ANGULAR";
+		return "SPRING_REST_ANGULAR";
 	}
 	
 	@Override
@@ -43,6 +44,7 @@ public class SpringHibernateAngularSkeleton implements Skeleton {
 		layers.add(new BusinessComponentLayer());
 		layers.add(new ServiceLayer());
 		layers.add(new SpringRestControllerLayer());
+		layers.add(new CommandsLayer());
 		layers.add(new PopulatorLayer());
 		layers.add(new JunitLayer());
 		layers.add(new TypeScriptModelLayer());

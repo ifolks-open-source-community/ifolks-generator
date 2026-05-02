@@ -14,7 +14,7 @@ public class OneToManyComponentPopulatorFileTemplateCommandFileWriteCommand exte
     private Bean parentBean;
 
     public OneToManyComponentPopulatorFileTemplateCommandFileWriteCommand(OneToManyComponent oneToManyComponent){
-    	super(oneToManyComponent.referenceBean.myPackage.model.project.workspaceFolder + File.separator + "data-model" + File.separator + "population" + File.separator + "templates" + File.separator + oneToManyComponent.referenceBean.table.myPackage.name.toUpperCase().replace(".", File.separator),
+    	super(oneToManyComponent.referenceBean.myPackage.model.project.workspaceFolder + File.separator + oneToManyComponent.referenceBean.myPackage.model.commandsArtefactName + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "population" + File.separator + "templates" + File.separator + oneToManyComponent.referenceBean.table.myPackage.name.toUpperCase().replace(".", File.separator),
     			oneToManyComponent.referenceBean.table.originalName);
     			referenceBean = oneToManyComponent.referenceBean;
     			parentBean = oneToManyComponent.parentBean;

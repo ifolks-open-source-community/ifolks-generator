@@ -95,6 +95,7 @@ public class JavaModelFactory implements ModelFactory {
         model.componentsArtefactName = project.projectName + "-components";
         model.servicesArtefactName = project.projectName + "-services";
         model.populatorArtefactName = project.projectName + "-populator";
+        model.commandsArtefactName = project.projectName + "-commands";
         model.testsArtefactName = project.projectName + "-tests";
         model.restArtefactName = project.projectName + "-rest";
 
@@ -126,9 +127,9 @@ public class JavaModelFactory implements ModelFactory {
         model.mvcModelPackageName = model.mvcPackageName + ".model";
         model.mvcFilterPackageName = model.mvcPackageName + ".filter";
        
-        model.commandPackageName = project.domainName + "." + project.projectName + ".populator.command";
-        model.builderPackageName = project.domainName + "." + project.projectName + ".populator.builder";
-        model.executorPackageName = project.domainName + "." + project.projectName + ".populator.executor";
+        model.commandPackageName = project.domainName + "." + project.projectName + ".commands";
+        model.populationPackageName = project.domainName + "." + project.projectName + ".populator";
+        model.populationRunnersPackageName = project.domainName + "." + project.projectName + ".populator.runners";
         model.junitPackageName = project.domainName + "." + project.projectName + ".junit";
         
         model.packages = new ArrayList<Package>();

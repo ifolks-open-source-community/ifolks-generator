@@ -1,0 +1,51 @@
+package ${project.model.persistencePackageName};
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import java.util.Properties;
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+
+@Configuration
+@Profile("local")
+public class LocalPersistenceConfig {
+	
+	@Autowired
+	private Environment env;
+
+	@Bean
+    public DataSource dataSource() {
+		HikariConfig config = new HikariConfig();
+	    config.setJdbcUrl(env.getRequiredProperty("db.url"));
+	    config.setUsername(env.getRequiredProperty("db.userName"));
+	    config.setPassword(env.getRequiredProperty("db.password"));
+	    config.setDriverClassName(env.getRequiredProperty("db.driverClassName"));
+	    config.setMaximumPoolSize(Integer.valueOf(env.getRequiredProperty("db.maximumPoolSize")));
+	    config.setMinimumIdle(Integer.valueOf(env.getRequiredProperty("db.minimumIdle")));
+	    config.setIdleTimeout(Integer.valueOf(env.getRequiredProperty("db.idleTimeout")));
+	    config.setConnectionTimeout(Integer.valueOf(env.getRequiredProperty("db.connectionTimeout")));
+		
+		return new HikariDataSource(config);
+     }
+
+	@Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean result = new LocalContainerEntityManagerFactoryBean();
+        result.setDataSource(dataSource());
+        result.setPackagesToScan("${project.model.modelPackageName}");
+        result.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+
+        Properties hibernateProperties = new Properties();
+		hibernateProperties.setProperty("hibernate.show_sql", env.getProperty("hibernate.showSql"));
+		hibernateProperties.setProperty("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
+		result.setJpaProperties(hibernateProperties);
+
+        return result;
+    }
+}

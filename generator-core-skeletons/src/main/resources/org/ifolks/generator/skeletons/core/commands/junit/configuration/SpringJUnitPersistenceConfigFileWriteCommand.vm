@@ -1,0 +1,46 @@
+package ${project.model.persistencePackageName};
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import java.util.Properties;
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+
+@Configuration
+@Profile("junit")
+public class JUnitPersistenceConfig {
+	
+	@Autowired
+	private Environment env;
+
+	@Bean
+    public DataSource dataSource() {
+		HikariConfig config = new HikariConfig();	    
+	    config.setJdbcUrl("jdbc:hsqldb:mem:${project.datasource.databaseName}");
+	    config.setUsername("sa");
+	    config.setPassword("");
+	    config.setDriverClassName("org.hsqldb.jdbcDriver");
+		return new HikariDataSource(config);
+    }
+	
+	@Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean result = new LocalContainerEntityManagerFactoryBean();
+        result.setDataSource(dataSource());
+        result.setPackagesToScan("${project.model.modelPackageName}");
+        result.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+
+        Properties hibernateProperties = new Properties();
+		hibernateProperties.setProperty("hibernate.show_sql", env.getProperty("hibernate.showSql"));
+		hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+        result.setJpaProperties(hibernateProperties);
+
+        return result;
+    }
+}

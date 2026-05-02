@@ -42,7 +42,7 @@ public class Populator {
 
 		logger.info("start populating database");
 
-		int maxSteps = FolderUtil.resolveMaxStep(backupPath);
+		int maxSteps = fileLocator.resolveMaxStep(backupPath);
 
 		for(int step=1; step<=maxSteps; step++){
 			logger.info("start bulding step " + step);

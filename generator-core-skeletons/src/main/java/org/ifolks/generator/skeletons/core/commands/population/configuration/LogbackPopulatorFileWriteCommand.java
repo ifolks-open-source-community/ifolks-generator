@@ -9,6 +9,6 @@ import org.ifolks.generator.skeletons.commands.impl.templatized.ProjectTemplatiz
 public class LogbackPopulatorFileWriteCommand extends ProjectTemplatizedFileWriteCommand {
 
 	public LogbackPopulatorFileWriteCommand(Project project) {
-		super(project.workspaceFolder + File.separator + project.model.populatorArtefactName + File.separator + project.model.resourcesFolder, "logback", FileType.XML, project);
+		super(project.workspaceFolder + File.separator + project.model.populatorArtefactName + File.separator + project.model.resourcesFolder, "logback-spring", FileType.XML, project);
 	}
 }

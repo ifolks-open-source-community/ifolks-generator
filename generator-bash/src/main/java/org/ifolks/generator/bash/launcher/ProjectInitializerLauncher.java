@@ -1,5 +1,6 @@
 package org.ifolks.generator.bash.launcher;
 
+import org.ifolks.generator.bash.ApplicationConfig;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.metadata.PersistenceMode;
 import org.ifolks.generator.model.metadata.ProjectMetaData;
@@ -9,6 +10,8 @@ import org.ifolks.generator.services.ProjectLoader;
 import org.ifolks.generator.services.ProjectMetaDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 /**
@@ -49,7 +52,7 @@ public class ProjectInitializerLauncher {
 			throw new IllegalArgumentException("11 arguments are mandatory");
 		}
 				
-		try(FileSystemXmlApplicationContext appContext = new FileSystemXmlApplicationContext("classpath:applicationContext-generator-bash.xml");){
+		try (ConfigurableApplicationContext appContext = new AnnotationConfigApplicationContext(ApplicationConfig.class);) {
 			logger.info("Context loaded");
 			
 			ProjectMetaData projectMetaData = buildProjectMetaData(args);

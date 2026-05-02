@@ -44,13 +44,13 @@ public class DatabaseHandlerDiscovery {
 	}
 	
 	
-	public static String getBuildScriptFolder(String engineName) {
-		return "data-model" + File.separator + "scripts" + File.separator + "SQL" + File.separator + engineName + File.separator + "build";
+	public static String getBuildScriptFolder(String engineName, String projectName) {
+		return projectName + "-populator" + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "scripts" + File.separator + "SQL" + File.separator + engineName + File.separator + "build";
 	}
 	
 	
-	public static String getBuildScriptFolder(DatabaseHandler handler) {
-		return getBuildScriptFolder(handler.getName());
+	public static String getBuildScriptFolder(DatabaseHandler handler, String projectName) {
+		return getBuildScriptFolder(handler.getName(), projectName);
 	}
 	
 	

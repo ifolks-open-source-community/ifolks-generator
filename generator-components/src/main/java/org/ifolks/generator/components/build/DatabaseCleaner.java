@@ -11,19 +11,24 @@ import org.ifolks.generator.components.database.DatabaseHandlerDiscovery;
 import org.ifolks.generator.components.population.files.SimpleScriptFileReader;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.exception.InvalidFileException;
+import java.nio.charset.Charset;
+import org.ifolks.generator.model.exception.InvalidFileException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StreamUtils;
 
 @Component
 public class DatabaseCleaner {
 	
 	@Autowired
-	private SimpleScriptFileReader scriptFileReader;	
+	private ResourceLoader resourceLoader;
 
 	public void cleanDatabase(DataSource dataSource, Project project, String engineName) throws IOException, InvalidFileException, SQLException {
 		
-		String scriptFilePath = project.workspaceFolder + File.separator + DatabaseHandlerDiscovery.getBuildScriptFolder(engineName) + File.separator + "MAIN.sql";
-		String script = scriptFileReader.readScript(scriptFilePath);
+		String scriptFilePath = "classpath:scripts/SQL/" + engineName + "/build/MAIN.sql";
+		
+		String script = StreamUtils.copyToString(resourceLoader.getResource(scriptFilePath).getInputStream(), Charset.defaultCharset());
 			
 		new JdbcRawCommand(dataSource, script).execute();
 	}

@@ -26,6 +26,9 @@ public class DatabaseBuilder {
 	
 	@Autowired
 	private DatabaseCleaner databaseCleaner;
+	
+	@Autowired
+	private org.springframework.core.io.ResourceLoader resourceLoader;
 
 	public void buildDatabase(DataSource dataSource, Project project, String engineName) throws InvalidFileException, IOException, SQLException {
 		
@@ -34,8 +37,12 @@ public class DatabaseBuilder {
 		logger.info("cleaning database completed");
 		
 		logger.info("start bulding database");		
-		TableBuilder tableBuilder = new TableBuilder(project, dataSource, engineName);		
-		int maxStep = FolderUtil.resolveMaxStep(project.workspaceFolder + File.separator + DatabaseHandlerDiscovery.getBuildScriptFolder(engineName));
+		TableBuilder tableBuilder = new TableBuilder(project, dataSource, engineName, resourceLoader);		
+		
+		int maxStep = 0;
+		while (resourceLoader.getResource("classpath:scripts/SQL/" + engineName + "/build/" + (maxStep + 1)).exists()) {
+			maxStep++;
+		}
 		
 		for (int step = 1; step <= maxStep; step++) {
 			

@@ -1,0 +1,165 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+	http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.1</version>
+    </parent>
+	
+	<groupId>${project.domainName}.${project.projectName}</groupId>
+	<artifactId>${project.projectName}-root</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>${project.projectName}-root</name>
+
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>${project.model.apiArtefactName}</module>
+		<module>${project.model.modelArtefactName}</module>
+		<module>${project.model.persistenceArtefactName}</module>
+		<module>${project.model.componentsArtefactName}</module>
+		<module>${project.model.servicesArtefactName}</module>
+		<module>${project.model.restArtefactName}</module>
+		<module>${project.model.commandsArtefactName}</module>
+		<module>${project.model.populatorArtefactName}</module>
+		<module>${project.model.testsArtefactName}</module>
+	</modules>
+	
+	<properties>
+	
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>21</java.version>
+		<maven.compiler.release.version>21</maven.compiler.release.version>
+		
+		<ifolks.commons.version>1.0.0-SNAPSHOT</ifolks.commons.version>
+		<ifolks.generator.version>1.0.0-SNAPSHOT</ifolks.generator.version>
+		
+	</properties>
+	
+	<dependencyManagement>
+		<dependencies>
+		
+			<dependency>
+				<groupId>${project.domainName}.${project.projectName}</groupId>
+				<artifactId>${project.model.apiArtefactName}</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>${project.domainName}.${project.projectName}</groupId>
+				<artifactId>${project.model.modelArtefactName}</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>${project.domainName}.${project.projectName}</groupId>
+				<artifactId>${project.model.persistenceArtefactName}</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>${project.domainName}.${project.projectName}</groupId>
+				<artifactId>${project.model.componentsArtefactName}</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>${project.domainName}.${project.projectName}</groupId>
+				<artifactId>${project.model.servicesArtefactName}</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>${project.domainName}.${project.projectName}</groupId>
+				<artifactId>${project.model.commandsArtefactName}</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			
+			<!-- ifolks generator -->
+			<dependency>
+				<groupId>org.ifolks.generator</groupId>
+				<artifactId>generator-components</artifactId>
+				<version>${ifolks.generator.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.ifolks.generator</groupId>
+				<artifactId>generator-services</artifactId>
+				<version>${ifolks.generator.version}</version>
+			</dependency>
+			
+			<!-- ifolks commons -->
+			<dependency>
+				<groupId>org.ifolks.commons</groupId>
+				<artifactId>commons-api</artifactId>
+				<version>${ifolks.commons.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.ifolks.commons</groupId>
+				<artifactId>commons-entities</artifactId>
+				<version>${ifolks.commons.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.ifolks.commons</groupId>
+				<artifactId>commons-text</artifactId>
+				<version>${ifolks.commons.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.ifolks.commons</groupId>
+				<artifactId>commons-log</artifactId>
+				<version>${ifolks.commons.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.ifolks.commons</groupId>
+				<artifactId>commons-rest</artifactId>
+				<version>${ifolks.commons.version}</version>
+			</dependency>
+			
+		</dependencies>
+	</dependencyManagement>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<verbose>true</verbose>
+					<fork>true</fork>
+					<release>${maven.compiler.release.version}</release>
+					<encoding>${encoding}</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.diffplug.spotless</groupId>
+				<artifactId>spotless-maven-plugin</artifactId>
+				<version>2.43.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>apply</goal>
+						</goals>
+						<phase>process-sources</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<java>
+						<removeUnusedImports />
+						<importOrder />
+					</java>
+				</configuration>
+			</plugin>
+		</plugins>		
+	</build>
+	
+</project>

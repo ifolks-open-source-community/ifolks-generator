@@ -23,7 +23,7 @@ public class SpringHibernateRestSkeleton implements Skeleton {
 
 	@Override
 	public String getName() {
-		return "SPRING_HIBERNATE_REST";
+		return "SPRING_REST";
 	}
 	
 	@Override

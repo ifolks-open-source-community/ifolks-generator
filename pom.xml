@@ -68,9 +68,6 @@
 			
 		<velocity.version>2.3</velocity.version>
 		
-		<postgresql.version>42.4.3</postgresql.version>
-		<ojdbc.version>12.2.0.1</ojdbc.version>
-		
 		<commons.lang.version>2.5</commons.lang.version>
 		<commons.io.version>2.7</commons.io.version>
 		<commons.csv.version>1.8</commons.csv.version>
@@ -120,20 +117,6 @@
 				<version>${project.version}</version>
 			</dependency>
 				
-			
-			<!-- postgresql drivers -->
-			<dependency>
-				<groupId>org.postgresql</groupId>
-				<artifactId>postgresql</artifactId>
-				<version>${postgresql.version}</version>
-			 </dependency>
-			 
-			 <!-- oracle drivers-->
-			 <dependency>
-				<groupId>com.oracle.database.jdbc</groupId>
-				<artifactId>ojdbc8</artifactId>
-				<version>${ojdbc.version}</version>
-			</dependency>		
 			
 			<!-- apache velocity-->
 			<dependency>

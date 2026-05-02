@@ -11,6 +11,6 @@ import org.ifolks.generator.skeletons.core.database.OracleHandler;
 public class OracleMainDefinitionFileWriteCommand extends ProjectTemplatizedFileWriteCommand {
 
 	public OracleMainDefinitionFileWriteCommand(Project project) {
-		super(project.workspaceFolder + File.separator + DatabaseHandlerDiscovery.getBuildScriptFolder(OracleHandler.NAME), "MAIN", FileType.SQL, project);
+		super(project.workspaceFolder + File.separator + DatabaseHandlerDiscovery.getBuildScriptFolder(OracleHandler.NAME, project.projectName), "MAIN", FileType.SQL, project);
 	}
 }

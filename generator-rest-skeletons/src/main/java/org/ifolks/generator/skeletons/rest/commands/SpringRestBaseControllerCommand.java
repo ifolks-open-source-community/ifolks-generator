@@ -30,7 +30,7 @@ private Bean bean;
 		javaImports.add("import java.time.LocalDate;");
 		javaImports.add("import java.math.BigDecimal;");
 		javaImports.add("import java.util.List;");
-		javaImports.add("import javax.validation.Valid;");
+		javaImports.add("import jakarta.validation.Valid;");
 		javaImports.add("import org.springframework.beans.factory.annotation.Autowired;");
 		javaImports.add("import org.ifolks.commons.api.model.ScrollForm;");
 		javaImports.add("import org.ifolks.commons.api.model.ScrollView;");

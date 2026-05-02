@@ -11,6 +11,6 @@ import org.ifolks.generator.skeletons.core.database.PostgresqlHandler;
 public class PostgresqlMainDefinitionFileWriteCommand extends ProjectTemplatizedFileWriteCommand {
 
 	public PostgresqlMainDefinitionFileWriteCommand(Project project) {
-		super(project.workspaceFolder + File.separator + DatabaseHandlerDiscovery.getBuildScriptFolder(PostgresqlHandler.NAME), "MAIN", FileType.SQL, project);
+		super(project.workspaceFolder + File.separator + DatabaseHandlerDiscovery.getBuildScriptFolder(PostgresqlHandler.NAME, project.projectName), "MAIN", FileType.SQL, project);
 	}
 }

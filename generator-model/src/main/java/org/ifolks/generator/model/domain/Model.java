@@ -36,6 +36,7 @@ public class Model {
 	public String componentsArtefactName;
 	public String servicesArtefactName;
 	public String populatorArtefactName;
+	public String commandsArtefactName;
 	public String testsArtefactName;	
 	public String restArtefactName;
 	public String webappArtefactName;
@@ -69,8 +70,8 @@ public class Model {
 	public String mvcFilterPackageName;
 	
 	public String commandPackageName;
-	public String builderPackageName;
-	public String executorPackageName;	
+	public String populationPackageName;
+	public String populationRunnersPackageName;	
 	public String junitPackageName;
 
 	
@@ -161,6 +162,12 @@ public class Model {
 	}
 	public void setPopulatorArtefactName(String populatorArtefactName) {
 		this.populatorArtefactName = populatorArtefactName;
+	}
+	public String getCommandsArtefactName() {
+		return commandsArtefactName;
+	}
+	public void setCommandsArtefactName(String commandsArtefactName) {
+		this.commandsArtefactName = commandsArtefactName;
 	}
 	public String getTestsArtefactName() {
 		return testsArtefactName;
@@ -307,16 +314,16 @@ public class Model {
 		this.commandPackageName = commandPackageName;
 	}
 	public String getBuilderPackageName() {
-		return builderPackageName;
+		return populationPackageName;
 	}
 	public void setBuilderPackageName(String builderPackageName) {
-		this.builderPackageName = builderPackageName;
+		this.populationPackageName = builderPackageName;
 	}
 	public String getExecutorPackageName() {
-		return executorPackageName;
+		return populationRunnersPackageName;
 	}
 	public void setExecutorPackageName(String executorPackageName) {
-		this.executorPackageName = executorPackageName;
+		this.populationRunnersPackageName = executorPackageName;
 	}
 	public String getJunitPackageName() {
 		return junitPackageName;

@@ -1,0 +1,128 @@
+package ${project.model.populationRunnersPackageName};
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import javax.sql.DataSource;
+import org.ifolks.generator.components.build.prompt.BuildPrompter;
+import org.ifolks.generator.components.metadata.validation.prompt.ValidationPrompter;
+import org.ifolks.generator.components.population.checks.PopulationPostExecutionChecker;
+import org.ifolks.generator.components.population.checks.PopulationPreExecutionChecker;
+import org.ifolks.generator.components.population.datasources.InputDataSourceProvider;
+import org.ifolks.generator.components.population.prompt.PopulatorPrompter;
+import org.ifolks.generator.model.domain.Project;
+import org.ifolks.generator.model.metadata.ProjectMetaData;
+import org.ifolks.generator.model.metadata.validation.ProjectValidationReport;
+import org.ifolks.generator.model.population.check.PopulationPlanPostExecutionWarning;
+import org.ifolks.generator.model.population.check.PopulationPlanPreExecutionWarning;
+import org.ifolks.generator.services.DatabaseBuilder;
+import org.ifolks.generator.services.Populator;
+import org.ifolks.generator.services.ProjectLoader;
+import org.ifolks.generator.services.ProjectMetaDataService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MainRunner implements CommandLineRunner {
+
+    private static final Logger logger = LoggerFactory.getLogger(MainRunner.class);
+
+    @Autowired
+    private ProjectMetaDataService projectMetaDataService;
+    @Autowired
+    private ProjectLoader projectLoader;
+    @Autowired
+    private DatabaseBuilder databaseBuilder;
+    @Autowired
+    private DataSource dataSource;
+    @Autowired
+    private Environment env;
+    @Autowired
+    private InputDataSourceProvider inputDataSourceProvider;
+    @Autowired
+    private PopulationPreExecutionChecker preChecker;
+    @Autowired
+    private PopulationPostExecutionChecker postChecker;
+    @Autowired
+    private Populator populator;
+    
+    @Autowired
+    private ApplicationArguments applicationArguments;
+
+    @Override
+    public void run(String... args) throws Exception {
+
+        String workspacePath = null;
+        if (applicationArguments.containsOption("workspace-path")) {
+            workspacePath = applicationArguments.getOptionValues("workspace-path").get(0);
+        } else if (!applicationArguments.getNonOptionArgs().isEmpty()) {
+            workspacePath = applicationArguments.getNonOptionArgs().get(0);
+        }
+
+        if (workspacePath == null) {
+            logger.error("workspace-path is mandatory. Provide it as an argument or --workspace-path=");
+            return;
+        }
+
+        boolean skipRebuild = applicationArguments.containsOption("skip-rebuild");
+        boolean populate = applicationArguments.containsOption("populate");
+        boolean noPrompt = applicationArguments.containsOption("no-prompt");
+
+        Set<String> tables = null;
+        if (applicationArguments.containsOption("tables")) {
+            String tablesArg = applicationArguments.getOptionValues("tables").get(0);
+            String[] tableTokens = tablesArg.split(";");
+            tables = new HashSet<>();
+            for (String table : tableTokens) {
+                tables.add(table);
+            }
+        }
+
+        String backupPath = "classpath:population";
+        if (applicationArguments.containsOption("population-plan-path")) {
+            String planPath = applicationArguments.getOptionValues("population-plan-path").get(0);
+            backupPath = "classpath:population/plans/" + planPath;
+        }
+
+        logger.info("start loading project from {}", workspacePath);
+        ProjectMetaData projectMetaData = projectMetaDataService.loadProjectMetaData(workspacePath);
+        ProjectValidationReport report = projectMetaDataService.validate(projectMetaData);
+        ValidationPrompter.promptOnValidation(report);
+
+        Project project = projectLoader.loadProject(projectMetaData);
+        logger.info("loading project " + project.projectName + " completed");
+
+        if (!skipRebuild) {
+            if (!noPrompt) {
+                BuildPrompter.promptForConfirmation();
+            }
+            databaseBuilder.buildDatabase(dataSource, project, env.getRequiredProperty("db.engine"));
+            logger.info("Database rebuilt");
+        }
+
+        if (populate) {
+            logger.info("Checking backup plan before execution...");
+            List<PopulationPlanPreExecutionWarning> preExecutionWarnings = preChecker.checkPlan(inputDataSourceProvider, project, tables, backupPath);
+            logger.info("plan pre-execution check finished");
+
+            PopulatorPrompter.printPreExecutionWarnings(preExecutionWarnings);
+
+            if (!noPrompt) {
+                PopulatorPrompter.promptForConfirmation();
+            }
+
+            populator.populate(inputDataSourceProvider, project, tables, backupPath);
+
+            logger.info("Checking backup plan after execution...");
+            List<PopulationPlanPostExecutionWarning> postExecutionWarnings = postChecker.checkPlan(dataSource, project, tables);
+            logger.info("plan post-execution check finished");
+
+            PopulatorPrompter.printPostExecutionWarnings(postExecutionWarnings);
+        }
+    }
+}

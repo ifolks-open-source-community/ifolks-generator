@@ -4,6 +4,8 @@ import org.ifolks.generator.components.population.datasources.InputDataSourcePro
 import org.ifolks.generator.components.population.files.readers.interfaces.DataReader;
 import org.ifolks.generator.model.exception.UnhandledPersistenceModeException;
 import org.ifolks.generator.model.metadata.PersistenceMode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,12 +19,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataReaderFactory {
 
+	@Autowired
+	private ResourceLoader resourceLoader;
+
 	public DataReader getDataReader(PersistenceMode type, InputDataSourceProvider inputSourceProvider) {
 		switch (type) {
 		case CSV:
-			return new CsvFileDataReader();
+			return new CsvFileDataReader(resourceLoader);
 		case XML:
-			return new XmlFileSourceAndScriptDataReader(inputSourceProvider);
+			return new XmlFileSourceAndScriptDataReader(inputSourceProvider, resourceLoader);
 		default:
 			throw new UnhandledPersistenceModeException("Unhandled persistenceMode " + type + " for reading backup arguments");
 		}

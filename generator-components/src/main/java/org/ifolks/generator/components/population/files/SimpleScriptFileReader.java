@@ -14,13 +14,24 @@ import org.springframework.stereotype.Component;
  * @author Nicolas Thibault
  *
  */
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.StreamUtils;
+
 @Component
 public class SimpleScriptFileReader {
 
+	@Autowired
+	private ResourceLoader resourceLoader;
+
 	public String readScript(String scriptFilePath, Charset charset) throws IOException {
-		Path path  = Paths.get(scriptFilePath);
-		byte[] bytes = Files.readAllBytes(path);
-        return new String(bytes,charset);
+		if (scriptFilePath.startsWith("classpath:")) {
+			return StreamUtils.copyToString(resourceLoader.getResource(scriptFilePath).getInputStream(), charset);
+		} else {
+			Path path  = Paths.get(scriptFilePath);
+			byte[] bytes = Files.readAllBytes(path);
+			return new String(bytes,charset);
+		}
 	}
 	
 	public String readScript(String scriptFilePath) throws IOException {

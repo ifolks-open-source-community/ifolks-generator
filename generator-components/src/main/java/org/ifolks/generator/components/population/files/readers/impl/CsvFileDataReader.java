@@ -15,15 +15,24 @@ import org.ifolks.generator.model.exception.ReadBackupFailureException;
 import org.ifolks.generator.model.metadata.DataType;
 
 
+import java.io.InputStreamReader;
+import org.springframework.core.io.ResourceLoader;
+
 public class CsvFileDataReader implements DataReader {
 	
+	private ResourceLoader resourceLoader;
+
+	public CsvFileDataReader(ResourceLoader resourceLoader) {
+		this.resourceLoader = resourceLoader;
+	}
+
 	public List<Object[]> readData(String filePath, Bean bean) {
 		
 		List<DataType> types = bean.getPopulationTypes();
 
 		List<Object[]> result = new ArrayList<>();
 				
-		try (Reader reader = new FileReader(filePath);) {
+		try (Reader reader = getReader(filePath)) {
 			
 			Iterable<CSVRecord> records = CSVFormat.newFormat(';').withQuote('"').withFirstRecordAsHeader().withAllowMissingColumnNames().parse(reader);
 			for (CSVRecord record : records) {
@@ -39,5 +48,13 @@ public class CsvFileDataReader implements DataReader {
 		
 		
 		return result;
+	}
+
+	private Reader getReader(String filePath) throws IOException {
+		if (filePath.startsWith("classpath:")) {
+			return new InputStreamReader(resourceLoader.getResource(filePath).getInputStream());
+		} else {
+			return new FileReader(filePath);
+		}
 	}
 }

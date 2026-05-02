@@ -9,8 +9,26 @@ import org.ifolks.generator.model.domain.database.Table;
 import org.ifolks.generator.model.metadata.PersistenceMode;
 import org.springframework.stereotype.Component;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
+
 @Component
 public class PopulationFileLocator {
+
+	@Autowired
+	private ResourceLoader resourceLoader;
+
+	public int resolveMaxStep(String rootPath) {
+		if (rootPath.startsWith("classpath:")) {
+			int maxStep = 0;
+			while (resourceLoader.getResource(rootPath + "/" + (maxStep + 1)).exists()) {
+				maxStep++;
+			}
+			return maxStep;
+		} else {
+			return org.ifolks.generator.model.util.folder.FolderUtil.resolveMaxStep(rootPath);
+		}
+	}
 
 	public PersistenceMode resolvePersistenceModeOrNull(String backupPath, int step, Table table) {
 		if (existsFileForType(backupPath, step, table, PersistenceMode.CMD)) {
@@ -43,13 +61,22 @@ public class PopulationFileLocator {
 	private boolean existsFileForType(String backupPath, int step, Table table, PersistenceMode type) {
 
 		String backupFilePath = getBackupFilePath(backupPath, step, table, type);
-		Path path = Paths.get(backupFilePath);
-
-		return Files.exists(path);
+		
+		if (backupFilePath.startsWith("classpath:")) {
+			return resourceLoader.getResource(backupFilePath).exists();
+		} else {
+			Path path = Paths.get(backupFilePath);
+			return Files.exists(path);
+		}
 	}
 
 	private String getPathPrefix(String backupPath, int step, Table table) {
-		return backupPath + File.separator + step + File.separator
-				+ table.myPackage.name.toUpperCase().replace(".", File.separator) + File.separator + table.originalName;
+		if (backupPath.startsWith("classpath:")) {
+			return backupPath + "/" + step + "/"
+					+ table.myPackage.name.toUpperCase().replace(".", "/") + "/" + table.originalName;
+		} else {
+			return backupPath + File.separator + step + File.separator
+					+ table.myPackage.name.toUpperCase().replace(".", File.separator) + File.separator + table.originalName;
+		}
 	}
 }
