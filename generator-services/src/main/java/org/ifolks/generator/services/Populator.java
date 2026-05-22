@@ -10,7 +10,6 @@ import org.ifolks.generator.model.domain.Package;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.metadata.PersistenceMode;
-import org.ifolks.generator.model.util.folder.FolderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -149,7 +149,7 @@ public class OracleTableDefinitionFileWriteCommand extends SqlFileWriteCommand {
 				return "DATE";
 			
 			case DATETIME:
-				return "TIMESTAMP";
+				return "TIMESTAMP WITH TIME ZONE";
 	
 			case BOOLEAN:
 				return "NUMBER(1,0)";

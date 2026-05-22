@@ -26,7 +26,7 @@ public enum DataType {
 	DOUBLE("Double", "number", true, false, IdGeneratorType.NONE),
 	BIG_DECIMAL("BigDecimal", "number", true, false, IdGeneratorType.NONE),
 	DATE("LocalDate", "string", true, false, IdGeneratorType.NONE),
-	DATETIME("Date", "Date", true, false, IdGeneratorType.NONE),
+	DATETIME("OffsetDateTime", "Date", true, false, IdGeneratorType.NONE),
 	BOOLEAN("Boolean", "boolean", false, false, IdGeneratorType.NONE);	
 	
 

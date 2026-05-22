@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 import org.ifolks.generator.model.metadata.DataType;
 
@@ -19,7 +18,7 @@ public class StringToObjectConverter {
 		switch(type) {
 
 			case DATETIME:
-				return Date.from(OffsetDateTime.parse(value).toInstant());
+				return OffsetDateTime.parse(value);
 
 		
 			case DATE:

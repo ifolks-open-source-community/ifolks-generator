@@ -9,9 +9,6 @@ import org.ifolks.generator.skeletons.core.commands.commands.BeanPopulatorComman
 import org.ifolks.generator.skeletons.core.commands.commands.OneToManyComponentPopulatorCommandFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.commands.OneToOneComponentPopulatorCommandFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.commands.configuration.CommandsPomFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.population.BeanPopulatorFileTemplateCommandFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.population.OneToManyComponentPopulatorFileTemplateCommandFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.population.OneToOneComponentPopulatorFileTemplateCommandFileWriteCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 

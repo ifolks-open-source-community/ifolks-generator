@@ -1,20 +1,15 @@
 package org.ifolks.generator.components.build;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
 import org.ifolks.generator.components.build.commands.JdbcRawCommand;
-import org.ifolks.generator.components.database.DatabaseHandlerDiscovery;
-import org.ifolks.generator.components.population.files.SimpleScriptFileReader;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.database.Table;
 import org.ifolks.generator.model.exception.InvalidFileException;
-
-
-import java.nio.charset.Charset;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StreamUtils;
 

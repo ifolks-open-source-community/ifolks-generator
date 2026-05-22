@@ -50,7 +50,7 @@ public class EntityBeanFileWriteCommand extends JavaFileWriteCommand {
 		javaImports.add("import org.hibernate.type.SqlTypes;");
 		
 		javaImports.add("import java.util.Set;");
-		javaImports.add("import java.util.Date;");
+		javaImports.add("import java.time.OffsetDateTime;");
 		javaImports.add("import java.time.LocalDate;");
 		javaImports.add("import java.math.BigDecimal;");
 		javaImports.add("import java.io.Serializable;");
@@ -256,9 +256,6 @@ public class EntityBeanFileWriteCommand extends JavaFileWriteCommand {
 					skipLine();
 				}
 			} else {
-				if (property.dataType.equals(DataType.DATETIME)) {
-					writeLine("@Temporal(TemporalType.TIMESTAMP)");
-				}
 				if (property.dataType.equals(DataType.TEXT)) {
 					writeLine("@Lob");
 					writeLine("@JdbcTypeCode(SqlTypes.LONGVARCHAR)");

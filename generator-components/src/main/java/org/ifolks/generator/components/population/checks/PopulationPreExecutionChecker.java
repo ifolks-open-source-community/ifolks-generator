@@ -14,7 +14,6 @@ import org.ifolks.generator.model.domain.database.Table;
 import org.ifolks.generator.model.metadata.PersistenceMode;
 import org.ifolks.generator.model.population.check.PopulationPlanPreExecutionWarning;
 import org.ifolks.generator.model.population.check.PopulationPlanWarningType;
-import org.ifolks.generator.model.util.folder.FolderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

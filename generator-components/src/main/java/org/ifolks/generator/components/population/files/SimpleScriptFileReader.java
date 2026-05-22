@@ -7,8 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.springframework.stereotype.Component;
-
 /**
  * simply converts a sript file to its content as a String
  * @author Nicolas Thibault
@@ -16,6 +14,7 @@ import org.springframework.stereotype.Component;
  */
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
 @Component

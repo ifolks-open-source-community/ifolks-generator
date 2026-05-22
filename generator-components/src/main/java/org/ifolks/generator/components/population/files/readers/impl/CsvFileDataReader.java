@@ -2,6 +2,7 @@ package org.ifolks.generator.components.population.files.readers.impl;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +14,6 @@ import org.ifolks.generator.components.population.files.readers.interfaces.DataR
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.exception.ReadBackupFailureException;
 import org.ifolks.generator.model.metadata.DataType;
-
-
-import java.io.InputStreamReader;
 import org.springframework.core.io.ResourceLoader;
 
 public class CsvFileDataReader implements DataReader {

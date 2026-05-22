@@ -2,6 +2,7 @@ package org.ifolks.generator.components.population.files.readers.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,18 +16,11 @@ import javax.xml.validation.SchemaFactory;
 import org.ifolks.generator.components.population.datasources.InputDataSourceProvider;
 import org.ifolks.generator.components.population.files.readers.interfaces.DataReader;
 import org.ifolks.generator.model.domain.business.Bean;
-import org.ifolks.generator.model.domain.database.Table;
 import org.ifolks.generator.model.exception.DataSourceNotFoundException;
 import org.ifolks.generator.model.exception.InvalidXmlSourceAndScriptFileException;
 import org.ifolks.generator.model.exception.PopulationFileNotFoundException;
 import org.ifolks.generator.model.exception.ReadBackupFailureException;
 import org.ifolks.generator.model.population.SourceAndScript;
-import org.xml.sax.SAXException;
-
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
-
 /**
  * Implementation of a {@link DataReader} that uses a path to a Xml backup file, a {@link InputDataSourceProvider} and a {@link Table} for meta-data
  * the processing will use a {@link SourceAndScriptDataReader} by converting the xml backup file to a {@link SourceAndScript} to extract a {@link DataSource} and a script
@@ -34,7 +28,11 @@ import jakarta.xml.bind.Unmarshaller;
  *
  */
 import org.springframework.core.io.ResourceLoader;
-import java.io.InputStream;
+import org.xml.sax.SAXException;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 
 public class XmlFileSourceAndScriptDataReader implements DataReader {
 	

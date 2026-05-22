@@ -7,10 +7,9 @@ import java.nio.file.Paths;
 
 import org.ifolks.generator.model.domain.database.Table;
 import org.ifolks.generator.model.metadata.PersistenceMode;
-import org.springframework.stereotype.Component;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.stereotype.Component;
 
 @Component
 public class PopulationFileLocator {

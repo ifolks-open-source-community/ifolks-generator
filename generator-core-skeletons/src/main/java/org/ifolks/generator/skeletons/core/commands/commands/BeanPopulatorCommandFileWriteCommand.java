@@ -21,7 +21,7 @@ public class BeanPopulatorCommandFileWriteCommand extends JavaFileWriteCommand {
 	protected void fetchSpecificImports() {
 		
 		javaImports.add("import java.util.List;");
-		javaImports.add("import java.util.Date;");
+		javaImports.add("import java.time.OffsetDateTime;");
 		javaImports.add("import java.time.LocalDate;");
 		javaImports.add("import java.math.BigDecimal;");
 		

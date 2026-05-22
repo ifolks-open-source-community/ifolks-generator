@@ -28,7 +28,7 @@ public class BaseBasicViewMapperFileWriteCommand extends JavaFileWriteCommand {
 
 	@Override
 	protected void fetchSpecificImports() {
-		javaImports.add("import java.util.Date;");
+		javaImports.add("import java.time.OffsetDateTime;");
 		javaImports.add("import java.time.LocalDate;");
 		javaImports.add("import java.math.BigDecimal;");
 		javaImports.add("import org.springframework.beans.factory.annotation.Autowired;");

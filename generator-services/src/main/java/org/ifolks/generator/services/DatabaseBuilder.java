@@ -1,6 +1,5 @@
 package org.ifolks.generator.services;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -8,12 +7,10 @@ import javax.sql.DataSource;
 
 import org.ifolks.generator.components.build.DatabaseCleaner;
 import org.ifolks.generator.components.build.TableBuilder;
-import org.ifolks.generator.components.database.DatabaseHandlerDiscovery;
 import org.ifolks.generator.model.domain.Package;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.database.Table;
 import org.ifolks.generator.model.exception.InvalidFileException;
-import org.ifolks.generator.model.util.folder.FolderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -48,7 +48,7 @@ public class DbObjectToObjectConverter {
 	
 		case DATETIME:
 			if (Date.class.isAssignableFrom(value.getClass())) {
-				result = (Date)value;
+				result = ((Date)value).toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime();
 			}
 			return result;
 		
