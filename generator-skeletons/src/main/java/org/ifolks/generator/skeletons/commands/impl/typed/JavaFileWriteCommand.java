@@ -40,9 +40,9 @@ public abstract class JavaFileWriteCommand extends SingleFileWriteCommand {
 					fileType.getEncoding());
 			
 			for (String line : lines) {
-				if (line.startsWith("import ")){
-                    javaImports.add(line);
-                }
+				if (line.startsWith("import ")) {
+					javaImports.add(line);
+				}
 			}
 		}
 	}

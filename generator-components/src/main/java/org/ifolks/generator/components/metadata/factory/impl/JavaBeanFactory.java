@@ -60,12 +60,11 @@ public class JavaBeanFactory implements BeanFactory {
 		bean.objectName = JavaClassNaming.toObjectName(table.originalName);
 		bean.urlPiece = JavaClassNaming.getUrlPiece(table.originalName);
 
-		bean.baseDaoClassName = bean.className + "BaseDaoImpl";
-		bean.daoClassName = bean.className + "DaoImpl";
-		bean.baseDaoInterfaceName = bean.className + "BaseDao";
-		;
-		bean.daoInterfaceName = bean.className + "Dao";
-		bean.daoObjectName = bean.objectName + "Dao";
+		bean.baseDaoClassName = bean.className + "BaseRepository";
+		bean.daoClassName = bean.className + "Repository";
+		bean.baseDaoInterfaceName = bean.className + "BaseRepository";
+		bean.daoInterfaceName = bean.className + "Repository";
+		bean.daoObjectName = bean.objectName + "Repository";
 
 		bean.baseServiceClassName = bean.className + "BaseServiceImpl";
 		bean.serviceClassName = bean.className + "ServiceImpl";

@@ -8,8 +8,8 @@ import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.skeletons.Skeleton;
 import org.ifolks.generator.skeletons.core.layers.ApiLayer;
 import org.ifolks.generator.skeletons.core.layers.BusinessComponentLayer;
-import org.ifolks.generator.skeletons.core.layers.HibernateBusinessModelLayer;
-import org.ifolks.generator.skeletons.core.layers.HibernateDaoLayer;
+import org.ifolks.generator.skeletons.core.layers.BusinessModelLayer;
+import org.ifolks.generator.skeletons.core.layers.RepositoryLayer;
 import org.ifolks.generator.skeletons.core.layers.JunitLayer;
 import org.ifolks.generator.skeletons.core.layers.PopulatorLayer;
 import org.ifolks.generator.skeletons.core.layers.ServiceLayer;
@@ -19,7 +19,7 @@ import org.ifolks.generator.skeletons.rest.layers.SpringRestControllerLayer;
 import org.ifolks.generator.skeletons.rest.layers.SpringRestRootLayer;
 
 
-public class SpringHibernateRestSkeleton implements Skeleton {
+public class SpringRestSkeleton implements Skeleton {
 
 	@Override
 	public String getName() {
@@ -35,8 +35,8 @@ public class SpringHibernateRestSkeleton implements Skeleton {
 		}
 		layers.add(new SpringRestRootLayer());
 		layers.add(new ApiLayer());
-		layers.add(new HibernateBusinessModelLayer());
-		layers.add(new HibernateDaoLayer());
+		layers.add(new BusinessModelLayer());
+		layers.add(new RepositoryLayer());
 		layers.add(new BusinessComponentLayer());
 		layers.add(new ServiceLayer());		
 		layers.add(new SpringRestControllerLayer());

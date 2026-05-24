@@ -86,9 +86,7 @@ public class ApiLayer extends AbstractLayer {
 			packageTreeNode.add(filterTreeNode);		
 
 			for (Bean bean : myPackage.beans) {
-				
-				if (!bean.isEmbedded && !bean.isOneToOneComponent) {
-				
+				if (bean.isListable()) {
 					FileWriteCommandTreeNode beanTreeNode = new FileWriteCommandTreeNode(new FilterFileWriteCommand(bean));
 					filterTreeNode.add(beanTreeNode);
 				}
@@ -98,9 +96,7 @@ public class ApiLayer extends AbstractLayer {
 			packageTreeNode.add(oerderingTreeNode);		
 
 			for (Bean bean : myPackage.beans) {
-				
-				if (!bean.isEmbedded && !bean.isOneToOneComponent) {
-				
+				if (bean.isListable()) {
 					FileWriteCommandTreeNode beanTreeNode = new FileWriteCommandTreeNode(new SortingFileWriteCommand(bean));
 					filterTreeNode.add(beanTreeNode);
 				}

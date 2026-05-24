@@ -60,11 +60,13 @@ public class FilterFileWriteCommand extends JavaFileWriteCommand {
 		writeLine(" */");
 		
 		for (ViewProperty property:this.bean.basicViewBean.properties) {
-			if (property.dataType.isLimitable()) {
-				writeLine("private " + property.javaType + " " + property.name + "MinValue;");
-				writeLine("private " + property.javaType + " " + property.name + "MaxValue;");
-			} else {
-				writeLine("private " + property.javaType + " " + property.name + ";");
+			if (property.filterable) {
+				if (property.dataType.isLimitable()) {
+					writeLine("private " + property.javaType + " " + property.name + "MinValue;");
+					writeLine("private " + property.javaType + " " + property.name + "MaxValue;");
+				} else {
+					writeLine("private " + property.javaType + " " + property.name + ";");
+				}
 			}
 		}
 		skipLine();
@@ -77,30 +79,32 @@ public class FilterFileWriteCommand extends JavaFileWriteCommand {
 		writeLine(" */");
 
 		for (ViewProperty property:this.bean.basicViewBean.properties) {
-			if (property.dataType.isLimitable()) {
-				writeLine("public " + property.javaType + " get" + property.capName + "MinValue() {");
-	            writeLine("return this." + property.name + "MinValue;");
-	            writeLine("}");
-	            
-	            writeLine("public void set" + property.capName + "MinValue(" + property.javaType + " " + property.name + "MinValue) {");
-	            writeLine("this." + property.name + "MinValue = " + property.name + "MinValue;");
-	            writeLine("}");
-	            
-	            writeLine("public " + property.javaType + " get" + property.capName + "MaxValue() {");
-	            writeLine("return this." + property.name + "MaxValue;");
-	            writeLine("}");
-	            
-	            writeLine("public void set" + property.capName + "MaxValue(" + property.javaType + " " + property.name + "MaxValue) {");
-	            writeLine("this." + property.name + "MaxValue = " + property.name + "MaxValue;");
-	            writeLine("}");
-			} else {
-				writeLine("public " + property.javaType + " get" + property.capName + "() {");
-	            writeLine("return this." + property.name + ";");
-	            writeLine("}");
-	            
-	            writeLine("public void set" + property.capName + "(" + property.javaType + " " + property.name + ") {");
-	            writeLine("this." + property.name + " = " + property.name + ";");
-	            writeLine("}");
+			if (property.filterable) {
+				if (property.dataType.isLimitable()) {
+					writeLine("public " + property.javaType + " get" + property.capName + "MinValue() {");
+					writeLine("return this." + property.name + "MinValue;");
+					writeLine("}");
+					
+					writeLine("public void set" + property.capName + "MinValue(" + property.javaType + " " + property.name + "MinValue) {");
+					writeLine("this." + property.name + "MinValue = " + property.name + "MinValue;");
+					writeLine("}");
+					
+					writeLine("public " + property.javaType + " get" + property.capName + "MaxValue() {");
+					writeLine("return this." + property.name + "MaxValue;");
+					writeLine("}");
+					
+					writeLine("public void set" + property.capName + "MaxValue(" + property.javaType + " " + property.name + "MaxValue) {");
+					writeLine("this." + property.name + "MaxValue = " + property.name + "MaxValue;");
+					writeLine("}");
+				} else {
+					writeLine("public " + property.javaType + " get" + property.capName + "() {");
+					writeLine("return this." + property.name + ";");
+					writeLine("}");
+					
+					writeLine("public void set" + property.capName + "(" + property.javaType + " " + property.name + ") {");
+					writeLine("this." + property.name + " = " + property.name + ";");
+					writeLine("}");
+				}
 			}
 		}
 		skipLine();

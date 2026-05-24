@@ -39,6 +39,7 @@ public class BaseProcessorImplFileWriteCommand extends JavaFileWriteCommand {
         {
             Bean currentBean = oneToManyComponent.referenceBean;
             javaImports.add("import " + currentBean.myPackage.omPackageName + "." + currentBean.className + ";");
+            javaImports.add("import " + currentBean.myPackage.DAOInterfacePackageName + "." + currentBean.daoInterfaceName + ";");
         }		
 	}
 
@@ -66,13 +67,21 @@ public class BaseProcessorImplFileWriteCommand extends JavaFileWriteCommand {
         
         writeLine("@Autowired");
         writeLine("protected " + this.bean.daoInterfaceName + " " + this.bean.daoObjectName + ";");
+        
+
+
+        for (OneToManyComponent oneToManyComponent : this.bean.oneToManyComponentList) {
+            Bean currentBean = oneToManyComponent.referenceBean;
+            writeLine("@Autowired");
+            writeLine("protected " + currentBean.daoInterfaceName + " " + currentBean.daoObjectName + ";");
+        }
         skipLine();
         
         writeLine("/**");
         writeLine(" * process save");
         writeLine(" */");
         writeLine("public " + bean.idType + " save(" + this.bean.className + " " + this.bean.objectName + ") {");
-        writeLine("return " + this.bean.daoObjectName + ".save(" + this.bean.objectName + ");");
+        writeLine("return " + this.bean.daoObjectName + ".saveAndFlush(" + this.bean.objectName + ").getId();");
         writeLine("}");
         skipLine();
         
@@ -83,7 +92,9 @@ public class BaseProcessorImplFileWriteCommand extends JavaFileWriteCommand {
             writeLine(" * process save one to one component " + currentBean.className);
             writeLine(" */");
             writeLine("public void save" + currentBean.className + "(" + currentBean.className + " " + currentBean.objectName + "," + this.bean.className + " " + this.bean.objectName + ") {");
-            writeLine(this.bean.daoObjectName + ".save" + currentBean.className + "(" + this.bean.objectName + ", " + currentBean.objectName + ");");
+            writeLine(this.bean.objectName + ".set" + currentBean.className + "(" + currentBean.objectName + ");");
+            writeLine(currentBean.objectName + ".set" + bean.className + "(" + this.bean.objectName + ");");
+            writeLine("this." + this.bean.daoObjectName + ".save(" + this.bean.objectName + ");");
             writeLine("}");
             skipLine();
         }
@@ -95,7 +106,8 @@ public class BaseProcessorImplFileWriteCommand extends JavaFileWriteCommand {
             writeLine(" * process save one to many component " + currentBean.className);
             writeLine(" */");
             writeLine("public void save" + currentBean.className + "(" + currentBean.className + " " + currentBean.objectName + "," + this.bean.className + " " + this.bean.objectName + ") {");
-            writeLine(this.bean.daoObjectName + ".save" + currentBean.className + "(" + this.bean.objectName + ", " + currentBean.objectName + ");");
+            writeLine(currentBean.objectName + ".set" + bean.className + "(" + this.bean.objectName + ");");
+            writeLine("this." + currentBean.daoObjectName + ".save(" + currentBean.objectName + ");");
             writeLine("}");
             skipLine();
         }
@@ -148,7 +160,12 @@ public class BaseProcessorImplFileWriteCommand extends JavaFileWriteCommand {
             writeLine(" * process delete one to one component " + currentBean.className);
             writeLine(" */");
             writeLine("public void delete" + currentBean.className + "(" + currentBean.className + " " + currentBean.objectName + ") {");
-            writeLine(this.bean.daoObjectName + ".delete" + currentBean.className + "(" + currentBean.objectName + ");");
+            writeLine(this.bean.className + " " + this.bean.objectName + " = " + currentBean.objectName + ".get" + bean.className + "();");
+            writeLine("if (" + this.bean.objectName + " != null) {");
+            writeLine("    " + this.bean.objectName + ".set" + currentBean.className + "(null);");
+            writeLine("    " + currentBean.objectName + ".set" + bean.className + "(null);");
+            writeLine("    this." + this.bean.daoObjectName + ".save(" + this.bean.objectName + ");");
+            writeLine("}");
             writeLine("}");
             skipLine();
         }
@@ -160,7 +177,8 @@ public class BaseProcessorImplFileWriteCommand extends JavaFileWriteCommand {
             writeLine(" * process delete one to many component " + currentBean.className);
             writeLine(" */");
             writeLine("public void delete" + currentBean.className + "(" + currentBean.className + " " + currentBean.objectName + ") {");
-            writeLine(this.bean.daoObjectName + ".delete" + currentBean.className + "(" + currentBean.objectName + ");");
+            writeLine(currentBean.objectName + ".get" + bean.className + "().get" + currentBean.className + "Collection().remove(" + currentBean.objectName + ");");
+            writeLine("this." + currentBean.daoObjectName + ".delete(" + currentBean.objectName + ");");
             writeLine("}");
             skipLine();
         }

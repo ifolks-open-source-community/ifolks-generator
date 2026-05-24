@@ -66,7 +66,6 @@ public class EntityBeanFileWriteCommand extends JavaFileWriteCommand {
 		javaImports.add("import jakarta.persistence.OneToMany;");
 		javaImports.add("import jakarta.persistence.OneToOne;");
 		javaImports.add("import jakarta.persistence.SequenceGenerator;");
-		javaImports.add("import org.hibernate.annotations.GenericGenerator;");
 		javaImports.add("import jakarta.persistence.Table;");
 		javaImports.add("import jakarta.persistence.Temporal;");
 		javaImports.add("import jakarta.persistence.TemporalType;");
@@ -168,7 +167,7 @@ public class EntityBeanFileWriteCommand extends JavaFileWriteCommand {
 			}
 		}
 
-		write("public class " + bean.className + " implements org.ifolks.commons.model.interfaces.Entity<" + bean.idType + ">");
+		write("public class " + bean.className + " implements java.io.Serializable");
 		if (bean.interfaces != null) {
 			for (String interfaceElem:bean.interfaces) {
 				write(", " + interfaceElem);
@@ -216,8 +215,7 @@ public class EntityBeanFileWriteCommand extends JavaFileWriteCommand {
 			writeLine("@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = \"" + bean.objectName + "IdGenerator\")");
 		}
 		if (bean.table.idGeneratorType.equals(IdGeneratorType.UUID)) {
-			writeLine("@GeneratedValue(generator=\"uuid\")");
-			writeLine("@GenericGenerator(name=\"uuid\", strategy = \"uuid2\")");
+			writeLine("@GeneratedValue(strategy = GenerationType.UUID)");
 		}
 		writeLine("private " + bean.idType + " id;");
 		skipLine();
@@ -292,7 +290,7 @@ public class EntityBeanFileWriteCommand extends JavaFileWriteCommand {
 
 				
 		for (OneToOneComponent oneToOneComponent : this.bean.oneToOneComponentList) {
-			writeLine("@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = " + CHAR_34 + oneToOneComponent.parentBean.objectName + CHAR_34 + ")");
+			writeLine("@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = " + CHAR_34 + oneToOneComponent.parentBean.objectName + CHAR_34 + ")");
 			writeLine("@Fetch(FetchMode.JOIN)");
 			writeLine("private " + oneToOneComponent.referenceBean.className + " " + oneToOneComponent.referenceBean.objectName + ";");
 			skipLine();

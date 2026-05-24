@@ -102,6 +102,10 @@ public class Bean {
 	public boolean isOneToOneComponent = false;
 	public Bean parentBean = null;
 	
+	public boolean isListable() {
+		return !isEmbedded && !isOneToOneComponent;
+	}
+	
 	public List<ViewProperty> referenceViewProperties = new ArrayList<>();
 	public BasicViewBean basicViewBean;
 	public FullViewBean fullViewBean;

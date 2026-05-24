@@ -11,9 +11,9 @@ import org.ifolks.generator.skeletons.core.commands.model.resources.AuditListene
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 
-public class HibernateBusinessModelLayer extends AbstractLayer {
+public class BusinessModelLayer extends AbstractLayer {
 	
-	public HibernateBusinessModelLayer() {
+	public BusinessModelLayer() {
 		super("Business Model / Hibernate mappings");
 	}
 

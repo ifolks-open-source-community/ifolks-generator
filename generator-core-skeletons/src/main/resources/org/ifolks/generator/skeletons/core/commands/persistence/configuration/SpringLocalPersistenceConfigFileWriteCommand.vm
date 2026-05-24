@@ -11,9 +11,11 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @Profile("local")
+@EnableJpaRepositories(basePackages = "${project.model.persistencePackageName}")
 public class LocalPersistenceConfig {
 	
 	@Autowired

@@ -2,10 +2,10 @@ package ${project.model.restControllerPackageName};
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-@SpringBootApplication(exclude = HibernateJpaAutoConfiguration.class, scanBasePackages = "${project.domainName}.${project.projectName}")
+@SpringBootApplication(exclude = HibernateJpaAutoConfiguration.class, scanBasePackages = {"${project.domainName}.${project.projectName}", "org.ifolks.commons"})
 public class ApplicationStarter extends SpringBootServletInitializer {
 	
 	public static void main(String[] args) {

@@ -279,7 +279,7 @@ public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {
 			if (start) start = false; else write(", ");
 			write(this.bean.formBean.objectName + "." + property.name + refProperty.capName + "()");
 		}
-		writeLine("));");		
+		writeLine(").orElseThrow(() -> new ObjectNotFoundException(\"" + property.referenceBean.className + ".notFound\")));");		
 	}
 
 	private void writeMapEmbeddedToObject(Property property) {
@@ -303,7 +303,7 @@ public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {
 						if (start) start = false; else write(", ");
 						write(this.bean.formBean.objectName + "." + embeddedProperty.name + refProperty.capName + "()");
 					}
-					writeLine("));");
+					writeLine(").orElseThrow(() -> new ObjectNotFoundException(\"" + embeddedProperty.referenceBean.className + ".notFound\")));");
 					
 				} else {
 					writeLine(embeddedBean.objectName + "." + embeddedProperty.setterName + "(" + bean.formBean.objectName + "." + embeddedProperty.name + "());");

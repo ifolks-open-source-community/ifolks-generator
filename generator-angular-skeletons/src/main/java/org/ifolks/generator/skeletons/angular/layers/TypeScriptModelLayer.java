@@ -68,7 +68,7 @@ public class TypeScriptModelLayer extends AbstractLayer {
 			FileWriteCommandTreeNode filtersTreeNode = new FileWriteCommandTreeNode("Filters");
 			packageTreeNode.add(filtersTreeNode);
 			for (Bean bean : myPackage.beans) {
-				if (!bean.isEmbedded) {
+				if (bean.isListable()) {
 					FileWriteCommandTreeNode filterTreeNode = new FileWriteCommandTreeNode(new TsFilterFileWriteCommand(bean));
 					filtersTreeNode.add(filterTreeNode);
 				}
@@ -77,7 +77,7 @@ public class TypeScriptModelLayer extends AbstractLayer {
 			FileWriteCommandTreeNode sortingsTreeNode = new FileWriteCommandTreeNode("Sortings");
 			packageTreeNode.add(sortingsTreeNode);
 			for (Bean bean : myPackage.beans) {
-				if (!bean.isEmbedded) {
+				if (bean.isListable()) {
 					FileWriteCommandTreeNode sortringTreeNode = new FileWriteCommandTreeNode(new TsSortingFileWriteCommand(bean));
 					sortingsTreeNode.add(sortringTreeNode);
 				}
