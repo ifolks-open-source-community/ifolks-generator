@@ -209,8 +209,8 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
 	
 	private void createGetOptions() {
 			
-		Property targetProperty = bean.selectionBehavior.targetProperty;
-		Property labelProperty = bean.selectionBehavior.labelProperty!=null?bean.selectionBehavior.labelProperty:bean.selectionBehavior.targetProperty;
+		Property formKeyProperty = bean.properties.get(0); // Clé métier
+		Property labelProperty = bean.selectionBehavior.labelProperty;
 		
 		if (bean.selectionBehavior.selectionMode.equals(SelectionMode.DROPDOWN_OPTIONS)) {
 			
@@ -223,7 +223,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
 			writeLine("List<" + this.bean.className + "> " + this.bean.objectName + "List = " + this.bean.daoObjectName + ".findAll();");
 			writeLine("List<SelectItem> result = new ArrayList<>(" + this.bean.objectName + "List.size());");
 			writeLine("for (" + this.bean.className + " " + this.bean.objectName + " : " + this.bean.objectName + "List) {");
-			writeLine("result.add(new SelectItem(" + this.bean.objectName + "." + targetProperty.getterName + "(), " + this.bean.objectName + "." + labelProperty.getterName + "()));");
+			writeLine("result.add(new SelectItem(" + this.bean.objectName + "." + formKeyProperty.getterName + "(), " + this.bean.objectName + "." + labelProperty.getterName + "()));");
 			writeLine("}");
 			writeLine("return result;");
 			writeLine("}");
@@ -239,7 +239,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
 			writeLine("List<" + this.bean.className + "> " + this.bean.objectName + "List = " + this.bean.daoObjectName + ".search(arg);");
 			writeLine("List<SelectItem> result = new ArrayList<>(" + this.bean.objectName + "List.size());");
 			writeLine("for (" + this.bean.className + " " + this.bean.objectName + " : " + this.bean.objectName + "List) {");
-			writeLine("result.add(new SelectItem(" + this.bean.objectName + "." + targetProperty.getterName + "(), " + this.bean.objectName + "." + labelProperty.getterName + "()));");
+			writeLine("result.add(new SelectItem(" + this.bean.objectName + "." + formKeyProperty.getterName + "(), " + this.bean.objectName + "." + labelProperty.getterName + "()));");
 			writeLine("}");
 			writeLine("return result;");
 			writeLine("}");

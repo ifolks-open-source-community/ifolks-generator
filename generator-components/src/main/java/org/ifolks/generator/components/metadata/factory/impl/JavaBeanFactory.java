@@ -204,7 +204,6 @@ public class JavaBeanFactory implements BeanFactory {
 		}
 		
 		if (bean.selectable) {
-			bean.selectionBehavior.targetProperty = bean.properties.get(0);
 			if (tableMetaData.getSelectionBehavior().getLabelColumn()!=null) {
 				bean.selectionBehavior.labelProperty = bean.findPropertyByColumnName(tableMetaData.getSelectionBehavior().getLabelColumn());
 			} else {

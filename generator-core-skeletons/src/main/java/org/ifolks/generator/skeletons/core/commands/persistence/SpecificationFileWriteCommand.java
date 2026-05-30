@@ -33,7 +33,7 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 		javaImports.add("import java.util.List;");
 		javaImports.add("import java.util.ArrayList;");
 		
-		javaImports.add("import jakarta.persistence.criteria.CriteriaBuilder;");		
+		javaImports.add("import jakarta.persistence.criteria.CriteriaBuilder;");
 		javaImports.add("import jakarta.persistence.criteria.CriteriaQuery;");
 		javaImports.add("import jakarta.persistence.criteria.Fetch;");
 		javaImports.add("import jakarta.persistence.criteria.Join;");
@@ -222,17 +222,17 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 		writeLine("\t\treturn (root, query, cb) -> {");
 		writeLine("\t\t\tList<Predicate> predicates = new ArrayList<>();");
 
-		if (bean.selectionBehavior != null && bean.selectionBehavior.targetProperty != null) {
-			Property targetProperty = bean.selectionBehavior.targetProperty;
-			switch (targetProperty.textFilterType) {
+		if (bean.selectionBehavior != null && bean.selectionBehavior.labelProperty != null) {
+			Property searchProperty = bean.selectionBehavior.labelProperty;
+			switch (searchProperty.textFilterType) {
 				case CONTAINS:
-					writeLine("\t\t\tPredicate predicate = getStringContainsRestriction(cb, root.get(" + bean.className + "_." + targetProperty.name + "), arg);");
+					writeLine("\t\t\tPredicate predicate = getStringContainsRestriction(cb, root.get(" + bean.className + "_." + searchProperty.name + "), arg);");
 					break;
 				case CONTAINS_IGNORE_ACCENTS:
-					writeLine("\t\t\tPredicate predicate = getUnaccentuatedStringContainsRestriction(cb, root.get(" + bean.className + "_." + targetProperty.name + "), arg);");
+					writeLine("\t\t\tPredicate predicate = getUnaccentuatedStringContainsRestriction(cb, root.get(" + bean.className + "_." + searchProperty.name + "), arg);");
 					break;
 				case STARTS_WITH:
-					writeLine("\t\t\tPredicate predicate = getStringStartsWithRestriction(cb, root.get(" + bean.className + "_." + targetProperty.name + "), arg);");
+					writeLine("\t\t\tPredicate predicate = getStringStartsWithRestriction(cb, root.get(" + bean.className + "_." + searchProperty.name + "), arg);");
 					break;
 				default:
 					writeLine("\t\t\tPredicate predicate = null;");

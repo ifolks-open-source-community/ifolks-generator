@@ -9,7 +9,6 @@ public class SelectionBehavior {
 	 * properties
 	 */
     public SelectionMode selectionMode;
-    public Property targetProperty;
 	public Property labelProperty;
 	
 }

@@ -113,7 +113,7 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 		} else {
 			writeLine("<mat-select placeholder=\"" + property.rendering + "\" formControlName=\"" + property.name + "\" >");
 			writeLine("<mat-option [value]=\"null\"></mat-option>");
-			writeLine("<mat-option *ngFor=\"let option of " + property.name + "Options\" [value]=\"option.key\">{{option.key}}</mat-option>");
+			writeLine("<mat-option *ngFor=\"let option of " + property.name + "Options\" [value]=\"option.key\">{{option.label}}</mat-option>");
 			writeLine("</mat-select>");
 		}
 		writeLine("</mat-form-field>");
@@ -130,7 +130,7 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 		} else {
 			writeLine("<input matInput placeholder=\"" + property.rendering + "\" formControlName=\"" + property.name + "\" [matAutocomplete]=\"" + property.name + "AutoComplete\"/>");
 			writeLine("<mat-autocomplete #" + property.name + "AutoComplete=\"matAutocomplete\">");
-			writeLine("<mat-option *ngFor=\"let option of " + property.name + "Options | async\" [value]=\"option.key\">{{option.key}}</mat-option>");
+			writeLine("<mat-option *ngFor=\"let option of " + property.name + "Options | async\" [value]=\"option.key\">{{option.label}}</mat-option>");
 			writeLine("</mat-autocomplete>");
 		}
 		writeLine("</mat-form-field>");

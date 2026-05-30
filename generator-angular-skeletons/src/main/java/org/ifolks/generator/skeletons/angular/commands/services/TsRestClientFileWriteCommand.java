@@ -57,7 +57,7 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
 		skipLine();
 		
 		writeLine("/**");
-		writeLine(" * auto generated rest client ts file"); 
+		writeLine(" * auto generated rest client ts file");
 		writeLine(" * <br/>no modification should be done to this file");
 		writeLine(" * <br/>processed by ifolks-generator");
 		writeLine(" */");
@@ -101,9 +101,6 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
 	
 	private void createGetOptions() {
 		
-		Property targetProperty = bean.selectionBehavior.targetProperty;
-		Property labelProperty = bean.selectionBehavior.labelProperty!=null?bean.selectionBehavior.labelProperty:bean.selectionBehavior.targetProperty;
-		
 		if (bean.selectionBehavior.selectionMode.equals(SelectionMode.DROPDOWN_OPTIONS)) {
 			
 			writeLine("/**");
@@ -114,7 +111,7 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
 			writeLine("}");
 			skipLine();
 		}
-		if (bean.selectionBehavior.selectionMode.equals(SelectionMode.AUTO_COMPLETE)) {			
+		if (bean.selectionBehavior.selectionMode.equals(SelectionMode.AUTO_COMPLETE)) {
 			writeLine("/**");
 			writeLine(" * get options");
 			writeLine(" */");
@@ -175,7 +172,7 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
 		writeLine("/**");
 		writeLine(" * load object");
 		writeLine(" */");
-		writeLine("public load(id:" + bean.idTsType + ") {");	
+		writeLine("public load(id:" + bean.idTsType + ") {");
         writeLine("return this.http.get<" + this.bean.fullViewBean.className + ">(environment.restApiUrl + '/" + bean.urlPiece + "/' + id);");
 		writeLine("}");
 		skipLine();
@@ -185,7 +182,7 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
     
     private void createSaveObject() {
         writeLine("/**");
-        writeLine(" * save object");        
+        writeLine(" * save object");
         writeLine(" */");
         writeLine("public save(form: " + this.bean.formBean.className + ") {");
         writeLine("return this.http.post<" + bean.idTsType + ">(environment.restApiUrl + '/" + bean.urlPiece + "', form, this.httpOptions);");
@@ -196,7 +193,7 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
     
     private void createUpdateObject() {
         writeLine("/**");
-        writeLine(" * update object");        
+        writeLine(" * update object");
         writeLine(" */");
         writeLine("public update(id: " + bean.idTsType + ", form: " + this.bean.formBean.className + ") {");
         writeLine("return this.http.put(environment.restApiUrl + '/" + bean.urlPiece + "/' + id, form, this.httpOptions);");
@@ -207,7 +204,7 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
     
     private void createDeleteObject() {
         writeLine("/**");
-        writeLine(" * delete object");        
+        writeLine(" * delete object");
         writeLine(" */");
         writeLine("public delete(id: " + bean.idTsType + ") {");
         writeLine("return this.http.delete(environment.restApiUrl + '/" + bean.urlPiece + "/' + id);");
@@ -252,7 +249,7 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
             writeLine("/**");
             writeLine(" * load one to many component " + currentBean.objectName);
             writeLine(" */");
-            writeLine("public load" + currentBean.className + "(id: " + bean.idTsType + ") {");            
+            writeLine("public load" + currentBean.className + "(id: " + bean.idTsType + ") {");
             writeLine("return this.http.get<" + currentBean.fullViewBean.className + ">(environment.restApiUrl + '/" + currentBean.urlPiece + "/' + id, this.httpOptions);");
             writeLine("}");
             skipLine();
@@ -266,7 +263,7 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
             writeLine("/**");
             writeLine(" * load one to one component " + currentBean.objectName);
             writeLine(" */");
-            writeLine("public load" + currentBean.className + "(id: " + bean.idTsType + ") {");            
+            writeLine("public load" + currentBean.className + "(id: " + bean.idTsType + ") {");
             writeLine("return this.http.get<" + currentBean.fullViewBean.className + ">(environment.restApiUrl + '/" + bean.urlPiece + "/' + id + '/" + currentBean.urlPiece + "', this.httpOptions);");
             writeLine("}");
             skipLine();
@@ -333,8 +330,8 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
         for (OneToManyComponent oneToManyComponent : this.bean.oneToManyComponentList) {
             Bean currentBean = oneToManyComponent.referenceBean;
 
-            writeLine("/**");            
-            writeLine(" * delete one to many component " + currentBean.objectName);            
+            writeLine("/**");
+            writeLine(" * delete one to many component " + currentBean.objectName);
             writeLine(" */");
             writeLine("public delete" + currentBean.className + "(id: " + currentBean.idTsType + ") {");
             writeLine("return this.http.delete(environment.restApiUrl + '/" + currentBean.urlPiece + "/' + id);");
@@ -347,8 +344,8 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
         for (OneToOneComponent oneToOneComponent : this.bean.oneToOneComponentList) {
             Bean currentBean = oneToOneComponent.referenceBean;
 
-            writeLine("/**");            
-            writeLine(" * delete one to one component " + currentBean.objectName);            
+            writeLine("/**");
+            writeLine(" * delete one to one component " + currentBean.objectName);
             writeLine(" */");
             writeLine("public delete" + currentBean.className + "(id: " + bean.idTsType + ") {");
             writeLine("return this.http.delete(environment.restApiUrl + '/" + bean.urlPiece + "/' + id + '/" + currentBean.urlPiece + "');");
