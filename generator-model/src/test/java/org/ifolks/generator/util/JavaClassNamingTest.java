@@ -1,8 +1,8 @@
 package org.ifolks.generator.util;
 
 import org.ifolks.generator.model.util.naming.JavaClassNaming;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class JavaClassNamingTest {
 
@@ -12,7 +12,7 @@ public class JavaClassNamingTest {
 		String expected = "MY_DUMMY_CLASS";
 		String result = JavaClassNaming.toDatabaseName(arg);
 		System.out.println(result);
-		Assert.assertEquals(expected, result);
+		Assertions.assertEquals(expected, result);
 	}
 	
 	@Test
@@ -21,6 +21,7 @@ public class JavaClassNamingTest {
 		String expected = "MY_DUMMY_OBJECT";
 		String result = JavaClassNaming.toDatabaseName(arg);
 		System.out.println(result);
-		Assert.assertEquals(expected, result);
+		Assertions.assertEquals(expected, result);
 	}
 }
+

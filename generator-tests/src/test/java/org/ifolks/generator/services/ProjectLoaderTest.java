@@ -3,14 +3,11 @@ package org.ifolks.generator.services;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.metadata.ProjectMetaData;
 import org.ifolks.generator.model.metadata.validation.ProjectValidationReport;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={ApplicationConfig.class})
+@SpringJUnitConfig(ApplicationConfig.class)
 public class ProjectLoaderTest {
 	
 	@Autowired
@@ -26,3 +23,4 @@ public class ProjectLoaderTest {
 		Project result = loader.loadProject(project);
 	}
 }
+

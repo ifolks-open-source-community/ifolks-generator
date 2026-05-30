@@ -1,6 +1,6 @@
 package org.ifolks.generator.bash.arguments;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SkeletonTypeChoicesRetrieverTest {
 
@@ -9,3 +9,4 @@ public class SkeletonTypeChoicesRetrieverTest {
 		System.out.println(new TrueFalseChoicesHelper("Please choose amongst").getFullMessage());
 	}
 }
+

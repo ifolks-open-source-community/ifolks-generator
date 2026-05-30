@@ -2,15 +2,12 @@ package org.ifolks.generator.services;
 
 import org.ifolks.generator.model.metadata.ProjectMetaData;
 import org.ifolks.generator.model.metadata.validation.ProjectValidationReport;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={ApplicationConfig.class})
+@SpringJUnitConfig(ApplicationConfig.class)
 public class ProjectMetaDataServiceTest {
 	
 	@Autowired
@@ -21,8 +18,8 @@ public class ProjectMetaDataServiceTest {
 	public void testLoadSuccess() {
 		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/success/1");
 		ProjectValidationReport report = service.validate(project);
-		Assert.assertFalse(report.hasErrors);
-		Assert.assertFalse(report.hasWarnings);
+		Assertions.assertFalse(report.hasErrors);
+		Assertions.assertFalse(report.hasWarnings);
 	}
 	
 	
@@ -31,8 +28,8 @@ public class ProjectMetaDataServiceTest {
 		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/failure/1");
 		ProjectValidationReport report = service.validate(project);
 		report.print();
-		Assert.assertTrue(report.hasErrors);
-		Assert.assertFalse(report.hasWarnings);
+		Assertions.assertTrue(report.hasErrors);
+		Assertions.assertFalse(report.hasWarnings);
 	}
 	
 	
@@ -41,8 +38,8 @@ public class ProjectMetaDataServiceTest {
 		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/failure/2");
 		ProjectValidationReport report = service.validate(project);
 		report.print();
-		Assert.assertTrue(report.hasErrors);
-		Assert.assertFalse(report.hasWarnings);
+		Assertions.assertTrue(report.hasErrors);
+		Assertions.assertFalse(report.hasWarnings);
 	}
 	
 	
@@ -51,7 +48,8 @@ public class ProjectMetaDataServiceTest {
 		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/failure/3");
 		ProjectValidationReport report = service.validate(project);
 		report.print();
-		Assert.assertTrue(report.hasErrors);
-		Assert.assertFalse(report.hasWarnings);
+		Assertions.assertTrue(report.hasErrors);
+		Assertions.assertFalse(report.hasWarnings);
 	}
 }
+

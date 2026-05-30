@@ -8,7 +8,7 @@
 	<parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.1</version>
+        <version>4.0.6</version>
     </parent>
 	
 	<groupId>${project.domainName}.${project.projectName}</groupId>
@@ -123,6 +123,12 @@
 				<groupId>org.ifolks.commons</groupId>
 				<artifactId>commons-rest</artifactId>
 				<version>${ifolks.commons.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>tools.jackson.datatype</groupId>
+				<artifactId>jackson-datatype-jsr310</artifactId>
+				<version>3.0.0-rc2</version>
 			</dependency>
 			
 		</dependencies>
