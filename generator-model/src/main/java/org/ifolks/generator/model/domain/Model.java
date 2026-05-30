@@ -319,11 +319,20 @@ public class Model {
 	public void setBuilderPackageName(String builderPackageName) {
 		this.populationPackageName = builderPackageName;
 	}
-	public String getExecutorPackageName() {
-		return populationRunnersPackageName;
+	public String getPopulationPackageName() {
+		return populationPackageName;
+	}
+	public void setPopulationPackageName(String populationPackageName) {
+		this.populationPackageName = populationPackageName;
 	}
 	public void setExecutorPackageName(String executorPackageName) {
 		this.populationRunnersPackageName = executorPackageName;
+	}
+	public String getPopulationRunnersPackageName() {
+		return populationRunnersPackageName;
+	}
+	public void setPopulationRunnersPackageName(String populationRunnersPackageName) {
+		this.populationRunnersPackageName = populationRunnersPackageName;
 	}
 	public String getJunitPackageName() {
 		return junitPackageName;
