@@ -12,7 +12,7 @@
 ## 🌟 Key Features
 
 * **Model-Driven Development (MDD):** Define your domain model, selection behaviors, audits, and validations in a single `skeleton.xml` file, and let the generator build the rest.
-* **12-Tier Standardized Architecture:** Generates clean, decoupled, and industry-standard maven sub-modules for:
+* **Multi-Tier Standardized Architecture:** Generates clean, decoupled, and industry-standard maven sub-modules for:
   * **API & Model:** Clean interfaces and entities (fully leveraging modern **Java Records** for lightweight DTOs like `SelectItem`).
   * **JPA Persistence & Services:** Decoupled data access layer with Spring Data JPA and standard transaction-managed services.
   * **REST Web Services:** Fully configured Spring MVC Controllers with robust error handlers and Jackson `JsonMapper` serialization.
@@ -53,10 +53,10 @@ graph TD
 ### 1. Bootstrapping a Project (`igen init`)
 Install the `igen` CLI binary and initialize a new project workspace:
 ```bash
-# Initialize a new project structure
-igen init --project MyAwesomeProject --domain org.mycompany
+# Start the guided interactive prompt to initialize a new project structure
+igen init
 ```
-This generates a starter workspace containing your `data-model/skeleton.xml` and initial configuration files.
+This interactive wizard will guide you through configuring your project, then generate a starter workspace containing your `data-model/skeleton.xml` and initial configuration files.
 
 ### 2. Defining your Domains & Entities
 Edit your `skeleton.xml` to declare your database tables, primary keys, relationships, and selection behaviors.
@@ -87,9 +87,9 @@ The generator is organized into modular components:
 | **`generator-model`** | Core definitions of the metadata representation, Java class naming, and XML schemas (`skeleton-metadata-1.0.xsd`). |
 | **`generator-components`** | Business rules factories, selection column uniqueness checks, and JAXB parsing services. |
 | **`generator-skeletons`** | Core file-writing command executor and template engine hooks. |
-| **`generator-core-skeletons`** | Velocity templates and writers for Spring configuration, database schemas, entities, and JUnit 5 components. |
-| **`generator-rest-skeletons`** | Velocity templates for Spring Boot REST starters, configuration, and controller endpoints. |
-| **`generator-angular-skeletons`** | Velocity templates for typescript UI models, rest clients, list/details layouts, and routing. |
+| **`generator-core-skeletons`** | Templates and writers for Spring configuration, database schemas, entities, and JUnit 5 components. |
+| **`generator-rest-skeletons`** | Templates and writers for Spring Boot REST starters, configuration, and controller endpoints. |
+| **`generator-angular-skeletons`** | Templates and writers for TypeScript UI models, REST clients, list/details layouts, and routing. |
 | **`generator-services`** | Higher-level services coordinating metadata loading, validation, and generation. |
 | **`generator-bash`** | The Command Line Interface (CLI) executing package (compiles to the `igen` ZIP binary). |
 | **`generator-tests`** | Full integration test suites asserting complete compilation and test passes on simulated metadata. |
