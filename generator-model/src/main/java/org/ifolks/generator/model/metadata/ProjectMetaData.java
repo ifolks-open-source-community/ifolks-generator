@@ -37,8 +37,6 @@ public class ProjectMetaData {
     private String skeleton;
 	@XmlElement(required=true)
     private String databaseEngine;
-	@XmlElement(defaultValue="false")
-    private boolean audited = false;
 	@XmlElement(required=false)
 	public String tablesTableSpace;
 	@XmlElement(required=false)
@@ -97,12 +95,7 @@ public class ProjectMetaData {
 	public void setDatabaseEngine(String databaseEngine) {
 		this.databaseEngine = databaseEngine;
 	}
-	public boolean getAudited() {
-		return audited;
-	}
-	public void setAudited(boolean audited) {
-		this.audited = audited;
-	}
+
 	public String getTablesTableSpace() {
 		return tablesTableSpace;
 	}

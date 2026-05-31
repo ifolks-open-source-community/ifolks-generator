@@ -48,7 +48,6 @@ public class Model {
 	public String serviceInterfacePackageName;
 	
 	public String modelPackageName;
-	public String enversPackageName;
 	
 	public String persistencePackageName;
 	public String daoInterfacePackageName;
@@ -217,12 +216,7 @@ public class Model {
 	public void setModelPackageName(String modelPackageName) {
 		this.modelPackageName = modelPackageName;
 	}
-	public String getEnversPackageName() {
-		return enversPackageName;
-	}
-	public void setEnversPackageName(String enversPackageName) {
-		this.enversPackageName = enversPackageName;
-	}
+
 	public String getPersistencePackageName() {
 		return persistencePackageName;
 	}

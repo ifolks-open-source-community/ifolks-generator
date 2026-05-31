@@ -36,14 +36,6 @@
 			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-core</artifactId>
 		</dependency>
-		
-#if ($project.audited)
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-envers</artifactId>
-		</dependency>
-		
-#end
 	</dependencies>
 
 </project>

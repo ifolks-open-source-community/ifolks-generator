@@ -36,7 +36,6 @@ public class ProjectInitializerPrompter implements ArgumentsPrompter {
 		choicesHelpers.add(new BasicFreeChoicesHelper("Enter your project name (ex:demo) : "));
 		choicesHelpers.add(new SkeletonChoicesHelper());
 		choicesHelpers.add(new DatabaseEngineChoicesHelper());
-		choicesHelpers.add(new TrueFalseChoicesHelper("Do you want to activate Hibernate envers fonctionality "));
 		
 		datasourceChoicesHelpers.add(new BasicFreeChoicesHelper("Enter your database name (ex:DEMO) : "));
 		datasourceChoicesHelpers.add(new BasicFreeChoicesHelper("Enter your database host name (ex:localhost) : "));
@@ -77,13 +76,11 @@ public class ProjectInitializerPrompter implements ArgumentsPrompter {
 			System.out.println("project name : " + arguments.get(1));
 			System.out.println("skeleton type : " + arguments.get(2));
 			System.out.println("database engine : " + arguments.get(3));
-			System.out.println("hibernate envers activated : " + arguments.get(4));
-			
-			System.out.println("database name : " + arguments.get(5));
-			System.out.println("database host name : " + arguments.get(6));
-			System.out.println(" port : " + arguments.get(7));
-			System.out.println("database username : " + arguments.get(8));
-			System.out.println("database password : " + arguments.get(9));
+			System.out.println("database name : " + arguments.get(4));
+			System.out.println("database host name : " + arguments.get(5));
+			System.out.println(" port : " + arguments.get(6));
+			System.out.println("database username : " + arguments.get(7));
+			System.out.println("database password : " + arguments.get(8));
 			
 			System.out.println("Please confirm your choice (Y/n)");
 			input = bufferedReader.readLine();

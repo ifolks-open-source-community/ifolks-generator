@@ -38,17 +38,16 @@ public class ProjectInitializerLauncher {
 	 * @param args 2->your project name(myproject for example)
 	 * @param args 3->the skeleton type of your project @{link SkeletonType}
 	 * @param args 4->the database engine to be used @{link DatabaseEngine}
-	 * @param args 5->a boolean string representation (True/False) to indicate whereas you want to activate hibernate auditing functionnality or not (envers)
-	 * @param args 6->your database name (MYDATABASE for example)
-	 * @param args 7->your database hostname
-	 * @param args 8->your database port
-	 * @param args 9->your database connection username
-	 * @param args 10->your database connection password
+	 * @param args 5->your database name (MYDATABASE for example)
+	 * @param args 6->your database hostname
+	 * @param args 7->your database port
+	 * @param args 8->your database connection username
+	 * @param args 9->your database connection password
 	 */
 	public static void main(String[] args) {
 		
-		if (args.length < 11) {
-			throw new IllegalArgumentException("11 arguments are mandatory");
+		if (args.length < 10) {
+			throw new IllegalArgumentException("10 arguments are mandatory");
 		}
 				
 		try (ConfigurableApplicationContext appContext = new AnnotationConfigApplicationContext(ApplicationConfig.class);) {
@@ -124,7 +123,6 @@ public class ProjectInitializerLauncher {
 		projectMetaData.setProjectName(args[2]);
 		projectMetaData.setSkeleton(args[3]);
 		projectMetaData.setDatabaseEngine(args[4]);
-		projectMetaData.setAudited(Boolean.valueOf(args[5]));
 		
 		return projectMetaData;
 	}
@@ -133,11 +131,11 @@ public class ProjectInitializerLauncher {
 	private static DataSourceMetaData buildDataSource(String[] args) {
 		
 		DataSourceMetaData result = new DataSourceMetaData();
-		result.setDatabaseName(args[6]);
-		result.setHost(args[7]);
-		result.setPort(args[8]);
-		result.setUserName(args[9]);
-		result.setPassword(args[10]);
+		result.setDatabaseName(args[5]);
+		result.setHost(args[6]);
+		result.setPort(args[7]);
+		result.setUserName(args[8]);
+		result.setPassword(args[9]);
 		
 		return result;
 	}

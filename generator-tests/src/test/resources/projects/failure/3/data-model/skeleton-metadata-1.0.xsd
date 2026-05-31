@@ -145,7 +145,6 @@
       <xs:element name="projectName" type="xs:string"/>
       <xs:element name="skeleton" type="xs:string"/>
       <xs:element name="databaseEngine" type="xs:string"/>
-      <xs:element name="audited" type="xs:boolean" default="false"/>
       <xs:element name="tablesTableSpace" type="xs:string" minOccurs="0"/>
       <xs:element name="indexesTableSpace" type="xs:string" minOccurs="0"/>
       <xs:element name="packages" minOccurs="0">

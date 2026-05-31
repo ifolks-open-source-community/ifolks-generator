@@ -106,7 +106,6 @@ public class JavaModelFactory implements ModelFactory {
         model.serviceInterfacePackageName = project.domainName + "." + project.projectName + ".api.interfaces";
        
         model.modelPackageName = project.domainName + "." + project.projectName + ".model";
-        model.enversPackageName = project.domainName + "." + project.projectName + ".model.envers";
         
         model.persistencePackageName = project.domainName + "." + project.projectName + ".persistence";
         model.daoImplPackageName = model.persistencePackageName + ".impl";

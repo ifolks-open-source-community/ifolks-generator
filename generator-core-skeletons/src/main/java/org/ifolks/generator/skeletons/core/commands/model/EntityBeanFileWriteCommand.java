@@ -41,9 +41,7 @@ public class EntityBeanFileWriteCommand extends JavaFileWriteCommand {
 
 	@Override
 	protected void fetchSpecificImports() {
-		if (bean.myPackage.model.project.audited) {
-			javaImports.add("import org.hibernate.envers.Audited;");
-		}
+
 		
 		javaImports.add("import org.hibernate.Length;");
 		javaImports.add("import org.hibernate.annotations.JdbcTypeCode;");
@@ -121,9 +119,7 @@ public class EntityBeanFileWriteCommand extends JavaFileWriteCommand {
 		writeLine(" */");
 
 		writeLine("@Entity");
-		if (bean.myPackage.model.project.audited) {
-			writeLine("@Audited");
-		}
+
 		write("@Table(name=" + CHAR_34 + this.bean.table.name + CHAR_34 );		
 		skipLine();
 		writeLine(", uniqueConstraints = {");

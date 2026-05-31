@@ -21,7 +21,6 @@ public class Project {
 	public String projectName;
 	public String skeleton;
 	public String databaseEngine;
-	public boolean audited;
 	public String tablesTableSpace;
 	public String indexesTableSpace;
 	
@@ -69,12 +68,7 @@ public class Project {
 	public void setDatabaseEngine(String databaseEngine) {
 		this.databaseEngine = databaseEngine;
 	}
-	public boolean isAudited() {
-		return audited;
-	}
-	public void setAudited(boolean audited) {
-		this.audited = audited;
-	}
+
 	public String getTablesTableSpace() {
 		return tablesTableSpace;
 	}

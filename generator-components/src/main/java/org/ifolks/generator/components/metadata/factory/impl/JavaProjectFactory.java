@@ -42,7 +42,6 @@ public class JavaProjectFactory implements ProjectFactory {
 		project.workspaceFolder = projectMetaData.getWorkspaceFolder();
 		project.skeleton = projectMetaData.getSkeleton();
 		project.databaseEngine = projectMetaData.getDatabaseEngine();
-		project.audited = projectMetaData.getAudited();
 		project.tablesTableSpace = projectMetaData.tablesTableSpace;
 		project.indexesTableSpace = projectMetaData.indexesTableSpace;
 		project.dataSource = projectMetaData.getDataSource();

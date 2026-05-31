@@ -18,19 +18,3 @@ SELECT translate(
 $$;
 
 
-#if ($project.audited)	
-CREATE TABLE auditentity
-(
-id BIGINT NOT NULL,
-"timestamp" BIGINT NOT NULL,
-login VARCHAR(255),
-CONSTRAINT auditentity_pkey PRIMARY KEY (id)
-);
-
-CREATE SEQUENCE hibernate_sequence
-INCREMENT 1
-MINVALUE 1
-MAXVALUE 9223372036854775807
-START 1
-CACHE 1;
-#end

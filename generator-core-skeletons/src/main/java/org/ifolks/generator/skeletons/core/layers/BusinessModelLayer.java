@@ -6,8 +6,6 @@ import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.skeletons.core.commands.model.EntityBeanFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.model.EntityMetaModelFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.model.configuration.ModelPomFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.model.resources.AuditEntityFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.model.resources.AuditListenerFileWriteCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 
@@ -22,13 +20,7 @@ public class BusinessModelLayer extends AbstractLayer {
 		
 		FileWriteCommandTreeNode resourcesTreeNode = new FileWriteCommandTreeNode();
 		
-		if (project.audited) {
-			FileWriteCommandTreeNode auditEntityTreeNode = new FileWriteCommandTreeNode(new AuditEntityFileWriteCommand(project));
-			resourcesTreeNode.add(auditEntityTreeNode);
-		
-			FileWriteCommandTreeNode auditListenerTreeNode = new FileWriteCommandTreeNode(new AuditListenerFileWriteCommand(project));
-			resourcesTreeNode.add(auditListenerTreeNode);
-		}
+
 		
 		return resourcesTreeNode;
 	}

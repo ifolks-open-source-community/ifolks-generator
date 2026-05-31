@@ -11,7 +11,7 @@
 
 ## 🌟 Key Features
 
-* **Model-Driven Development (MDD):** Define your domain model, selection behaviors, audits, and validations in a single `skeleton.xml` file, and let the generator build the rest.
+* **Model-Driven Development (MDD):** Define your domain model, relations and constraints between entities, UI behaviors (selection mode, filters and sortings, display mode) in a single `skeleton.xml` file, and let the generator build the rest.
 * **Multi-Tier Standardized Architecture:** Generates clean, decoupled, and industry-standard maven sub-modules for:
   * **API & Model:** Clean interfaces and entities (fully leveraging modern **Java Records** for lightweight DTOs like `SelectItem`).
   * **JPA Persistence & Services:** Decoupled data access layer with Spring Data JPA and standard transaction-managed services.

@@ -31,9 +31,7 @@ public class OracleTableDefinitionFileWriteCommand extends SqlFileWriteCommand {
 		
 		createTable();
 		
-		if (table.myPackage.model.project.audited) {
-			createAuditTable();
-		}
+
 
 		writeNotOverridableContent();
 
@@ -84,42 +82,7 @@ public class OracleTableDefinitionFileWriteCommand extends SqlFileWriteCommand {
 		}
 	}
 	
-	/*
-	 * create audit table
-	 */
-	private void createAuditTable()
-    {
-		
-        writeLine("-- create audit table --");
-        writeLine("CREATE TABLE " + table.name + "_AUD");
-        writeLine("(");
-        writeLine("ID int NOT NULL,");
-        writeLine("REV int NOT NULL,");
-        writeLine("REVTYPE smallint NOT NULL,");
 
-        for (Column column:table.columns) {
-            writeLine(column.name + " " + getOracleType(column.dataType) + " NULL,");
-        }
-
-        writeLine("CONSTRAINT PK_" + table.name + "_AUD PRIMARY KEY (ID, REV),");
-        writeLine("CONSTRAINT FK_" + table.name + "_AUD FOREIGN KEY (REV)");
-        writeLine("REFERENCES AUDITENTITY (ID)");
-        if (table.myPackage.model.project.tablesTableSpace != null) {
-			write(" TABLESPACE " + table.myPackage.model.project.tablesTableSpace + ")");
-		} else {
-			writeLine(")");
-		}
-		skipLine();
-        writeLine("/");
-        skipLine();
-        
-        writeLine("CREATE INDEX IDX_" + table.name + "_AR ON " + this.table.name + "_AUD(REV)");
-        if (table.myPackage.model.project.indexesTableSpace != null) {
-			write(" TABLESPACE " + table.myPackage.model.project.indexesTableSpace);
-		}
-        writeLine("/");
-        skipLine();
-    }
 	
 	
 	private String getOracleType(DataType type) {

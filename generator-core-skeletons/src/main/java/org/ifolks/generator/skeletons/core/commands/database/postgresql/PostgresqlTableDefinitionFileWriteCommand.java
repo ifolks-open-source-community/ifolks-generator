@@ -30,9 +30,7 @@ public class PostgresqlTableDefinitionFileWriteCommand extends SqlFileWriteComma
 
 		createTable();
 
-		if (table.myPackage.model.project.audited) {
-			createAuditTable();
-		}		
+
 
 		writeNotOverridableContent();
 	}
@@ -80,29 +78,7 @@ public class PostgresqlTableDefinitionFileWriteCommand extends SqlFileWriteComma
 	}
 	
 
-	/*
-	 * create audit table
-	 */
-	private void createAuditTable() {
-		writeLine("-- table d'audit des elements --");
-		writeLine("CREATE TABLE " + table.name + "_aud");
-		writeLine("(");
-		writeLine("id integer NOT NULL,");
-		writeLine("rev integer NOT NULL,");
-		writeLine("revtype smallint NOT NULL,");
 
-		for (Column column:table.columns) {
-			writeLine(column.name + " " + getPostgresqlType(column.dataType) + " NULL,");
-		}
-
-		writeLine("CONSTRAINT " + table.name + "_aud_pkey PRIMARY KEY (id, rev),");
-		writeLine("CONSTRAINT " + table.name + "_aud_rev FOREIGN KEY (rev)");
-		writeLine("REFERENCES auditentity (id) MATCH SIMPLE");
-		writeLine("ON UPDATE NO ACTION ON DELETE NO ACTION");
-		writeLine(")");
-		writeLine(";");
-		skipLine();
-	}
 	
 	
 	public String getPostgresqlType(DataType type) {
