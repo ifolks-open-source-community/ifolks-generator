@@ -13,7 +13,7 @@
 
 * **Model-Driven Development (MDD):** Define your domain model, relations and constraints between entities, UI behaviors (selection mode, filters and sortings, display mode) in a single `skeleton.xml` file, and let the generator build the rest.
 * **Multi-Tier Standardized Architecture:** Generates clean, decoupled, and industry-standard maven sub-modules for:
-  * **API & Model:** Clean interfaces and entities (fully leveraging modern **Java Records** for lightweight DTOs like `SelectItem`).
+  * **API & Model:** Clean interfaces and entities (fully leveraging modern **Java Records** for lightweight DTOs).
   * **JPA Persistence & Services:** Decoupled data access layer with Spring Data JPA and standard transaction-managed services.
   * **REST Web Services:** Fully configured Spring MVC Controllers with robust error handlers and Jackson `JsonMapper` serialization.
   * **Angular Frontend:** Generates complete TypeScript models, REST clients, search filters, lists, details components, and modals automatically!
