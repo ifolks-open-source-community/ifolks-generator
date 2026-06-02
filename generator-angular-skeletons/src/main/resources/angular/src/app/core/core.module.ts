@@ -7,8 +7,7 @@ import { ConfirmationModalComponent } from './components/confirmation-modal/conf
 
 
 @NgModule({
-  imports: [BrowserAnimationsModule, HttpClientModule, SharedModule],
-  declarations: [ConfirmationModalComponent],
+  imports: [BrowserAnimationsModule, HttpClientModule, SharedModule, ConfirmationModalComponent],
   exports: [ConfirmationModalComponent]
 })
 export class CoreModule {

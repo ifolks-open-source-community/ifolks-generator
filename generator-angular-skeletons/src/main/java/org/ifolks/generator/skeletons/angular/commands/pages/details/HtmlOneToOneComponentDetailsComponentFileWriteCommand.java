@@ -59,13 +59,19 @@ public class HtmlOneToOneComponentDetailsComponentFileWriteCommand extends Angul
 		
 		writeLine("<mat-dialog-actions>");
 		if (referenceBean.createEnabled) {
-			writeLine("<button mat-raised-button *ngIf=\"view.id == null\" color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">Save</button>");
+			writeLine("@if (view.id == null) {");
+			writeLine("  <button mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">Save</button>");
+			writeLine("}");
 		}
 		if (referenceBean.updateEnabled ) {
-			writeLine("<button mat-raised-button *ngIf=\"view.id != null && view.canUpdate\" color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">Update</button>");
+			writeLine("@if (view.id != null && view.canUpdate) {");
+			writeLine("  <button mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">Update</button>");
+			writeLine("}");
 		}
 		if (referenceBean.deleteEnabled ) {
-			writeLine("<button mat-raised-button *ngIf=\"view.id != null && view.canDelete\" color=\"warn\" type=\"button\" (click)=\"delete()\">Delete</button>");
+			writeLine("@if (view.id != null && view.canDelete) {");
+			writeLine("  <button mat-raised-button color=\"warn\" type=\"button\" (click)=\"delete()\">Delete</button>");
+			writeLine("}");
 		}
 		writeLine("</mat-dialog-actions>");
 		writeLine("</form>");

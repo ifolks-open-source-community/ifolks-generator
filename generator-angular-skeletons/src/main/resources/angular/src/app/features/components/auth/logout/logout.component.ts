@@ -1,9 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { PublicTemplatesModule } from 'src/app/templates/public/templates.module';
 
 @Component({
-selector: 'app-logout',
-templateUrl: './logout.component.html',
-styleUrls: ['./logout.component.scss']
+  selector: 'app-logout',
+  standalone: true,
+  imports: [PublicTemplatesModule],
+  templateUrl: './logout.component.html',
+  styleUrl: './logout.component.scss'
 })
 export class LogoutComponent implements OnInit {
 

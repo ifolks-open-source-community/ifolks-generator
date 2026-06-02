@@ -18,7 +18,7 @@ public class TsRoutingModuleFileWriteCommand extends TsFileWriteCommand {
 	 */
 	public TsRoutingModuleFileWriteCommand(Bean bean) {
         
-		super(bean.myPackage.model.project.workspaceFolder + File.separator + bean.myPackage.model.tsUiArtefactName + File.separator + bean.myPackage.tsComponentsPath + File.separator + bean.urlPiece, bean.urlPiece + "-routing.module");
+		super(bean.myPackage.model.project.workspaceFolder + File.separator + bean.myPackage.model.tsUiArtefactName + File.separator + bean.myPackage.tsComponentsPath + File.separator + bean.urlPiece, bean.urlPiece + ".routes");
 		
 		this.bean = bean;
 		
@@ -26,8 +26,7 @@ public class TsRoutingModuleFileWriteCommand extends TsFileWriteCommand {
 	
 	@Override
 	protected void fetchSpecificImports() {
-		imports.add("import { NgModule } from '@angular/core';");
-		imports.add("import { RouterModule, Routes } from '@angular/router';");
+		imports.add("import { Routes } from '@angular/router';");
 		imports.add("import { " + bean.className + "ListComponent } from './list/" + bean.urlPiece + "-list.component';");
 		imports.add("import { " + bean.className + "DetailsComponent } from './details/" + bean.urlPiece + "-details.component';");
 		for (OneToManyComponent oneToManyComponent:bean.oneToManyComponentList) {
@@ -48,13 +47,13 @@ public class TsRoutingModuleFileWriteCommand extends TsFileWriteCommand {
         writeImports();
         
         writeLine("/**");
-        writeLine(" * auto generated list routing module ts file");
+        writeLine(" * auto generated list routes ts file");
         writeLine(" * <br/>write modifications between specific code marks");
         writeLine(" * <br/>processed by ifolks-generator");
         writeLine(" */");
         skipLine();
         
-        writeLine("const routes: Routes = [");
+        writeLine("export const routes: Routes = [");
         writeLine( "{path: 'list', component: " + bean.className + "ListComponent }");
         writeLine( ",{path: ':id', component: " + bean.className + "DetailsComponent }");
         for (OneToManyComponent oneToManyComponent:bean.oneToManyComponentList) {
@@ -67,13 +66,6 @@ public class TsRoutingModuleFileWriteCommand extends TsFileWriteCommand {
         	writeLine( ",{path: ':id/" + oneToOneComponent.referenceBean.urlPiece + "', component: " + oneToOneComponent.referenceBean.className + "DetailsComponent }");
 		}
         writeLine("];");
-        skipLine();
-        
-        writeLine("@NgModule({");
-        writeLine("imports: [RouterModule.forChild(routes)],");
-        writeLine("exports: [RouterModule]");
-        writeLine("})");
-        writeLine("export class " + bean.className + "RoutingModule { }");
 
 	}
 }

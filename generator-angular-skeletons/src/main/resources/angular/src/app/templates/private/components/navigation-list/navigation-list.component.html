@@ -7,14 +7,16 @@
         {{ menu.text }}
 </button>
 <ul [ngClass]="{ openNavList: panel.expanded }" class="app-navigation-sublinks">
-   <li *ngFor="let link of menu.links" class="border-0">
-     <a
-       #rla="routerLinkActive"
-       (click)="listItemClick.emit()"
-       [ngClass]="{ 'text-grey-darker': !rla.isActive }"
-       [routerLink]="link.path"
-       routerLinkActive="link-text-active">
-   		{{ link.text }}
- 	  </a>
- </li>
+   @for (link of menu.links; track link.path) {
+     <li class="border-0">
+       <a
+         #rla="routerLinkActive"
+         (click)="listItemClick.emit()"
+         [ngClass]="{ 'text-grey-darker': !rla.isActive }"
+         [routerLink]="link.path"
+         routerLinkActive="link-text-active">
+    		{{ link.text }}
+  	  </a>
+     </li>
+   }
 </ul>

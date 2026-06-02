@@ -26,6 +26,9 @@ public class TsListComponentFileWriteCommand extends TsFileWriteCommand {
 	@Override
 	protected void fetchSpecificImports() {
 		imports.add("import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';");
+		imports.add("import { CommonModule } from '@angular/common';");
+		imports.add("import { SharedModule } from 'src/app/shared/shared.module';");
+		imports.add("import { PrivateTemplatesModule } from 'src/app/templates/private/templates.module';");
 		imports.add("import { MatTableDataSource } from '@angular/material/table';");
 		imports.add("import { MatPaginator } from '@angular/material/paginator';");
 		
@@ -65,8 +68,10 @@ public class TsListComponentFileWriteCommand extends TsFileWriteCommand {
         
         writeLine("@Component({");
         writeLine("selector: 'app-" + bean.urlPiece + "-list',");
+        writeLine("standalone: true,");
+        writeLine("imports: [CommonModule, SharedModule, PrivateTemplatesModule],");
         writeLine("templateUrl: './" + bean.urlPiece + "-list.component.html',");
-        writeLine("styleUrls: ['./" + bean.urlPiece + "-list.component.scss']");
+        writeLine("styleUrl: './" + bean.urlPiece + "-list.component.scss'");
         writeLine("})");
         writeLine("export class " + this.bean.className + "ListComponent implements OnInit, AfterViewInit {");
         skipLine();

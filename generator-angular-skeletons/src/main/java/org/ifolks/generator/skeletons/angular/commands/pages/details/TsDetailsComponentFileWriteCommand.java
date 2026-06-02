@@ -35,6 +35,11 @@ public class TsDetailsComponentFileWriteCommand extends TsFileWriteCommand {
 	@Override
 	protected void fetchSpecificImports() {
 		imports.add("import { Component, OnInit, ViewChild } from '@angular/core';");
+		imports.add("import { CommonModule } from '@angular/common';");
+		imports.add("import { SharedModule } from 'src/app/shared/shared.module';");
+		imports.add("import { PrivateTemplatesModule } from 'src/app/templates/private/templates.module';");
+		imports.add("import { RouterModule } from '@angular/router';");
+		imports.add("import { " + bean.className + "MenuComponent } from './../menu/" + bean.urlPiece + "-menu.component';");
 		imports.add("import { SelectItem } from 'src/app/core/models/SelectItem';");
 		imports.add("import { Observable } from 'rxjs';");
 		imports.add("import { StringUtils } from 'src/app/core/services/StringUtils';");
@@ -66,8 +71,10 @@ public class TsDetailsComponentFileWriteCommand extends TsFileWriteCommand {
         
         writeLine("@Component({");
         writeLine("selector: 'app-" + bean.urlPiece + "-details',");
+        writeLine("standalone: true,");
+        writeLine("imports: [CommonModule, SharedModule, PrivateTemplatesModule, RouterModule, " + bean.className + "MenuComponent],");
         writeLine("templateUrl: './" + bean.urlPiece + "-details.component.html',");
-        writeLine("styleUrls: ['./" + bean.urlPiece + "-details.component.scss']");
+        writeLine("styleUrl: './" + bean.urlPiece + "-details.component.scss'");
         writeLine("})");
         writeLine("export class " + this.bean.className + "DetailsComponent implements OnInit {");
         skipLine();

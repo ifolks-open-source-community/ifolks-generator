@@ -7,7 +7,6 @@ import org.ifolks.generator.model.domain.business.OneToMany;
 import org.ifolks.generator.model.domain.business.OneToManyComponent;
 import org.ifolks.generator.model.domain.business.OneToOneComponent;
 import org.ifolks.generator.skeletons.angular.commands.pages.TsAppRoutingModuleFileWriteCommand;
-import org.ifolks.generator.skeletons.angular.commands.pages.TsModuleFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.pages.TsRoutingModuleFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.pages.details.HtmlDetailsComponentFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.pages.details.HtmlOneToOneComponentDetailsComponentFileWriteCommand;
@@ -75,16 +74,12 @@ public class TypeScriptComponentsLayer extends AbstractLayer {
 			FileWriteCommandTreeNode packageTreeNode = new FileWriteCommandTreeNode(myPackage.name);
 			modelTreeNode.add(packageTreeNode);
 			
-			FileWriteCommandTreeNode modulesTreeNode = new FileWriteCommandTreeNode("Modules");
-			packageTreeNode.add(modulesTreeNode);
+			FileWriteCommandTreeNode routesTreeNode = new FileWriteCommandTreeNode("Routes");
+			packageTreeNode.add(routesTreeNode);
 			for (Bean bean : myPackage.beans) {
 				if (!bean.isComponent) {
-					FileWriteCommandTreeNode module = new FileWriteCommandTreeNode(new TsModuleFileWriteCommand(bean));
-					modulesTreeNode.add(module);
-					
 					FileWriteCommandTreeNode routingModule = new FileWriteCommandTreeNode(new TsRoutingModuleFileWriteCommand(bean));
-					modulesTreeNode.add(routingModule);
-					
+					routesTreeNode.add(routingModule);
 				}
 			}
 

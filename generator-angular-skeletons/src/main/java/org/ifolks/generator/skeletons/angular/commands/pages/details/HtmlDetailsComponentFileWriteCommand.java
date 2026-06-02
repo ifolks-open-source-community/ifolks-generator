@@ -53,7 +53,9 @@ public class HtmlDetailsComponentFileWriteCommand extends AngularHtmlFileWriteCo
 		
 		if (bean.updateEnabled) {
 			writeLine("<p>");
-			writeLine("<button *ngIf=\"view.canUpdate\" mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">Update</button>");
+			writeLine("@if (view.canUpdate) {");
+			writeLine("  <button mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">Update</button>");
+			writeLine("}");
 			writeLine("</p>");
 		}
 		writeLine("</form>");

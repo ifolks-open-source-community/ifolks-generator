@@ -1,12 +1,14 @@
-import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NotificationService } from 'src/app/core/services/NotificationService';
+import { Component, OnInit } from '@angular/core';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { PrivateTemplatesModule } from 'src/app/templates/private/templates.module';
 
 
 @Component({
-selector: 'app-index',
-templateUrl: './index.component.html',
-styleUrls: ['./index.component.scss']
+  selector: 'app-index',
+  standalone: true,
+  imports: [SharedModule, PrivateTemplatesModule],
+  templateUrl: './index.component.html',
+  styleUrl: './index.component.scss'
 })
 export class IndexComponent implements OnInit {
 

@@ -1,11 +1,13 @@
-import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { PublicTemplatesModule } from 'src/app/templates/public/templates.module';
 
 
 @Component({
-selector: 'app-callback',
-templateUrl: './callback.component.html',
-styleUrls: ['./callback.component.scss']
+  selector: 'app-callback',
+  standalone: true,
+  imports: [PublicTemplatesModule],
+  templateUrl: './callback.component.html',
+  styleUrl: './callback.component.scss'
 })
 export class CallbackComponent implements OnInit {
 

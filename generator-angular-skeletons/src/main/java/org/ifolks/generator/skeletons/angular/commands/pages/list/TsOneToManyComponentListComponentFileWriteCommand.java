@@ -33,6 +33,11 @@ public class TsOneToManyComponentListComponentFileWriteCommand extends TsFileWri
 	@Override
 	protected void fetchSpecificImports() {
 		imports.add("import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';");
+		imports.add("import { CommonModule } from '@angular/common';");
+		imports.add("import { SharedModule } from 'src/app/shared/shared.module';");
+		imports.add("import { PrivateTemplatesModule } from 'src/app/templates/private/templates.module';");
+		imports.add("import { RouterModule } from '@angular/router';");
+		imports.add("import { " + parentBean.className + "MenuComponent } from './../../menu/" + parentBean.urlPiece + "-menu.component';");
 		imports.add("import { MatTableDataSource } from '@angular/material/table';");
 		imports.add("import { MatPaginator } from '@angular/material/paginator';");
 		
@@ -74,8 +79,10 @@ public class TsOneToManyComponentListComponentFileWriteCommand extends TsFileWri
         
         writeLine("@Component({");
         writeLine("selector: 'app-" + referenceBean.urlPiece + "-list',");
+        writeLine("standalone: true,");
+        writeLine("imports: [CommonModule, SharedModule, PrivateTemplatesModule, RouterModule, " + parentBean.className + "MenuComponent],");
         writeLine("templateUrl: './" + referenceBean.urlPiece + "-list.component.html',");
-        writeLine("styleUrls: ['./" + referenceBean.urlPiece + "-list.component.scss']");
+        writeLine("styleUrl: './" + referenceBean.urlPiece + "-list.component.scss'");
         writeLine("})");
         writeLine("export class " + this.referenceBean.className + "ListComponent implements OnInit, AfterViewInit {");
         skipLine();

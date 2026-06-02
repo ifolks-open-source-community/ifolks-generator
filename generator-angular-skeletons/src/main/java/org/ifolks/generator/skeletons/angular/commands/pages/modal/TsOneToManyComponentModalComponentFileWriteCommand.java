@@ -40,6 +40,8 @@ public class TsOneToManyComponentModalComponentFileWriteCommand extends TsFileWr
 	@Override
 	protected void fetchSpecificImports() {
 		imports.add("import { Component, OnInit, ViewChild } from '@angular/core';");
+		imports.add("import { CommonModule } from '@angular/common';");
+		imports.add("import { SharedModule } from 'src/app/shared/shared.module';");
 		imports.add("import { SelectItem } from 'src/app/core/models/SelectItem';");
 		imports.add("import { Observable } from 'rxjs';");
 		imports.add("import { StringUtils } from 'src/app/core/services/StringUtils';");
@@ -70,8 +72,10 @@ public class TsOneToManyComponentModalComponentFileWriteCommand extends TsFileWr
         
         writeLine("@Component({");
         writeLine("selector: 'app-" + referenceBean.urlPiece + "-modal',");
+        writeLine("standalone: true,");
+        writeLine("imports: [CommonModule, SharedModule],");
         writeLine("templateUrl: './" + referenceBean.urlPiece + "-modal.component.html',");
-        writeLine("styleUrls: ['./" + referenceBean.urlPiece + "-modal.component.scss']");
+        writeLine("styleUrl: './" + referenceBean.urlPiece + "-modal.component.scss'");
         writeLine("})");
         writeLine("export class " + this.referenceBean.className + "ModalComponent implements OnInit {");
         skipLine();

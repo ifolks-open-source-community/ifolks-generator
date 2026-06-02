@@ -6,6 +6,7 @@ import { NavMenu } from '../../models/nav-menu';
 
 @Component({
   selector: 'app-navigation-list',
+  standalone: false,
   templateUrl: './navigation-list.component.html',
   styleUrls: ['./navigation-list.component.scss']
 })

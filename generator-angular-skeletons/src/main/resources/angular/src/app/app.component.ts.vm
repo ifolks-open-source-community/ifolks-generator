@@ -1,10 +1,20 @@
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { SharedModule } from './shared/shared.module';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, SharedModule],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = '${project.model.tsUiArtefactName}';
+
+  constructor(private matIconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) {
+    this.matIconRegistry.addSvgIconSet(this.sanitizer.bypassSecurityTrustResourceUrl('../assets/icons/mdi.svg'));
+  }
 }

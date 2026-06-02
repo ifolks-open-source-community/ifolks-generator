@@ -5,6 +5,7 @@ import { NavMenu } from '../../models/nav-menu';
 
 @Component({
   selector: 'app-private-body',
+  standalone: false,
   templateUrl: './body.component.html',
   styleUrls: ['./body.component.scss']
 })

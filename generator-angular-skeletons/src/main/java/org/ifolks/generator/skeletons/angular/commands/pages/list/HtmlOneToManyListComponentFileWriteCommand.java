@@ -72,7 +72,9 @@ public class HtmlOneToManyListComponentFileWriteCommand extends AngularHtmlFileW
 			writeLine("<a class=\"margin-10\" href=\"{{'/" + referenceBean.urlPiece + "/' + element.id}}\"><mat-icon aria-label=\"Edit\" svgIcon=\"table-edit\" class=\"text-success\"></mat-icon></a>");
 		}
 		writeLine("<a class=\"margin-10\" (click)=\"edit(element.id)\"><mat-icon aria-label=\"Edit\" svgIcon=\"pencil\" class=\"text-success\"></mat-icon></a>");
-		writeLine("<a *ngIf=\"element.canDelete\" class=\"margin-10\" (click)=\"delete(element.id)\"><mat-icon aria-label=\"Delete\" svgIcon=\"delete\" class=\"text-warn\"></mat-icon></a>");
+		writeLine("@if (element.canDelete) {");
+		writeLine("  <a class=\"margin-10\" (click)=\"delete(element.id)\"><mat-icon aria-label=\"Delete\" svgIcon=\"delete\" class=\"text-warn\"></mat-icon></a>");
+		writeLine("}");
 
 		writeLine("</mat-cell>");
 		writeLine("</ng-container>");

@@ -36,6 +36,8 @@ public class TsMenuComponentFileWriteCommand extends TsFileWriteCommand {
 	@Override
 	protected void fetchSpecificImports() {
 		imports.add("import { Component, Input, OnInit } from '@angular/core';");
+		imports.add("import { CommonModule } from '@angular/common';");
+		imports.add("import { SharedModule } from 'src/app/shared/shared.module';");
 		imports.add("import { NavLink } from 'src/app/templates/private/models/nav-link';");
 	}
 	
@@ -54,8 +56,10 @@ public class TsMenuComponentFileWriteCommand extends TsFileWriteCommand {
         
         writeLine("@Component({");
         writeLine("selector: 'app-" + bean.urlPiece + "-menu',");
+        writeLine("standalone: true,");
+        writeLine("imports: [CommonModule, SharedModule],");
         writeLine("templateUrl: './" + bean.urlPiece + "-menu.component.html',");
-        writeLine("styleUrls: ['./" + bean.urlPiece + "-menu.component.scss']");
+        writeLine("styleUrl: './" + bean.urlPiece + "-menu.component.scss'");
         writeLine("})");
         writeLine("export class " + this.bean.className + "MenuComponent implements OnInit {");
         skipLine();

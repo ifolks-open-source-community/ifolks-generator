@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angul
 
 @Component({
   selector: 'app-private-header',
+  standalone: false,
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
