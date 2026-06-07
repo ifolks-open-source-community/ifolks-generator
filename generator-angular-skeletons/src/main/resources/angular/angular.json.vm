@@ -64,15 +64,15 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "${project.model.tsUiArtefactName}:build",
+            "buildTarget": "${project.model.tsUiArtefactName}:build",
             "proxyConfig": "src/proxy.conf.json"
           },
           "configurations": {
             "production": {
-              "browserTarget": "${project.model.tsUiArtefactName}:build:production"
+              "buildTarget": "${project.model.tsUiArtefactName}:build:production"
             },
             "development": {
-              "browserTarget": "${project.model.tsUiArtefactName}:build:development"
+              "buildTarget": "${project.model.tsUiArtefactName}:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -80,7 +80,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "${project.model.tsUiArtefactName}:build"
+            "buildTarget": "${project.model.tsUiArtefactName}:build"
           }
         },
         "test": {

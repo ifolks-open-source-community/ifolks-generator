@@ -15,7 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @Profile("junit")
-@EnableJpaRepositories(basePackages = "${project.model.persistencePackageName}")
+@EnableJpaRepositories(basePackages = "${project.model.daoInterfacePackageName}")
 public class JUnitPersistenceConfig {
 	
 	@Autowired
@@ -24,7 +24,7 @@ public class JUnitPersistenceConfig {
 	@Bean
     public DataSource dataSource() {
 		HikariConfig config = new HikariConfig();	    
-	    config.setJdbcUrl("jdbc:hsqldb:mem:${project.datasource.databaseName}");
+	    config.setJdbcUrl("jdbc:hsqldb:mem:${project.dataSource.databaseName}");
 	    config.setUsername("sa");
 	    config.setPassword("");
 	    config.setDriverClassName("org.hsqldb.jdbcDriver");

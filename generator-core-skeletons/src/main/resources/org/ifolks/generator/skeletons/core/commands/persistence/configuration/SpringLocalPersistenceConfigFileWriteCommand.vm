@@ -15,7 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @Profile("local")
-@EnableJpaRepositories(basePackages = "${project.model.persistencePackageName}")
+@EnableJpaRepositories(basePackages = "${project.model.daoInterfacePackageName}")
 public class LocalPersistenceConfig {
 	
 	@Autowired
