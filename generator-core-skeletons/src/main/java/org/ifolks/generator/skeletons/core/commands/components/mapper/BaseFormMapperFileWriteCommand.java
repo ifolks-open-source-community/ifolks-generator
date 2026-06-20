@@ -273,6 +273,18 @@ public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {
 	
 
 	private void writeMapReferenceToObject(Property property) {
+		if (property.nullable) {
+			write("if (");
+			boolean start = true;
+			for (ViewProperty refProperty : property.referenceBean.referenceViewProperties) {
+				if (start) start = false; else write(" && ");
+				write(this.bean.formBean.objectName + "." + property.name + refProperty.capName + "() == null");
+			}
+			writeLine(") {");
+			writeLine(this.bean.objectName + "." + property.setterName + "(null);");
+			writeLine("} else {");
+		}
+
 		boolean start = true;
 		write(this.bean.objectName + "." + property.setterName + "(" + property.referenceBean.daoObjectName + ".find(");
 		for (ViewProperty refProperty:property.referenceBean.referenceViewProperties) {
@@ -280,6 +292,10 @@ public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {
 			write(this.bean.formBean.objectName + "." + property.name + refProperty.capName + "()");
 		}
 		writeLine(").orElseThrow(() -> new ObjectNotFoundException(\"" + property.referenceBean.className + ".notFound\")));");		
+
+		if (property.nullable) {
+			writeLine("}");
+		}
 	}
 
 	private void writeMapEmbeddedToObject(Property property) {
@@ -297,6 +313,18 @@ public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {
 				if (embeddedProperty.referenceBean != null) {
 					
 					List<ViewProperty> referencePropertyList = embeddedProperty.referenceBean.referenceViewProperties;
+					if (embeddedProperty.nullable) {
+						write("if (");
+						boolean start = true;
+						for (ViewProperty refProperty : referencePropertyList) {
+							if (start) start = false; else write(" && ");
+							write(this.bean.formBean.objectName + "." + embeddedProperty.name + refProperty.capName + "() == null");
+						}
+						writeLine(") {");
+						writeLine(embeddedBean.objectName + "." + embeddedProperty.setterName + "(null);");
+						writeLine("} else {");
+					}
+
 					write(embeddedBean.objectName + "." + embeddedProperty.setterName + "(" + embeddedProperty.referenceBean.daoObjectName + ".find(");
 					boolean start = true;
 					for (ViewProperty refProperty : referencePropertyList) {
@@ -304,6 +332,10 @@ public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {
 						write(this.bean.formBean.objectName + "." + embeddedProperty.name + refProperty.capName + "()");
 					}
 					writeLine(").orElseThrow(() -> new ObjectNotFoundException(\"" + embeddedProperty.referenceBean.className + ".notFound\")));");
+					
+					if (embeddedProperty.nullable) {
+						writeLine("}");
+					}
 					
 				} else {
 					writeLine(embeddedBean.objectName + "." + embeddedProperty.setterName + "(" + bean.formBean.objectName + "." + embeddedProperty.name + "());");
