@@ -189,7 +189,7 @@ public class TsListComponentFileWriteCommand extends TsFileWriteCommand {
         writeLine("delete(id: " + bean.idTsType + "): void {");
         writeLine("this.dialog.open(ConfirmationModalComponent).afterClosed().subscribe(result => {");
         writeLine("if (result) {");
-        writeLine("this.service.delete(id).subscribe(success => {this.notifications.info(\"Operation completed\");this.refresh()}, error => {this.notifications.error(\"Operation failed\")});");
+        writeLine("this.service.delete(id).subscribe(success => {this.notifications.info(\"Operation completed\");this.refresh()});");
         writeLine("}");
         writeLine("});");
         writeLine("}");

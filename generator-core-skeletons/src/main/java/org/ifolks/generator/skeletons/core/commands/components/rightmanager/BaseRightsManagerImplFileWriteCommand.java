@@ -25,7 +25,7 @@ public class BaseRightsManagerImplFileWriteCommand extends JavaFileWriteCommand 
 	@Override
 	protected void fetchSpecificImports() {
 	
-		javaImports.add("import org.ifolks.commons.api.exception.rights.AccessDeniedException;");
+		javaImports.add("import org.springframework.security.access.AccessDeniedException;");
 
         javaImports.add("import " + this.bean.myPackage.omPackageName + "." + this.bean.className + ";");
         

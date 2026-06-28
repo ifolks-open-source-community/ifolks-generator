@@ -88,7 +88,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
 			javaImports.add("import " + currentBean.myPackage.sortingsPackageName + "." + currentBean.basicViewBean.sortingClassName + ";");
 			javaImports.add("import " + currentBean.myPackage.formMapperPackageName + "." + currentBean.formBean.mapperClassName + ";");
 		}
-		javaImports.add("import org.ifolks.commons.api.exception.repository.ObjectNotFoundException;");
+		javaImports.add("import org.ifolks.commons.api.exception.repository.ResourceNotFoundException;");
 		javaImports.add("import org.springframework.data.jpa.domain.Specification;");
 		javaImports.add("import org.springframework.data.domain.PageRequest;");
 		
@@ -342,7 +342,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
 		writeLine("@Override");
 		writeLine("@Transactional(readOnly=true)");
 		writeLine("public " + this.bean.fullViewBean.className + " load(" + bean.idType + " id) {");
-		writeLine(this.bean.className + " " + this.bean.objectName + " = " + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ObjectNotFoundException(\"" + bean.className + ".notFound\"));");
+		writeLine(this.bean.className + " " + this.bean.objectName + " = " + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ResourceNotFoundException(\"" + bean.className + ".notFound\"));");
         writeLine(this.bean.rightsManagerObjectName + ".checkCanAccess(" + this.bean.objectName + ");");
 		writeLine("return this." + bean.fullViewBean.mapperObjectName + ".toView(" + this.bean.objectName + ");");
 		writeLine("}");
@@ -369,7 +369,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
 			if (start) start = false; else write(", ");
 			write(property.name);
         }
-        writeLine(").orElseThrow(() -> new ObjectNotFoundException(\"" + bean.className + ".notFound\"));");
+        writeLine(").orElseThrow(() -> new ResourceNotFoundException(\"" + bean.className + ".notFound\"));");
         writeLine(this.bean.rightsManagerObjectName + ".checkCanAccess(" + this.bean.objectName + ");");
         writeLine("return this." + bean.fullViewBean.mapperObjectName + ".toView(" + this.bean.objectName + ");");
         writeLine("}");
@@ -386,7 +386,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
             writeLine("@Override");
             writeLine("@Transactional(readOnly=true)");
             writeLine("public " + currentBean.fullViewBean.className + " load" + currentBean.className + "(" + bean.idType + " id) {");
-            writeLine(this.bean.className + " " + this.bean.objectName + " = " + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ObjectNotFoundException(\"" + bean.className + ".notFound\"));");
+            writeLine(this.bean.className + " " + this.bean.objectName + " = " + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ResourceNotFoundException(\"" + bean.className + ".notFound\"));");
             writeLine(this.bean.rightsManagerObjectName + ".checkCanAccess" + currentBean.className + "(" + this.bean.objectName + ");");
             writeLine(currentBean.className + " " + currentBean.objectName + " = " + bean.objectName + ".get" + currentBean.className + "();");
             writeLine("if (" + currentBean.objectName + "==null) {");
@@ -409,7 +409,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
             writeLine("@Override");
             writeLine("@Transactional(readOnly=true)");
             writeLine("public List<" + currentBean.basicViewBean.recordName + "> load" + currentBean.className + "List(" + bean.idType + " id) {");
-            writeLine(this.bean.className + " " + this.bean.objectName + " = " + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ObjectNotFoundException(\"" + bean.className + ".notFound\"));");
+            writeLine(this.bean.className + " " + this.bean.objectName + " = " + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ResourceNotFoundException(\"" + bean.className + ".notFound\"));");
             writeLine(this.bean.rightsManagerObjectName + ".checkCanAccess" + currentBean.className + "(" + this.bean.objectName + ");");
             writeLine("List<" + currentBean.className + "> " + currentBean.objectName + "List = this." + currentBean.daoObjectName + ".findAll(" + currentBean.className + "Specification.filterBy" + bean.className + "Spec(id));");
             writeLine("List<" + currentBean.basicViewBean.recordName + "> result = new ArrayList<>(" + currentBean.objectName + "List.size());");
@@ -432,7 +432,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
 			writeLine("@Override");
             writeLine("@Transactional(readOnly=true)");
 			writeLine("public ScrollView<" + currentBean.basicViewBean.recordName + "> scroll" + currentBean.className + " (" + bean.idType + " " + bean.objectName + "Id, ScrollForm<" + currentBean.basicViewBean.filter.className + ", " + currentBean.basicViewBean.sortingClassName + "> form) {");
-			writeLine(this.bean.className + " " + this.bean.objectName + " = " + this.bean.daoObjectName + ".findById(" + bean.objectName + "Id).orElseThrow(() -> new ObjectNotFoundException(\"" + bean.className + ".notFound\"));");
+			writeLine(this.bean.className + " " + this.bean.objectName + " = " + this.bean.daoObjectName + ".findById(" + bean.objectName + "Id).orElseThrow(() -> new ResourceNotFoundException(\"" + bean.className + ".notFound\"));");
             writeLine(this.bean.rightsManagerObjectName + ".checkCanAccess" + currentBean.className + "(" + this.bean.objectName + ");");
 			
 			writeLine("Long size = this." + currentBean.daoObjectName + ".count(" + currentBean.className + "Specification.filterBy" + bean.className + "Spec(" + bean.objectName + "Id));");
@@ -461,7 +461,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
             writeLine("@Override");
             writeLine("@Transactional(readOnly=true)");
             writeLine("public " + currentBean.fullViewBean.className + " load" + currentBean.className + "(" + currentBean.idType + " id) {");            
-            writeLine(currentBean.className + " " + currentBean.objectName + " = this." + currentBean.daoObjectName + ".findById(id).orElseThrow(() -> new ObjectNotFoundException(\"" + currentBean.className + ".notFound\"));");
+            writeLine(currentBean.className + " " + currentBean.objectName + " = this." + currentBean.daoObjectName + ".findById(id).orElseThrow(() -> new ResourceNotFoundException(\"" + currentBean.className + ".notFound\"));");
             writeLine(this.bean.rightsManagerObjectName + ".checkCanAccess" + currentBean.className + "(" + currentBean.objectName + ".get" + oneToManyComponent.referenceProperty.capName + "());");
             writeLine("return this." + currentBean.fullViewBean.mapperObjectName + ".toView(" + currentBean.objectName + ");");
             writeLine("}");
@@ -495,7 +495,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
             writeLine("@Override");
             writeLine("@Transactional(rollbackFor=Exception.class)");
             writeLine("public void save" + currentBean.className + "(" + bean.idType + " id, " + currentBean.formBean.className + " " + currentBean.formBean.objectName + ") {");
-            writeLine(this.bean.className + " " + this.bean.objectName + " = this." + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ObjectNotFoundException(\"" + bean.className + ".notFound\"));");
+            writeLine(this.bean.className + " " + this.bean.objectName + " = this." + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ResourceNotFoundException(\"" + bean.className + ".notFound\"));");
             writeLine(currentBean.className + " " + currentBean.objectName + " = this." + currentBean.formBean.mapperObjectName + ".toEntity(" + currentBean.formBean.objectName + ", new " + currentBean.className + "());");
             writeLine(this.bean.rightsManagerObjectName + ".checkCanSave" + currentBean.className + "(" + currentBean.objectName + "," + this.bean.objectName + ");");
             writeLine(this.bean.stateManagerObjectName + ".checkCanSave" + currentBean.className + "(" + currentBean.objectName + "," + this.bean.objectName + ");");
@@ -515,7 +515,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
             writeLine("@Override");
             writeLine("@Transactional(rollbackFor=Exception.class)");
             writeLine("public void save" + currentBean.className + "(" + bean.idType + " id, " + currentBean.formBean.className + " " + currentBean.formBean.objectName + ") {");
-            writeLine(this.bean.className + " " + this.bean.objectName + " = this." + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ObjectNotFoundException(\"" + bean.className + ".notFound\"));");
+            writeLine(this.bean.className + " " + this.bean.objectName + " = this." + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ResourceNotFoundException(\"" + bean.className + ".notFound\"));");
             writeLine(currentBean.className + " " + currentBean.objectName + " = this." + currentBean.formBean.mapperObjectName + ".toEntity(" + currentBean.formBean.objectName + ", new " + currentBean.className + "());");
             writeLine(this.bean.rightsManagerObjectName + ".checkCanSave" + currentBean.className + "(" + currentBean.objectName + "," + this.bean.objectName + ");");
             writeLine(this.bean.stateManagerObjectName + ".checkCanSave" + currentBean.className + "(" + currentBean.objectName + "," + this.bean.objectName + ");");
@@ -532,7 +532,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
         writeLine("@Override");
         writeLine("@Transactional(rollbackFor=Exception.class)");
         writeLine("public void update(" + bean.idType + " id, " + this.bean.formBean.className + " " + this.bean.formBean.objectName + ") {");
-        writeLine(this.bean.className + " " + this.bean.objectName + " = this." + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ObjectNotFoundException(\"" + bean.className + ".notFound\"));");
+        writeLine(this.bean.className + " " + this.bean.objectName + " = this." + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ResourceNotFoundException(\"" + bean.className + ".notFound\"));");
         writeLine(this.bean.rightsManagerObjectName + ".checkCanUpdate(" + this.bean.objectName + ");");
         writeLine(this.bean.stateManagerObjectName + ".checkCanUpdate(" + this.bean.objectName + ");");
         writeLine(this.bean.objectName + " = this." + bean.formBean.mapperObjectName + ".toEntity(" + this.bean.formBean.objectName + ", " + this.bean.objectName + ");");
@@ -551,7 +551,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
             writeLine("@Override");
             writeLine("@Transactional(rollbackFor=Exception.class)");
             writeLine("public void update" + currentBean.className + "(" + bean.idType + " id, " + currentBean.formBean.className + " " + currentBean.formBean.objectName + ") {");
-            writeLine(this.bean.className + " " + this.bean.objectName + " = this." + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ObjectNotFoundException(\"" + bean.className + ".notFound\"));");
+            writeLine(this.bean.className + " " + this.bean.objectName + " = this." + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ResourceNotFoundException(\"" + bean.className + ".notFound\"));");
             writeLine(currentBean.className + " " + currentBean.objectName + " = " + bean.objectName + ".get" + currentBean.className + "();");
             writeLine(this.bean.rightsManagerObjectName + ".checkCanUpdate" + currentBean.className + "(" + currentBean.objectName + ");");
             writeLine(this.bean.stateManagerObjectName + ".checkCanUpdate" + currentBean.className + "(" + currentBean.objectName + ");");
@@ -572,7 +572,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
             writeLine("@Override");
             writeLine("@Transactional(rollbackFor=Exception.class)");
             writeLine("public void update" + currentBean.className + "(" + currentBean.idType + " id, " + currentBean.formBean.className + " " + currentBean.formBean.objectName + ") {");
-            writeLine(currentBean.className + " " + currentBean.objectName + " = this." + currentBean.daoObjectName + ".findById(id).orElseThrow(() -> new ObjectNotFoundException(\"" + currentBean.className + ".notFound\"));");
+            writeLine(currentBean.className + " " + currentBean.objectName + " = this." + currentBean.daoObjectName + ".findById(id).orElseThrow(() -> new ResourceNotFoundException(\"" + currentBean.className + ".notFound\"));");
             writeLine(this.bean.rightsManagerObjectName + ".checkCanUpdate" + currentBean.className + "(" + currentBean.objectName + ");");
             writeLine(this.bean.stateManagerObjectName + ".checkCanUpdate" + currentBean.className + "(" + currentBean.objectName + ");");
             writeLine(currentBean.objectName + " = this." + currentBean.formBean.mapperObjectName + ".toEntity(" + currentBean.formBean.objectName + ", " + currentBean.objectName + ");");
@@ -590,7 +590,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
         writeLine("@Override");
         writeLine("@Transactional(rollbackFor=Exception.class)");
         writeLine("public void delete(" + bean.idType + " id) {");
-        writeLine(this.bean.className + " " + this.bean.objectName + " = " + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ObjectNotFoundException(\"" + bean.className + ".notFound\"));");
+        writeLine(this.bean.className + " " + this.bean.objectName + " = " + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ResourceNotFoundException(\"" + bean.className + ".notFound\"));");
         writeLine(this.bean.rightsManagerObjectName + ".checkCanDelete(" + this.bean.objectName + ");");
         writeLine(this.bean.stateManagerObjectName + ".checkCanDelete(" + this.bean.objectName + ");");
         writeLine(this.bean.processorObjectName + ".delete" + "(" + bean.objectName + ");");
@@ -608,7 +608,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
             writeLine("@Override");
             writeLine("@Transactional(rollbackFor=Exception.class)");
             writeLine("public void delete" + currentBean.className + "(" + currentBean.idType + " id) {");
-            writeLine(currentBean.className + " " + currentBean.objectName + " = this." + currentBean.daoObjectName + ".findById(id).orElseThrow(() -> new ObjectNotFoundException(\"" + currentBean.className + ".notFound\"));");
+            writeLine(currentBean.className + " " + currentBean.objectName + " = this." + currentBean.daoObjectName + ".findById(id).orElseThrow(() -> new ResourceNotFoundException(\"" + currentBean.className + ".notFound\"));");
             writeLine(this.bean.rightsManagerObjectName + ".checkCanDelete" + currentBean.className + "(" + currentBean.objectName + ");");
             writeLine(this.bean.stateManagerObjectName + ".checkCanDelete" + currentBean.className + "(" + currentBean.objectName + ");");
             writeLine("this." + this.bean.processorObjectName + ".delete" + currentBean.className + "(" + currentBean.objectName + ");");
@@ -627,7 +627,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
             writeLine("@Override");
             writeLine("@Transactional(rollbackFor=Exception.class)");
             writeLine("public void delete" + currentBean.className + "(" + bean.idType + " id) {");
-            writeLine(this.bean.className + " " + this.bean.objectName + " = this." + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ObjectNotFoundException(\"" + bean.className + ".notFound\"));");
+            writeLine(this.bean.className + " " + this.bean.objectName + " = this." + this.bean.daoObjectName + ".findById(id).orElseThrow(() -> new ResourceNotFoundException(\"" + bean.className + ".notFound\"));");
             writeLine(currentBean.className + " " + currentBean.objectName + " = " + bean.objectName + ".get" + currentBean.className + "();");
             writeLine(this.bean.rightsManagerObjectName + ".checkCanDelete" + currentBean.className + "(" + currentBean.objectName + ");");
             writeLine(this.bean.stateManagerObjectName + ".checkCanDelete" + currentBean.className + "(" + currentBean.objectName + ");");
@@ -637,3 +637,4 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
         }
     }
 }
+

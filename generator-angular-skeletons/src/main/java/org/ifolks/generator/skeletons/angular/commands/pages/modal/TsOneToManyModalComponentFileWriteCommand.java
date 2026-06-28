@@ -203,7 +203,7 @@ public class TsOneToManyModalComponentFileWriteCommand extends TsFileWriteComman
 			writeLine("this.view.form." + oneToMany.referenceProperty.name + property.capName + " = " + parentBean.fullViewBean.objectName + ".form." + property.name + ";");
 		}
         
-        writeLine("this.service.save(this.view.form).subscribe(success => {this.notifications.info(\"Operation completed\");this.dialogRef.close();}, error => {this.notifications.error(\"Operation failed\")});");
+        writeLine("this.service.save(this.view.form).subscribe(success => {this.notifications.info(\"Operation completed\");this.dialogRef.close();});");
         
         writeLine("});");
         writeLine("}");
@@ -211,7 +211,7 @@ public class TsOneToManyModalComponentFileWriteCommand extends TsFileWriteComman
         
         writeLine("update(): void {");
         writeLine("this.applyForm();");
-        writeLine("this.service.update(this.view.id, this.view.form).subscribe(success => {this.notifications.info(\"Operation completed\");this.dialogRef.close();}, error => {this.notifications.error(\"Operation failed\")});");
+        writeLine("this.service.update(this.view.id, this.view.form).subscribe(success => {this.notifications.info(\"Operation completed\");this.dialogRef.close();});");
         writeLine("}");
         skipLine();
         
