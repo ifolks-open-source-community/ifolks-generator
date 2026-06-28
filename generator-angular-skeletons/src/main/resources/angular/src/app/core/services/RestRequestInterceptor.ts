@@ -45,7 +45,11 @@ export class RestRequestInterceptor implements HttpInterceptor {
         } else if (error.status === 409 || (error.status === 400 && request.method !== 'GET')) {
           this.notifications.error(error.error?.message || "Une erreur est survenue");
         } else if (error.status === 500) {
-          this.notifications.error("Une erreur technique est survenue sur le serveur.");
+          if (request.method === 'GET') {
+            this.router.navigate(['/500']);
+          } else {
+            this.notifications.error("Une erreur technique est survenue sur le serveur.");
+          }
         }
         return throwError(() => error);
       })
