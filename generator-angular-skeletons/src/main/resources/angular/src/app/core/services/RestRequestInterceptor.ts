@@ -40,10 +40,10 @@ export class RestRequestInterceptor implements HttpInterceptor {
           if (request.method === 'GET') {
             this.router.navigate(['/403']);
           } else {
-            this.notifications.error(error.error?.message || "Action non autorisée");
+            this.notifications.error(error.error?.detail || "Action non autorisée");
           }
         } else if (error.status === 409 || (error.status === 400 && request.method !== 'GET')) {
-          this.notifications.error(error.error?.message || "Une erreur est survenue");
+          this.notifications.error(error.error?.detail || "Une erreur est survenue");
         } else if (error.status === 500) {
           if (request.method === 'GET') {
             this.router.navigate(['/500']);
