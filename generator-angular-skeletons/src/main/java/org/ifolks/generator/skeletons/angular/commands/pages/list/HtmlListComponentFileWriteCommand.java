@@ -39,24 +39,24 @@ public class HtmlListComponentFileWriteCommand extends AngularHtmlFileWriteComma
 		
 		writeLine("<app-private-template>");
 		writeLine("<h2>");
-		writeLine(bean.listRendering + ": {{scrollView.count}} / {{scrollView.size}}");
+		writeLine("{{ '" + bean.objectName + "List' | i18n }}: {{scrollView.count}} / {{scrollView.size}}");
 		writeLine("</h2>");
 		skipLine();
 		
 		writeLine("<form [formGroup]=\"filter\">");
 		for (FilterProperty property : this.bean.basicViewBean.filter.properties) {
-			writeFilter(property);
+			writeFilter(property, bean);
 		}
 		writeLine("</form>");
 		
 		writeLine("<mat-table [dataSource]=\"dataSource\" matSort>");
 
 		for (ViewProperty property:bean.basicViewBean.properties) {
-			writeListComponent(property);
+			writeListComponent(property, bean);
 		}
 		
 		writeLine("<ng-container matColumnDef=\"Actions\">");
-		writeLine("<mat-header-cell *matHeaderCellDef class=\"table-header\">Actions</mat-header-cell>");
+		writeLine("<mat-header-cell *matHeaderCellDef class=\"table-header\">{{ 'actions' | i18n }}</mat-header-cell>");
 		writeLine("<mat-cell *matCellDef=\"let element\">");
 		if (bean.detailMode.equals(DetailMode.PAGE)) {
 			writeLine("<a class=\"margin-10\" href=\"{{'/" + bean.urlPiece + "/' + element.id}}\"><mat-icon aria-label=\"Edit\" svgIcon=\"table-edit\" class=\"text-success\"></mat-icon></a>");
@@ -84,7 +84,7 @@ public class HtmlListComponentFileWriteCommand extends AngularHtmlFileWriteComma
 		
 		if (bean.createEnabled) {
 			writeLine("<button mat-raised-button (click)=\"create()\" color=\"primary\">");
-			writeLine("Create");
+			writeLine("{{ 'create' | i18n }}");
 			writeLine("</button>");
 		}
 

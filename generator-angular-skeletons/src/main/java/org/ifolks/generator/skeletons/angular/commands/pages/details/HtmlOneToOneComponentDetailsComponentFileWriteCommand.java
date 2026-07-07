@@ -46,7 +46,7 @@ public class HtmlOneToOneComponentDetailsComponentFileWriteCommand extends Angul
 		skipLine();
 		
 		writeLine("<h2>");
-		writeLine(referenceBean.detailRendering);
+		writeLine("{{ '" + referenceBean.objectName + "Details' | i18n }}");
 		writeLine("</h2>");
 		skipLine();
 		
@@ -54,23 +54,23 @@ public class HtmlOneToOneComponentDetailsComponentFileWriteCommand extends Angul
 		writeLine("<form [formGroup]=\"form\" (ngSubmit)=\"saveOrUpdate()\">");
 		
 		for (ViewProperty property:referenceBean.formBean.properties) {
-			writeInput(property);
+			writeInput(property, referenceBean);
 		}
 		
 		writeLine("<mat-dialog-actions>");
 		if (referenceBean.createEnabled) {
 			writeLine("@if (view.id == null) {");
-			writeLine("  <button mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">Save</button>");
+			writeLine("  <button mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">{{ 'save' | i18n }}</button>");
 			writeLine("}");
 		}
 		if (referenceBean.updateEnabled ) {
 			writeLine("@if (view.id != null && view.canUpdate) {");
-			writeLine("  <button mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">Update</button>");
+			writeLine("  <button mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">{{ 'update' | i18n }}</button>");
 			writeLine("}");
 		}
 		if (referenceBean.deleteEnabled ) {
 			writeLine("@if (view.id != null && view.canDelete) {");
-			writeLine("  <button mat-raised-button color=\"warn\" type=\"button\" (click)=\"delete()\">Delete</button>");
+			writeLine("  <button mat-raised-button color=\"warn\" type=\"button\" (click)=\"delete()\">{{ 'delete' | i18n }}</button>");
 			writeLine("}");
 		}
 		writeLine("</mat-dialog-actions>");

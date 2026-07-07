@@ -40,7 +40,7 @@ public class HtmlDetailsComponentFileWriteCommand extends AngularHtmlFileWriteCo
 		skipLine();
 		
 		writeLine("<h2>");
-		writeLine(bean.detailRendering);
+		writeLine("{{ '" + bean.objectName + "Details' | i18n }}");
 		writeLine("</h2>");
 		skipLine();
 		
@@ -48,13 +48,13 @@ public class HtmlDetailsComponentFileWriteCommand extends AngularHtmlFileWriteCo
 		writeLine("<form [formGroup]=\"form\" (ngSubmit)=\"update()\">");
 		
 		for (ViewProperty property:bean.formBean.properties) {
-			writeInput(property);
+			writeInput(property, bean);
 		}
 		
 		if (bean.updateEnabled) {
 			writeLine("<p>");
 			writeLine("@if (view.canUpdate) {");
-			writeLine("  <button mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">Update</button>");
+			writeLine("  <button mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">{{ 'update' | i18n }}</button>");
 			writeLine("}");
 			writeLine("</p>");
 		}

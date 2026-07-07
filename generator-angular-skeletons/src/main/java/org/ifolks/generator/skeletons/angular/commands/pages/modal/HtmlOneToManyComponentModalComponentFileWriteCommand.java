@@ -51,7 +51,7 @@ public class HtmlOneToManyComponentModalComponentFileWriteCommand extends Angula
 		writeLine("</div>");
 		writeLine("<section>");
 		for (ViewProperty property:referenceBean.formBean.properties) {
-			writeInput(property);
+			writeInput(property, referenceBean);
 		}
 		
 		writeLine("</section>");
@@ -59,12 +59,12 @@ public class HtmlOneToManyComponentModalComponentFileWriteCommand extends Angula
 		writeLine("<mat-dialog-actions>");
 		if (referenceBean.createEnabled) {
 			writeLine("@if (view.id == null) {");
-			writeLine("  <button mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">Save</button>");
+			writeLine("  <button mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">{{ 'save' | i18n }}</button>");
 			writeLine("}");
 		}
 		if (referenceBean.updateEnabled ) {
 			writeLine("@if (view.id != null && view.canUpdate) {");
-			writeLine("  <button mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">Update</button>");
+			writeLine("  <button mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">{{ 'update' | i18n }}</button>");
 			writeLine("}");
 		}
 		writeLine("</mat-dialog-actions>");

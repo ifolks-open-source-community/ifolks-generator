@@ -6,10 +6,11 @@ import { FooterComponent } from './components/footer/footer.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { TemplateComponent } from './components/template/template.component';
 import { CommonModule } from '@angular/common';
+import { I18nPipe } from 'src/app/core/pipes/I18nPipe';
 
 
 @NgModule({
-  imports: [CommonModule, SharedModule],
+  imports: [CommonModule, SharedModule, I18nPipe],
   declarations: [HeaderComponent, BodyComponent, FooterComponent, TemplateComponent],
   exports: [TemplateComponent]
 })

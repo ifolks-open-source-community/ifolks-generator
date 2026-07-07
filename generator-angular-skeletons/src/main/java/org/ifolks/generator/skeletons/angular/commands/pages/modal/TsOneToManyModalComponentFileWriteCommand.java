@@ -41,6 +41,7 @@ public class TsOneToManyModalComponentFileWriteCommand extends TsFileWriteComman
 	protected void fetchSpecificImports() {
 		imports.add("import { Component, OnInit, ViewChild } from '@angular/core';");
 		imports.add("import { CommonModule } from '@angular/common';");
+		imports.add("import { I18nPipe } from 'src/app/core/pipes/I18nPipe';");
 		imports.add("import { SharedModule } from 'src/app/shared/shared.module';");
 		imports.add("import { SelectItem } from 'src/app/core/models/SelectItem';");
 		imports.add("import { Observable } from 'rxjs';");
@@ -75,7 +76,7 @@ public class TsOneToManyModalComponentFileWriteCommand extends TsFileWriteComman
         writeLine("@Component({");
         writeLine("selector: 'app-" + referenceBean.urlPiece + "from-" + parentBean.urlPiece + "-modal',");
         writeLine("standalone: true,");
-        writeLine("imports: [CommonModule, SharedModule],");
+        writeLine("imports: [CommonModule, SharedModule, I18nPipe],");
         writeLine("templateUrl: './" + referenceBean.urlPiece + "-modal.component.html',");
         writeLine("styleUrl: './" + referenceBean.urlPiece + "-modal.component.scss'");
         writeLine("})");

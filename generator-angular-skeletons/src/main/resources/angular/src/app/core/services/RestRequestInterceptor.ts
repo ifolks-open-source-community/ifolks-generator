@@ -11,6 +11,10 @@ export class RestRequestInterceptor implements HttpInterceptor {
   constructor(private router: Router, private notifications: NotificationService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (request.url.includes('/assets/') || request.url.startsWith('assets/')) {
+      return next.handle(request);
+    }
+
     const token = localStorage.getItem('access_token');
 
     if (token) {

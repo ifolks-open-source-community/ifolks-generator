@@ -1,6 +1,7 @@
 <div class="forbidden-container">
-  <img class="forbidden-image" src="assets/images/ifolks_forbidden.png" alt="Accès Refusé iFolks">
-  <h1 class="forbidden-title">403 - Accès Refusé</h1>
-  <p class="forbidden-message">Désolé, vous ne disposez pas des autorisations nécessaires pour accéder à cette ressource.</p>
-  <button mat-flat-button color="primary" routerLink="/">Retour à l'accueil</button>
+  <div class="forbidden-card">
+    <img class="forbidden-image" src="assets/images/ifolks_forbidden.png" alt="Accès Refusé iFolks">
+    <p class="forbidden-message">{{ 'access.denied' | i18n }}</p>
+  </div>
+  <button mat-flat-button color="primary" routerLink="/" class="back-button">{{ 'backToHome' | i18n }}</button>
 </div>

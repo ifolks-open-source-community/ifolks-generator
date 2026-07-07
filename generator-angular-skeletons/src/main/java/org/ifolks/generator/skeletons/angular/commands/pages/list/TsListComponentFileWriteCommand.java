@@ -27,6 +27,7 @@ public class TsListComponentFileWriteCommand extends TsFileWriteCommand {
 	protected void fetchSpecificImports() {
 		imports.add("import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';");
 		imports.add("import { CommonModule } from '@angular/common';");
+		imports.add("import { I18nPipe } from 'src/app/core/pipes/I18nPipe';");
 		imports.add("import { SharedModule } from 'src/app/shared/shared.module';");
 		imports.add("import { PrivateTemplatesModule } from 'src/app/templates/private/templates.module';");
 		imports.add("import { MatTableDataSource } from '@angular/material/table';");
@@ -69,7 +70,7 @@ public class TsListComponentFileWriteCommand extends TsFileWriteCommand {
         writeLine("@Component({");
         writeLine("selector: 'app-" + bean.urlPiece + "-list',");
         writeLine("standalone: true,");
-        writeLine("imports: [CommonModule, SharedModule, PrivateTemplatesModule],");
+        writeLine("imports: [CommonModule, SharedModule, PrivateTemplatesModule, I18nPipe],");
         writeLine("templateUrl: './" + bean.urlPiece + "-list.component.html',");
         writeLine("styleUrl: './" + bean.urlPiece + "-list.component.scss'");
         writeLine("})");

@@ -47,24 +47,24 @@ public class HtmlOneToManyComponentListComponentFileWriteCommand extends Angular
 		skipLine();
 		
 		writeLine("<h2>");
-		writeLine(referenceBean.listRendering + ": {{scrollView.count}} / {{scrollView.size}}");
+		writeLine("{{ '" + referenceBean.objectName + "List' | i18n }}: {{scrollView.count}} / {{scrollView.size}}");
 		writeLine("</h2>");
 		skipLine();
 		
 		writeLine("<form [formGroup]=\"filter\">");
 		for (FilterProperty property : referenceBean.basicViewBean.filter.properties) {
-			writeFilter(property);
+			writeFilter(property, referenceBean);
 		}
 		writeLine("</form>");
 		
 		writeLine("<mat-table [dataSource]=\"dataSource\" matSort>");
 
 		for (ViewProperty property:referenceBean.basicViewBean.properties) {
-			writeListComponent(property);
+			writeListComponent(property, referenceBean);
 		}
 		
 		writeLine("<ng-container matColumnDef=\"Actions\">");
-		writeLine("<mat-header-cell *matHeaderCellDef class=\"table-header\">Actions</mat-header-cell>");
+		writeLine("<mat-header-cell *matHeaderCellDef class=\"table-header\">{{ 'actions' | i18n }}</mat-header-cell>");
 		writeLine("<mat-cell *matCellDef=\"let element\">");
 		
 		writeLine("<a class=\"margin-10\" (click)=\"edit(element.id)\"><mat-icon aria-label=\"Edit\" svgIcon=\"pencil\" class=\"text-success\"></mat-icon></a>");
@@ -89,7 +89,7 @@ public class HtmlOneToManyComponentListComponentFileWriteCommand extends Angular
 		
 		if (referenceBean.createEnabled) {
 			writeLine("<button mat-raised-button (click)=\"create()\" color=\"primary\">");
-			writeLine("Create");
+			writeLine("{{ 'create' | i18n }}");
 			writeLine("</button>");
 		}
 

@@ -6,6 +6,7 @@ import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.business.OneToMany;
 import org.ifolks.generator.model.domain.business.OneToManyComponent;
 import org.ifolks.generator.model.domain.business.OneToOneComponent;
+import org.ifolks.generator.skeletons.angular.commands.i18n.I18nModelJsonFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.pages.TsAppRoutingModuleFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.pages.TsRoutingModuleFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.pages.details.HtmlDetailsComponentFileWriteCommand;
@@ -68,6 +69,8 @@ public class TypeScriptComponentsLayer extends AbstractLayer {
 		
 		FileWriteCommandTreeNode appRouting = new FileWriteCommandTreeNode(new TsAppRoutingModuleFileWriteCommand(project));
 		modelTreeNode.add(appRouting);
+		
+		modelTreeNode.add(new FileWriteCommandTreeNode(new I18nModelJsonFileWriteCommand(project)));
 		
 		
 		for (Package myPackage : project.model.packages) {

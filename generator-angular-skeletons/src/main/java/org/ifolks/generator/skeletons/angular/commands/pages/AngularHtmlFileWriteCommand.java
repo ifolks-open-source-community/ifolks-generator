@@ -1,5 +1,6 @@
 package org.ifolks.generator.skeletons.angular.commands.pages;
 
+import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.ui.FilterProperty;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
 import org.ifolks.generator.model.metadata.SelectionMode;
@@ -11,9 +12,9 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 		super(folderName, fileName);
 	}
 
-	protected void writeListComponent(ViewProperty property) {
+	protected void writeListComponent(ViewProperty property, Bean bean) {
 		writeLine("<ng-container matColumnDef=\"" + property.name + "\">");
-		writeLine("<mat-header-cell *matHeaderCellDef mat-sort-header class=\"table-header\">" + property.rendering + "</mat-header-cell>");
+		writeLine("<mat-header-cell *matHeaderCellDef mat-sort-header class=\"table-header\">{{ '" + bean.objectName + property.capName + "' | i18n }}</mat-header-cell>");
 		
 		switch (property.dataType) {
 		case BOOLEAN:
@@ -61,57 +62,57 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 	}
 	
 	
-	protected void writeInput(ViewProperty property){
+	protected void writeInput(ViewProperty property, Bean bean){
 		
 		if (property.selectableBean != null) {
 			if (property.selectableBean.selectionBehavior.selectionMode.equals(SelectionMode.DROPDOWN_OPTIONS)) {
-				writeCombobox(property);
+				writeCombobox(property, bean);
 			} else {
-				writeAutocomplete(property);
+				writeAutocomplete(property, bean);
 			}
 		} else {
 		
 			switch (property.dataType) {
 				case BOOLEAN:
-					writeBooleanInput(property);
+					writeBooleanInput(property, bean);
 					break;
 				case DATE:
-					writeDateInput(property);
+					writeDateInput(property, bean);
 					break;
 				case DATETIME:
-					writeDateTimeInput(property);
+					writeDateTimeInput(property, bean);
 					break;
 				case DOUBLE:
-					writeBigDecimalInput(property);
+					writeBigDecimalInput(property, bean);
 					break;
 				case BIG_DECIMAL:
-					writeBigDecimalInput(property);
+					writeBigDecimalInput(property, bean);
 					break;
 				case SHORT:
 				case INTEGER:
 				case LONG:
-					writeLongInput(property);
+					writeLongInput(property, bean);
 					break;
 				case STRING:
-					writeStringInput(property);
+					writeStringInput(property, bean);
 					break;
 				case TEXT:
-					writeTextInput(property);
+					writeTextInput(property, bean);
 					break;
 			}
 		}
         skipLine();
 	}
 	
-	private void writeCombobox(ViewProperty property){
+	private void writeCombobox(ViewProperty property, Bean bean){
 		
 		writeLine("<p>");
 		writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-		writeLine("<mat-label>" + property.rendering + "</mat-label>");
+		writeLine("<mat-label>{{ '" + bean.objectName + property.capName + "' | i18n }}</mat-label>");
 		if (!property.editable) {
-			writeLine("<input matInput placeholder=\"" + property.rendering + "\" formControlName=\"" + property.name + "\"/>");
+			writeLine("<input matInput placeholder=\"{{ '" + bean.objectName + property.capName + "' | i18n }}\" formControlName=\"" + property.name + "\"/>");
 		} else {
-			writeLine("<mat-select placeholder=\"" + property.rendering + "\" formControlName=\"" + property.name + "\" >");
+			writeLine("<mat-select placeholder=\"{{ '" + bean.objectName + property.capName + "' | i18n }}\" formControlName=\"" + property.name + "\" >");
 			writeLine("<mat-option [value]=\"null\"></mat-option>");
 			writeLine("@for (option of " + property.name + "Options; track option.key) {");
 			writeLine("  <mat-option [value]=\"option.key\">{{option.label}}</mat-option>");
@@ -122,15 +123,15 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 		writeLine("</p>");
 	}
 	
-	private void writeAutocomplete(ViewProperty property){
+	private void writeAutocomplete(ViewProperty property, Bean bean){
 		
 		writeLine("<p>");
 		writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\" class=\"autocomplete\">");
-		writeLine("<mat-label>" + property.rendering + "</mat-label>");
+		writeLine("<mat-label>{{ '" + bean.objectName + property.capName + "' | i18n }}</mat-label>");
 		if (!property.editable) {
-			writeLine("<input matInput placeholder=\"" + property.rendering + "\" formControlName=\"" + property.name + "\"/>");
+			writeLine("<input matInput placeholder=\"{{ '" + bean.objectName + property.capName + "' | i18n }}\" formControlName=\"" + property.name + "\"/>");
 		} else {
-			writeLine("<input matInput placeholder=\"" + property.rendering + "\" formControlName=\"" + property.name + "\" [matAutocomplete]=\"" + property.name + "AutoComplete\"/>");
+			writeLine("<input matInput placeholder=\"{{ '" + bean.objectName + property.capName + "' | i18n }}\" formControlName=\"" + property.name + "\" [matAutocomplete]=\"" + property.name + "AutoComplete\"/>");
 			writeLine("<mat-autocomplete #" + property.name + "AutoComplete=\"matAutocomplete\">");
 			writeLine("@for (option of " + property.name + "Options | async; track option.key) {");
 			writeLine("  <mat-option [value]=\"option.key\">{{option.label}}</mat-option>");
@@ -142,42 +143,42 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 	}
 	
 	
-	private void writeStringInput(ViewProperty property){
+	private void writeStringInput(ViewProperty property, Bean bean){
 		writeLine("<p>");
 		writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-		writeLine("<mat-label>" + property.rendering + "</mat-label>");
-		writeLine("<input matInput placeholder=\"" + property.rendering + "\" formControlName=\"" + property.name + "\"/>");
+		writeLine("<mat-label>{{ '" + bean.objectName + property.capName + "' | i18n }}</mat-label>");
+		writeLine("<input matInput placeholder=\"{{ '" + bean.objectName + property.capName + "' | i18n }}\" formControlName=\"" + property.name + "\"/>");
 		writeLine("</mat-form-field>");
 		writeLine("</p>");
 	}
 	
-	private void writeTextInput(ViewProperty property){
+	private void writeTextInput(ViewProperty property, Bean bean){
 		writeLine("<p>");
 		writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-		writeLine("<mat-label>" + property.rendering + "</mat-label>");
-		writeLine("<textarea matInput placeholder=\"" + property.rendering + "\" formControlName=\"" + property.name + "\" cdkTextareaAutosize></textarea>");
+		writeLine("<mat-label>{{ '" + bean.objectName + property.capName + "' | i18n }}</mat-label>");
+		writeLine("<textarea matInput placeholder=\"{{ '" + bean.objectName + property.capName + "' | i18n }}\" formControlName=\"" + property.name + "\" cdkTextareaAutosize></textarea>");
 		writeLine("</mat-form-field>");
 		writeLine("</p>");
 	}
 	
-	private void writeBooleanInput(ViewProperty property){
+	private void writeBooleanInput(ViewProperty property, Bean bean){
 		if (!property.nullable) {
 			writeLine("<p>");
 			writeLine("<mat-checkbox color=\"primary\" formControlName=\"" +  property.name + "\">");
-			writeLine(property.rendering);
+			writeLine("{{ '" + bean.objectName + property.capName + "' | i18n }}");
 			writeLine("</mat-checkbox>");
 			writeLine("</p>");
 		} else {
 			writeLine("<p>");
 			writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-			writeLine("<mat-label>" + property.rendering + "</mat-label>");
+			writeLine("<mat-label>{{ '" + bean.objectName + property.capName + "' | i18n }}</mat-label>");
 			if (!property.editable) {
-				writeLine("<input matInput placeholder=\"" + property.rendering + "\" formControlName=\"" + property.name + "\"/>");
+				writeLine("<input matInput placeholder=\"{{ '" + bean.objectName + property.capName + "' | i18n }}\" formControlName=\"" + property.name + "\"/>");
 			} else {
-				writeLine("<mat-select placeholder=\"" + property.rendering + "\" formControlName=\"" + property.name + "\">");
+				writeLine("<mat-select placeholder=\"{{ '" + bean.objectName + property.capName + "' | i18n }}\" formControlName=\"" + property.name + "\">");
 				writeLine("<mat-option [value]=\"\"></mat-option>");
-				writeLine("<mat-option [value]=\"true\">true</mat-option>");
-				writeLine("<mat-option [value]=\"false\">false</mat-option>");
+				writeLine("<mat-option [value]=\"true\">{{ 'trueLabel' | i18n }}</mat-option>");
+				writeLine("<mat-option [value]=\"false\">{{ 'falseLabel' | i18n }}</mat-option>");
 				writeLine("</mat-select>");
 			}
 			writeLine("</mat-form-field>");
@@ -185,28 +186,28 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 		}
 	}
 	
-	private void writeBigDecimalInput(ViewProperty property){
+	private void writeBigDecimalInput(ViewProperty property, Bean bean){
 		writeLine("<p>");
 		writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-		writeLine("<mat-label>" + property.rendering + "</mat-label>");
-		writeLine("<input matInput type=\"decimal\" placeholder=\"" + property.rendering + "\" formControlName=\"" + property.name + "\"/>");
+		writeLine("<mat-label>{{ '" + bean.objectName + property.capName + "' | i18n }}</mat-label>");
+		writeLine("<input matInput type=\"decimal\" placeholder=\"{{ '" + bean.objectName + property.capName + "' | i18n }}\" formControlName=\"" + property.name + "\"/>");
 		writeLine("</mat-form-field>");
 		writeLine("</p>");
 	}
 	
-	private void writeLongInput(ViewProperty property){
+	private void writeLongInput(ViewProperty property, Bean bean){
 		writeLine("<p>");
 		writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-		writeLine("<mat-label>" + property.rendering + "</mat-label>");
-		writeLine("<input type=\"number\" matInput placeholder=\"" + property.rendering + "\" formControlName=\"" + property.name + "\"/>");
+		writeLine("<mat-label>{{ '" + bean.objectName + property.capName + "' | i18n }}</mat-label>");
+		writeLine("<input type=\"number\" matInput placeholder=\"{{ '" + bean.objectName + property.capName + "' | i18n }}\" formControlName=\"" + property.name + "\"/>");
 		writeLine("</mat-form-field>");
 		writeLine("</p>");
 	}
 	
-	private void writeDateInput(ViewProperty property){
+	private void writeDateInput(ViewProperty property, Bean bean){
 		writeLine("<p>");
 		writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-		writeLine("<mat-label>" + property.rendering + "</mat-label>");
+		writeLine("<mat-label>{{ '" + bean.objectName + property.capName + "' | i18n }}</mat-label>");
 		if (!property.editable) {
 			writeLine("<input matInput placeholder=\"yyyy-MM-dd\" formControlName=\"" + property.name + "\"/>");
 		} else {
@@ -218,30 +219,30 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 		writeLine("</p>");
 	}
 	
-	private void writeDateTimeInput(ViewProperty property){
+	private void writeDateTimeInput(ViewProperty property, Bean bean){
 		writeLine("<p>");
 		writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-		writeLine("<mat-label>" + property.rendering + "</mat-label>");
+		writeLine("<mat-label>{{ '" + bean.objectName + property.capName + "' | i18n }}</mat-label>");
 		writeLine("<input matInput placeholder=\"yyyy-MM-ddTHH:mm:ssZ\" formControlName=\"" + property.name + "\"/>");
 		writeLine("</mat-form-field>");
 		writeLine("</p>");
 	}
 	
 	
-	protected void writeFilter(FilterProperty property) {
-		
+	protected void writeFilter(FilterProperty property, Bean bean) {
+		String capName = capitalize(property.name);
 		switch (property.dataType) {
 			case STRING:
 			case TEXT:
 				writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-				writeLine("<mat-label>" + property.rendering + "</mat-label>");
-				writeLine("<input matInput placeholder=\"" + property.rendering + "\" formControlName=\"" + property.name + "\"/>");
+				writeLine("<mat-label>{{ '" + bean.objectName + capName + "' | i18n }}</mat-label>");
+				writeLine("<input matInput placeholder=\"{{ '" + bean.objectName + capName + "' | i18n }}\" formControlName=\"" + property.name + "\"/>");
 				writeLine("</mat-form-field>");	
 				break;
 				
 			case DATE:				
 				writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-				writeLine("<mat-label>" + property.rendering + "</mat-label>");
+				writeLine("<mat-label>{{ '" + bean.objectName + capName + "' | i18n }}</mat-label>");
 				writeLine("<input matInput [matDatepicker]=\"" + property.name + "DatePicker\" placeholder=\"yyyy-MM-dd\" formControlName=\"" + property.name + "\"/>");
 				writeLine("<mat-datepicker-toggle matSuffix [for]=\"" + property.name + "DatePicker\"></mat-datepicker-toggle>");
 				writeLine("<mat-datepicker #" + property.name + "DatePicker></mat-datepicker>");
@@ -250,7 +251,7 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 				
 			case DATETIME:				
 				writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-				writeLine("<mat-label>" + property.rendering + "</mat-label>");
+				writeLine("<mat-label>{{ '" + bean.objectName + capName + "' | i18n }}</mat-label>");
 				writeLine("<input matInput placeholder=\"yyyy-MM-ddTHH:mm:ssZ\" formControlName=\"" + property.name + "\"/>");
 				writeLine("</mat-form-field>");
 				break;
@@ -258,8 +259,8 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 			case DOUBLE:
 			case BIG_DECIMAL:
 				writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-				writeLine("<mat-label>" + property.rendering + "</mat-label>");
-				writeLine("<input type=\"number\" matInput placeholder=\"" + property.rendering + "\" formControlName=\"" + property.name + "\"/>");
+				writeLine("<mat-label>{{ '" + bean.objectName + capName + "' | i18n }}</mat-label>");
+				writeLine("<input type=\"number\" matInput placeholder=\"{{ '" + bean.objectName + capName + "' | i18n }}\" formControlName=\"" + property.name + "\"/>");
 				writeLine("</mat-form-field>");
 				break;
 			
@@ -267,22 +268,29 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 			case INTEGER:
 			case LONG:
 				writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-				writeLine("<mat-label>" + property.rendering + "</mat-label>");
-				writeLine("<input type=\"number\" matInput placeholder=\"" + property.rendering + "\" formControlName=\"" + property.name + "\"/>");
+				writeLine("<mat-label>{{ '" + bean.objectName + capName + "' | i18n }}</mat-label>");
+				writeLine("<input type=\"number\" matInput placeholder=\"{{ '" + bean.objectName + capName + "' | i18n }}\" formControlName=\"" + property.name + "\"/>");
 				writeLine("</mat-form-field>");
 				break;
 				
 			case BOOLEAN:
 				writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-				writeLine("<mat-label>" + property.rendering + "</mat-label>");
-				writeLine("<mat-select placeholder=\"" + property.rendering + "\" formControlName=\"" + property.name + "\" >");
+				writeLine("<mat-label>{{ '" + bean.objectName + capName + "' | i18n }}</mat-label>");
+				writeLine("<mat-select placeholder=\"{{ '" + bean.objectName + capName + "' | i18n }}\" formControlName=\"" + property.name + "\" >");
 				writeLine("<mat-option [value]=\"\"></mat-option>");
-				writeLine("<mat-option [value]=\"true\">true</mat-option>");
-				writeLine("<mat-option [value]=\"false\">false</mat-option>");
+				writeLine("<mat-option [value]=\"true\">{{ 'trueLabel' | i18n }}</mat-option>");
+				writeLine("<mat-option [value]=\"false\">{{ 'falseLabel' | i18n }}</mat-option>");
 				writeLine("</mat-select>");
 				writeLine("</mat-form-field>");
 				break;
 
 		}
+	}
+
+	private String capitalize(String str) {
+		if (str == null || str.isEmpty()) {
+			return "";
+		}
+		return str.substring(0, 1).toUpperCase() + str.substring(1);
 	}
 }

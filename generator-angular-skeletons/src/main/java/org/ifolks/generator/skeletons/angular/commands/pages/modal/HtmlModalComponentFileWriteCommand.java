@@ -45,7 +45,7 @@ public class HtmlModalComponentFileWriteCommand extends AngularHtmlFileWriteComm
 		writeLine("</div>");
 		writeLine("<section>");
 		for (ViewProperty property:bean.formBean.properties) {
-			writeInput(property);
+			writeInput(property, bean);
 		}
 		
 		writeLine("</section>");
@@ -53,12 +53,12 @@ public class HtmlModalComponentFileWriteCommand extends AngularHtmlFileWriteComm
 		writeLine("<mat-dialog-actions>");
 		if (bean.createEnabled) {
 			writeLine("@if (view.id == null) {");
-			writeLine("  <button mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">Save</button>");
+			writeLine("  <button mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">{{ 'save' | i18n }}</button>");
 			writeLine("}");
 		}
 		if (bean.updateEnabled ) {
 			writeLine("@if (view.id != null && view.canUpdate) {");
-			writeLine("  <button mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">Update</button>");
+			writeLine("  <button mat-raised-button color=\"primary\" type=\"submit\" [disabled]=\"form.invalid\">{{ 'update' | i18n }}</button>");
 			writeLine("}");
 		}
 		writeLine("</mat-dialog-actions>");

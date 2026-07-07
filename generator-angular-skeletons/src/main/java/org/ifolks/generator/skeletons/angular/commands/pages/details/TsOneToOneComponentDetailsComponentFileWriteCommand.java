@@ -41,6 +41,7 @@ public class TsOneToOneComponentDetailsComponentFileWriteCommand extends TsFileW
 	protected void fetchSpecificImports() {
 		imports.add("import { Component, OnInit, ViewChild } from '@angular/core';");
 		imports.add("import { CommonModule } from '@angular/common';");
+		imports.add("import { I18nPipe } from 'src/app/core/pipes/I18nPipe';");
 		imports.add("import { SharedModule } from 'src/app/shared/shared.module';");
 		imports.add("import { PrivateTemplatesModule } from 'src/app/templates/private/templates.module';");
 		imports.add("import { RouterModule } from '@angular/router';");
@@ -77,7 +78,7 @@ public class TsOneToOneComponentDetailsComponentFileWriteCommand extends TsFileW
         writeLine("@Component({");
         writeLine("selector: 'app-" + referenceBean.urlPiece + "-details',");
         writeLine("standalone: true,");
-        writeLine("imports: [CommonModule, SharedModule, PrivateTemplatesModule, RouterModule, " + parentBean.className + "MenuComponent],");
+        writeLine("imports: [CommonModule, SharedModule, PrivateTemplatesModule, RouterModule, " + parentBean.className + "MenuComponent, I18nPipe],");
         writeLine("templateUrl: './" + referenceBean.urlPiece + "-details.component.html',");
         writeLine("styleUrl: './" + referenceBean.urlPiece + "-details.component.scss'");
         writeLine("})");

@@ -29,6 +29,7 @@ public enum FileType {
     SCSS (".scss", StandardCharsets.UTF_8, "/* Specific Code Start */", "/* Specific Code End */"),
     BAT (".bat", StandardCharsets.UTF_8, "# Specific Code Start", "# Specific Code End"),
     CSV (".csv", StandardCharsets.UTF_8, "# Specific Code Start", "# Specific Code End"),
+    JSON (".json", StandardCharsets.UTF_8, null, null),
     PROPERTIES (".properties", StandardCharsets.ISO_8859_1, "# Specific Code Start", "# Specific Code End");
 	
 	private String extension;
