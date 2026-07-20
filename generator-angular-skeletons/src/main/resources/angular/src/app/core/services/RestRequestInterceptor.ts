@@ -31,25 +31,27 @@ export class RestRequestInterceptor implements HttpInterceptor {
       });
     }
 
+    const isReadRequest = request.method === 'GET' || request.url.includes('/scroll') || request.url.includes('/search');
+
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           localStorage.removeItem('access_token');
           window.location.reload();
         } else if (error.status === 404) {
-          if (request.method === 'GET') {
+          if (isReadRequest) {
             this.router.navigate(['/404']);
           }
         } else if (error.status === 403) {
-          if (request.method === 'GET') {
+          if (isReadRequest) {
             this.router.navigate(['/403']);
           } else {
             this.notifications.error(error.error?.detail || "Action non autorisée");
           }
-        } else if (error.status === 409 || (error.status === 400 && request.method !== 'GET')) {
+        } else if (error.status === 409 || (error.status === 400 && !isReadRequest)) {
           this.notifications.error(error.error?.detail || "Une erreur est survenue");
-        } else if (error.status === 500) {
-          if (request.method === 'GET') {
+        } else if (error.status === 0 || error.status >= 500) {
+          if (isReadRequest) {
             this.router.navigate(['/500']);
           } else {
             this.notifications.error("Une erreur technique est survenue sur le serveur.");

@@ -40,13 +40,6 @@
 		</dependency>
 		
 		
-		<!-- jackson time support -->
-		<dependency>
-			<groupId>tools.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-jsr310</artifactId>
-		</dependency>
-		
-		
 		<!-- Spring transactions -->
 		<dependency>
 			<groupId>org.springframework</groupId>

@@ -36,8 +36,8 @@
 		<java.version>21</java.version>
 		<maven.compiler.release.version>21</maven.compiler.release.version>
 		
-		<ifolks.commons.version>1.0.0-M1</ifolks.commons.version>
-		<ifolks.generator.version>1.0.0-M1</ifolks.generator.version>
+		<ifolks.commons.version>1.0.0-M2</ifolks.commons.version>
+		<ifolks.generator.version>1.0.0-SNAPSHOT</ifolks.generator.version>
 		
 	</properties>
 	
@@ -123,12 +123,6 @@
 				<groupId>org.ifolks.commons</groupId>
 				<artifactId>commons-rest</artifactId>
 				<version>${ifolks.commons.version}</version>
-			</dependency>
-			
-			<dependency>
-				<groupId>tools.jackson.datatype</groupId>
-				<artifactId>jackson-datatype-jsr310</artifactId>
-				<version>3.0.0-rc2</version>
 			</dependency>
 			
 		</dependencies>
