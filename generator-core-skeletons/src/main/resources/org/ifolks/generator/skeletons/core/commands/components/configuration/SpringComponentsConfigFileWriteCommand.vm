@@ -12,7 +12,6 @@ import org.springframework.core.env.Environment;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import tools.jackson.databind.cfg.DateTimeFeature;
 import tools.jackson.databind.json.JsonMapper;
-import tools.jackson.datatype.jsr310.JavaTimeModule;
 
 @Configuration
 public class ComponentsConfig {
