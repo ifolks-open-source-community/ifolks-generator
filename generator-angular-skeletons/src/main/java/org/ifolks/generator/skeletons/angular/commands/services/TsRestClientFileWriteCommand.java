@@ -185,7 +185,11 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
         writeLine(" * save object");
         writeLine(" */");
         writeLine("public save(form: " + this.bean.formBean.className + ") {");
-        writeLine("return this.http.post<" + bean.idTsType + ">(environment.restApiUrl + '/" + bean.urlPiece + "', form, this.httpOptions);");
+        if (bean.idTsType.equals("string")) {
+            writeLine("return this.http.post(environment.restApiUrl + '/" + bean.urlPiece + "', form, { ...this.httpOptions, responseType: 'text' });");
+        } else {
+            writeLine("return this.http.post<" + bean.idTsType + ">(environment.restApiUrl + '/" + bean.urlPiece + "', form, this.httpOptions);");
+        }
         writeLine("}");
         skipLine();
     }
@@ -278,7 +282,11 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
             writeLine(" * save one to one component " + currentBean.objectName);
             writeLine(" */");
             writeLine("public save" + currentBean.className + "(id:" + bean.idTsType + ", form: " + currentBean.formBean.className + ") {");
-            writeLine("return this.http.post<" + currentBean.idTsType + ">(environment.restApiUrl + '/" + bean.urlPiece + "/' + id + '/" + currentBean.urlPiece + "', form, this.httpOptions);");
+            if (currentBean.idTsType.equals("string")) {
+                writeLine("return this.http.post(environment.restApiUrl + '/" + bean.urlPiece + "/' + id + '/" + currentBean.urlPiece + "', form, { ...this.httpOptions, responseType: 'text' });");
+            } else {
+                writeLine("return this.http.post<" + currentBean.idTsType + ">(environment.restApiUrl + '/" + bean.urlPiece + "/' + id + '/" + currentBean.urlPiece + "', form, this.httpOptions);");
+            }
             writeLine("}");
             skipLine();
         }
@@ -292,7 +300,11 @@ public class TsRestClientFileWriteCommand extends TsFileWriteCommand {
             writeLine(" * save one to many component " + currentBean.objectName);
             writeLine(" */");
             writeLine("public save" + currentBean.className + "(id:" + bean.idTsType + ", form: " + currentBean.formBean.className + ") {");
-            writeLine("return this.http.post<" + currentBean.idTsType + ">(environment.restApiUrl + '/" + bean.urlPiece + "/' + id + '/" + currentBean.urlPiece + "', form, this.httpOptions);");
+            if (currentBean.idTsType.equals("string")) {
+                writeLine("return this.http.post(environment.restApiUrl + '/" + bean.urlPiece + "/' + id + '/" + currentBean.urlPiece + "', form, { ...this.httpOptions, responseType: 'text' });");
+            } else {
+                writeLine("return this.http.post<" + currentBean.idTsType + ">(environment.restApiUrl + '/" + bean.urlPiece + "/' + id + '/" + currentBean.urlPiece + "', form, this.httpOptions);");
+            }
             writeLine("}");
             skipLine();
         }
