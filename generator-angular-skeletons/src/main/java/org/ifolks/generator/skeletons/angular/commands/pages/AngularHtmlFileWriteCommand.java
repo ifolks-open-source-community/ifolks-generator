@@ -3,6 +3,7 @@ package org.ifolks.generator.skeletons.angular.commands.pages;
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.ui.FilterProperty;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
+import org.ifolks.generator.model.metadata.FilterRangeType;
 import org.ifolks.generator.model.metadata.SelectionMode;
 import org.ifolks.generator.skeletons.commands.impl.typed.HtmlFileWriteCommand;
 
@@ -230,19 +231,30 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 	
 	
 	protected void writeFilter(FilterProperty property, Bean bean) {
-		String capName = capitalize(property.name);
+		String labelExpr;
+		String baseProp = (property.baseName != null && !property.baseName.isEmpty()) ? property.baseName : property.name;
+		String baseKey = bean.objectName + capitalize(baseProp);
+
+		if (property.rangeType == FilterRangeType.MIN) {
+			labelExpr = "{{ '" + baseKey + "' | i18n }} {{ 'minValue' | i18n }}";
+		} else if (property.rangeType == FilterRangeType.MAX) {
+			labelExpr = "{{ '" + baseKey + "' | i18n }} {{ 'maxValue' | i18n }}";
+		} else {
+			labelExpr = "{{ '" + baseKey + "' | i18n }}";
+		}
+
 		switch (property.dataType) {
 			case STRING:
 			case TEXT:
 				writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-				writeLine("<mat-label>{{ '" + bean.objectName + capName + "' | i18n }}</mat-label>");
-				writeLine("<input matInput placeholder=\"{{ '" + bean.objectName + capName + "' | i18n }}\" formControlName=\"" + property.name + "\"/>");
+				writeLine("<mat-label>" + labelExpr + "</mat-label>");
+				writeLine("<input matInput placeholder=\"" + labelExpr + "\" formControlName=\"" + property.name + "\"/>");
 				writeLine("</mat-form-field>");	
 				break;
 				
 			case DATE:				
 				writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-				writeLine("<mat-label>{{ '" + bean.objectName + capName + "' | i18n }}</mat-label>");
+				writeLine("<mat-label>" + labelExpr + "</mat-label>");
 				writeLine("<input matInput [matDatepicker]=\"" + property.name + "DatePicker\" placeholder=\"yyyy-MM-dd\" formControlName=\"" + property.name + "\"/>");
 				writeLine("<mat-datepicker-toggle matSuffix [for]=\"" + property.name + "DatePicker\"></mat-datepicker-toggle>");
 				writeLine("<mat-datepicker #" + property.name + "DatePicker></mat-datepicker>");
@@ -251,7 +263,7 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 				
 			case DATETIME:				
 				writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-				writeLine("<mat-label>{{ '" + bean.objectName + capName + "' | i18n }}</mat-label>");
+				writeLine("<mat-label>" + labelExpr + "</mat-label>");
 				writeLine("<input matInput placeholder=\"yyyy-MM-ddTHH:mm:ssZ\" formControlName=\"" + property.name + "\"/>");
 				writeLine("</mat-form-field>");
 				break;
@@ -259,8 +271,8 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 			case DOUBLE:
 			case BIG_DECIMAL:
 				writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-				writeLine("<mat-label>{{ '" + bean.objectName + capName + "' | i18n }}</mat-label>");
-				writeLine("<input type=\"number\" matInput placeholder=\"{{ '" + bean.objectName + capName + "' | i18n }}\" formControlName=\"" + property.name + "\"/>");
+				writeLine("<mat-label>" + labelExpr + "</mat-label>");
+				writeLine("<input type=\"number\" matInput placeholder=\"" + labelExpr + "\" formControlName=\"" + property.name + "\"/>");
 				writeLine("</mat-form-field>");
 				break;
 			
@@ -268,15 +280,15 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 			case INTEGER:
 			case LONG:
 				writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-				writeLine("<mat-label>{{ '" + bean.objectName + capName + "' | i18n }}</mat-label>");
-				writeLine("<input type=\"number\" matInput placeholder=\"{{ '" + bean.objectName + capName + "' | i18n }}\" formControlName=\"" + property.name + "\"/>");
+				writeLine("<mat-label>" + labelExpr + "</mat-label>");
+				writeLine("<input type=\"number\" matInput placeholder=\"" + labelExpr + "\" formControlName=\"" + property.name + "\"/>");
 				writeLine("</mat-form-field>");
 				break;
 				
 			case BOOLEAN:
 				writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
-				writeLine("<mat-label>{{ '" + bean.objectName + capName + "' | i18n }}</mat-label>");
-				writeLine("<mat-select placeholder=\"{{ '" + bean.objectName + capName + "' | i18n }}\" formControlName=\"" + property.name + "\" >");
+				writeLine("<mat-label>" + labelExpr + "</mat-label>");
+				writeLine("<mat-select placeholder=\"" + labelExpr + "\" formControlName=\"" + property.name + "\" >");
 				writeLine("<mat-option [value]=\"\"></mat-option>");
 				writeLine("<mat-option [value]=\"true\">{{ 'trueLabel' | i18n }}</mat-option>");
 				writeLine("<mat-option [value]=\"false\">{{ 'falseLabel' | i18n }}</mat-option>");

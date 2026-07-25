@@ -21,5 +21,7 @@
   "invalid.state": "The operation cannot be completed in the current state.",
   "invalid.arguments": "Some fields are invalid.",
   "technical.error": "A technical error occurred. Please try again later.",
-  "backToHome": "Back to home"
+  "backToHome": "Back to home",
+  "minValue": "Min value",
+  "maxValue": "Max value"
 }

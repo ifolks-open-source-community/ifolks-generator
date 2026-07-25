@@ -10,6 +10,7 @@ import org.ifolks.generator.model.domain.business.OneToMany;
 import org.ifolks.generator.model.domain.ui.BasicViewBean;
 import org.ifolks.generator.model.domain.ui.FilterProperty;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
+import org.ifolks.generator.model.metadata.FilterRangeType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,7 @@ public class JavaBasicViewBeanFactory implements BasicViewBeanFactory {
 
 	@Override
 	public BasicViewBean getBasicViewBean(Bean bean) {
-				
+		
 		BasicViewBean basicViewBean = new BasicViewBean();
 		
 		basicViewBean.recordName = bean.className + "BasicView";
@@ -34,7 +35,10 @@ public class JavaBasicViewBeanFactory implements BasicViewBeanFactory {
 		basicViewBean.mapperObjectName = basicViewBean.objectName + "Mapper";
 		
 		basicViewBean.filter.className = bean.className + "Filter";
+		basicViewBean.filter.objectName = bean.objectName + "Filter";
+
 		basicViewBean.sortingClassName = bean.className + "Sorting";
+
 		
 		basicViewBean.properties = viewPropertiesFactory.getBasicViewProperties(bean);
 		
@@ -62,6 +66,10 @@ public class JavaBasicViewBeanFactory implements BasicViewBeanFactory {
 		basicViewBean.mapperObjectName = basicViewBean.objectName + "Mapper";
 		
 		basicViewBean.filter.className = bean.className + "Filter";
+		basicViewBean.filter.objectName = bean.objectName + "Filter";
+
+		basicViewBean.sortingClassName = bean.className + "Sorting";
+
 		
 		basicViewBean.properties = viewPropertiesFactory.getBasicViewProperties(oneToMany);
 		
@@ -79,23 +87,26 @@ public class JavaBasicViewBeanFactory implements BasicViewBeanFactory {
 		if (property.dataType.isLimitable()) {
 			FilterProperty minProperty = new FilterProperty();
 			minProperty.name = property.name + "MinValue";
+			minProperty.baseName = property.name;
+			minProperty.rangeType = FilterRangeType.MIN;
 			minProperty.dataType = property.dataType;
 			minProperty.tsType = property.tsType;
-			minProperty.rendering = property.rendering + " Min";
 			result.add(minProperty);
 			
 			FilterProperty maxProperty = new FilterProperty();
 			maxProperty.name = property.name + "MaxValue";
+			maxProperty.baseName = property.name;
+			maxProperty.rangeType = FilterRangeType.MAX;
 			maxProperty.dataType = property.dataType;
 			maxProperty.tsType = property.tsType;
-			maxProperty.rendering = property.rendering + " Max";
 			result.add(maxProperty);
 		} else {
 			FilterProperty filterProperty = new FilterProperty();
 			filterProperty.name = property.name;
+			filterProperty.baseName = property.name;
+			filterProperty.rangeType = FilterRangeType.NONE;
 			filterProperty.dataType = property.dataType;
 			filterProperty.tsType = property.tsType;
-			filterProperty.rendering = property.rendering;
 			result.add(filterProperty);
 		}
 		return result;

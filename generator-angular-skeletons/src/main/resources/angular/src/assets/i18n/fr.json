@@ -21,5 +21,7 @@
   "invalid.state": "L'opération ne peut être effectuée dans l'état actuel.",
   "invalid.arguments": "Certains champs sont invalides.",
   "technical.error": "Une erreur technique est survenue. Veuillez réessayer ultérieurement.",
-  "backToHome": "Retour à l'accueil"
+  "backToHome": "Retour à l'accueil",
+  "minValue": "Valeur min",
+  "maxValue": "Valeur max"
 }
