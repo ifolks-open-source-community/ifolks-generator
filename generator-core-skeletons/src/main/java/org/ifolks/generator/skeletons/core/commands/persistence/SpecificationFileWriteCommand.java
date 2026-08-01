@@ -44,7 +44,7 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 		javaImports.add("import org.springframework.data.jpa.domain.Specification;");
 		javaImports.add("import org.springframework.data.domain.Sort;");
 		javaImports.add("import org.ifolks.commons.api.model.OrderType;");
-		javaImports.add("import static org.ifolks.commons.model.patterns.JpaCriteriaUtils.*;");
+		javaImports.add("import static org.ifolks.commons.jpa.JpaCriteriaUtils.*;");
 
 		javaImports.add("import " + this.bean.myPackage.omPackageName + "." + this.bean.className + ";");
 		javaImports.add("import " + this.bean.myPackage.omPackageName + "." + this.bean.className + "_;");

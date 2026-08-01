@@ -2,8 +2,8 @@ package ${project.model.componentsPackageName};
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.ifolks.commons.log.AccessLogger;
-import org.ifolks.commons.log.ErrorLogger;
+import org.ifolks.commons.log.logger.AccessLogger;
+import org.ifolks.commons.log.logger.ErrorLogger;
 import org.ifolks.commons.text.serialization.JsonSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

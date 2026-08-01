@@ -33,7 +33,7 @@ public class JUnitDataInitializer {
 	private static final String CREATE_NORMALIZE_FUNCTION = "CREATE FUNCTION normalize(CHAR VARYING(255))"
 																		+ " RETURNS CHAR VARYING(255)"
 																		+ " LANGUAGE JAVA DETERMINISTIC NO SQL"
-																		+ " EXTERNAL NAME 'CLASSPATH:org.ifolks.commons.text.StringUtils.normalize'";
+																		+ " EXTERNAL NAME 'CLASSPATH:org.ifolks.commons.jpa.StringUtils.normalize'";
 	
 	private boolean initialized = false;
 	private Project project;

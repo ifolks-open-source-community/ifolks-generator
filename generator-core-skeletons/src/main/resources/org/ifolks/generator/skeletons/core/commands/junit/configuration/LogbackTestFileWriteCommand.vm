@@ -4,17 +4,32 @@
 
 	<property resource="application.properties" />
 
-	<!--Console appender -->
+	<!-- Console Appender for Technical / Infrastructure Logs -->
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>{"logLevel":"%-5level","logger":"%logger{36}","@timestamp":"%d{"yyyy-MM-dd'T'HH:mm:ss.SSSXXX"}","threadId":"%thread","channel":"%X{channel}","transactionId":"%X{transactionId}","correlationId":"%X{correlationId}","message":"%replace(%msg){'"', '\"'}"}%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- Console Appender for Structured Business Access & Error Logs -->
+	<appender name="STDOUT_ACCESS_LOG" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
 			<layout class="ch.qos.logback.classic.PatternLayout">
-				<pattern>
-					{"@timestamp":"%d{"yyyy-MM-dd'T'HH:mm:ss,SSS"}","threadId":"%thread","logLevel":"%-5level","channel":"%X{channel}","transactionId":"%X{transactionId}","correlationId":"%X{correlationId}","logMessage":%msg}%n
-				</pattern>
+				<pattern>{"logLevel":"%-5level","logger":"%logger{36}","@timestamp":"%d{"yyyy-MM-dd'T'HH:mm:ss.SSSXXX"}","threadId":"%thread","channel":"%X{channel}","transactionId":"%X{transactionId}","correlationId":"%X{correlationId}","logBody":%msg}%n</pattern>
 			</layout>
 		</encoder>
 	</appender>
-	
+
+	<!-- Structured Loggers -->
+	<logger name="ACCESS_LOG" level="INFO" additivity="false">
+		<appender-ref ref="STDOUT_ACCESS_LOG" />
+	</logger>
+
+	<logger name="ERROR_LOG" level="INFO" additivity="false">
+		<appender-ref ref="STDOUT_ACCESS_LOG" />
+	</logger>
+
+	<!-- Root Logger for Technical Logs -->
 	<root level="${log.level}">
 		<appender-ref ref="STDOUT" />
 	</root>

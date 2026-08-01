@@ -23,7 +23,7 @@ import org.ifolks.generator.skeletons.rest.layers.SpringRestControllerLayer;
 import org.ifolks.generator.skeletons.rest.layers.SpringRestRootLayer;
 
 
-public class SpringHibernateAngularSkeleton implements Skeleton {
+public class SpringRestAngularSkeleton implements Skeleton {
 
 	@Override
 	public String getName() {

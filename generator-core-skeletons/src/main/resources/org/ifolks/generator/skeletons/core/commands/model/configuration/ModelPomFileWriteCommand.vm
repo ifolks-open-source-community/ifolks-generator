@@ -27,7 +27,7 @@
 		<!-- ifolks commons -->
 		<dependency>
 			<groupId>org.ifolks.commons</groupId>
-			<artifactId>commons-entities</artifactId>
+			<artifactId>commons-jpa</artifactId>
 		</dependency>
 		
 		

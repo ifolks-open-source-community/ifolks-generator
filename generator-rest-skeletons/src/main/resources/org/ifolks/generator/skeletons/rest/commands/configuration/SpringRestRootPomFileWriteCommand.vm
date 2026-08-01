@@ -89,13 +89,6 @@
 			</dependency>
 			
 			<dependency>
-				<groupId>org.ifolks.generator</groupId>
-				<artifactId>generator-services</artifactId>
-				<version>${ifolks.generator.version}</version>
-			</dependency>
-			
-			<!-- ifolks commons -->
-			<dependency>
 				<groupId>org.ifolks.commons</groupId>
 				<artifactId>commons-api</artifactId>
 				<version>${ifolks.commons.version}</version>
@@ -103,15 +96,10 @@
 			
 			<dependency>
 				<groupId>org.ifolks.commons</groupId>
-				<artifactId>commons-entities</artifactId>
+				<artifactId>commons-jpa</artifactId>
 				<version>${ifolks.commons.version}</version>
 			</dependency>
 			
-			<dependency>
-				<groupId>org.ifolks.commons</groupId>
-				<artifactId>commons-text</artifactId>
-				<version>${ifolks.commons.version}</version>
-			</dependency>
 			
 			<dependency>
 				<groupId>org.ifolks.commons</groupId>
