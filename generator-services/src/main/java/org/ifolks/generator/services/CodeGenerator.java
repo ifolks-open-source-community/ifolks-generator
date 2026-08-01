@@ -15,52 +15,31 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class CodeGenerator  {
-	
+public class CodeGenerator {
+
 	private static final Logger logger = LoggerFactory.getLogger(CodeGenerator.class);
-	
 
-	public void initResources(Project project) {
-
+	public void initProject(Project project) {
 		Skeleton skeleton = SkeletonResolver.getSkeleton(project);
-		
-		for (Layer layer : skeleton.getLayers(project)) {			
-			FileWriteCommandTreeNode root = layer.getResourcesNode(project);
+
+		for (Layer layer : skeleton.getLayers(project)) {
+			FileWriteCommandTreeNode root = layer.getInitializationNode(project);
 			if (root != null) {
-				logger.info("start copying resources for layer : " + layer.getName());
-				
-				root.execute();
-			}
-		}		
-	}
-
-
-	public void initConfiguration(Project project) {
-
-		Skeleton skeleton = SkeletonResolver.getSkeleton(project);
-		
-		for (Layer layer : skeleton.getLayers(project)) {			
-			FileWriteCommandTreeNode root = layer.getConfigurationNode(project);
-			if (root != null) {
-				logger.info("start creating configuration for layer : " + layer.getName());
-				
+				logger.info("start initializing layer : " + layer.getName());
 				root.execute();
 			}
 		}
 	}
 
-
 	public void generateCode(Project project) {
-
 		Skeleton skeleton = SkeletonResolver.getSkeleton(project);
-		
-		for (Layer layer : skeleton.getLayers(project)) {			
+
+		for (Layer layer : skeleton.getLayers(project)) {
 			FileWriteCommandTreeNode root = layer.getGenerationNode(project);
 			if (root != null) {
 				logger.info("start generating layer : " + layer.getName());
-				
 				root.execute();
 			}
-		}		
+		}
 	}
 }

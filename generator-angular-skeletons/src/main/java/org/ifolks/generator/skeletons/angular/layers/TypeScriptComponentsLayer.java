@@ -36,7 +36,7 @@ import org.ifolks.generator.skeletons.angular.commands.pages.modal.ScssOneToMany
 import org.ifolks.generator.skeletons.angular.commands.pages.modal.TsModalComponentFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.pages.modal.TsOneToManyComponentModalComponentFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.pages.modal.TsOneToManyModalComponentFileWriteCommand;
-import org.ifolks.generator.skeletons.commands.impl.ResourcesFileWriteCommand;
+import org.ifolks.generator.skeletons.commands.impl.DirectoryResourceCopyCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 
@@ -47,19 +47,13 @@ public class TypeScriptComponentsLayer extends AbstractLayer {
 	}
 
 	@Override
-	public FileWriteCommandTreeNode getResourcesNode(Project project) {
+	public FileWriteCommandTreeNode getInitializationNode(Project project) {
 		FileWriteCommandTreeNode resourcesTreeNode = new FileWriteCommandTreeNode();
 		
-		FileWriteCommandTreeNode copyResourcesTreeNode = new FileWriteCommandTreeNode(new ResourcesFileWriteCommand(project, getClass(), "/angular",project.projectName + "-ui"));
+		FileWriteCommandTreeNode copyResourcesTreeNode = new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/ui", project.projectName + "-ui"));
 		resourcesTreeNode.add(copyResourcesTreeNode);
 		
 		return resourcesTreeNode;
-	}
-
-	@Override
-	public FileWriteCommandTreeNode getConfigurationNode(Project project) {
-		
-		return null;
 	}
 
 	@Override

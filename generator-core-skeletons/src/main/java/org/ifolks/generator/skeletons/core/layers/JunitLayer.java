@@ -1,13 +1,7 @@
 package org.ifolks.generator.skeletons.core.layers;
 
 import org.ifolks.generator.model.domain.Project;
-import org.ifolks.generator.skeletons.core.commands.junit.configuration.LogbackTestFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.junit.configuration.SpringJUnitPersistenceConfigFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.junit.configuration.SpringTestsConfigFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.junit.configuration.TestsPomFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.junit.configuration.TestsPropertiesFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.junit.resources.JUnitDataInitializerFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.junit.resources.SetupTestFileWriteCommand;
+import org.ifolks.generator.skeletons.commands.impl.DirectoryResourceCopyCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 
@@ -18,40 +12,15 @@ public class JunitLayer extends AbstractLayer {
 	}
 
 	@Override
-	public FileWriteCommandTreeNode getResourcesNode(Project project) {
+	public FileWriteCommandTreeNode getInitializationNode(Project project) {
+		FileWriteCommandTreeNode initTreeNode = new FileWriteCommandTreeNode();
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/tests/pom.xml.vm", project.projectName + "-tests")));
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/tests/resources", project.projectName + "-tests/" + project.model.resourcesFolder)));
 		
-		FileWriteCommandTreeNode resourcesTreeNode = new FileWriteCommandTreeNode();
-		
-		FileWriteCommandTreeNode dataInitializerTreeNode = new FileWriteCommandTreeNode(new JUnitDataInitializerFileWriteCommand(project));
-		resourcesTreeNode.add(dataInitializerTreeNode);
-		
-		FileWriteCommandTreeNode testSetupTreeNode = new FileWriteCommandTreeNode(new SetupTestFileWriteCommand(project));
-		resourcesTreeNode.add(testSetupTreeNode);
-		
-		return resourcesTreeNode;
-	}
-
-	@Override
-	public FileWriteCommandTreeNode getConfigurationNode(Project project) {
-		
-		FileWriteCommandTreeNode configurationTreeNode = new FileWriteCommandTreeNode();
-		
-		FileWriteCommandTreeNode testPomTreeNode = new FileWriteCommandTreeNode(new TestsPomFileWriteCommand(project));
-		configurationTreeNode.add(testPomTreeNode);
-		
-		FileWriteCommandTreeNode springTestRepositoryTreeNode = new FileWriteCommandTreeNode(new SpringJUnitPersistenceConfigFileWriteCommand(project));
-		configurationTreeNode.add(springTestRepositoryTreeNode);
-		
-		FileWriteCommandTreeNode springTestTreeNode = new FileWriteCommandTreeNode(new SpringTestsConfigFileWriteCommand(project));
-		configurationTreeNode.add(springTestTreeNode);
-		
-		FileWriteCommandTreeNode logbackTestTreeNode = new FileWriteCommandTreeNode(new LogbackTestFileWriteCommand(project));
-		configurationTreeNode.add(logbackTestTreeNode);
-		
-		FileWriteCommandTreeNode testPropertiesTreeNode = new FileWriteCommandTreeNode(new TestsPropertiesFileWriteCommand(project));
-		configurationTreeNode.add(testPropertiesTreeNode);
-		
-		return configurationTreeNode;
+		String junitPackagePath = project.model.junitPackageName.replace('.', '/');
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/tests/java", project.projectName + "-tests/" + project.model.javaSourcesFolder + "/" + junitPackagePath)));
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/tests/test-java", project.projectName + "-tests/" + project.model.testJavaSourcesFolder + "/" + junitPackagePath)));
+		return initTreeNode;
 	}
 	
 	@Override

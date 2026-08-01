@@ -3,15 +3,10 @@ package org.ifolks.generator.skeletons.rest.layers;
 import org.ifolks.generator.model.domain.Package;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.skeletons.commands.impl.DirectoryResourceCopyCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.rest.commands.SpringRestBaseControllerCommand;
 import org.ifolks.generator.skeletons.rest.commands.SpringRestControllerCommand;
-import org.ifolks.generator.skeletons.rest.commands.configuration.SpringRestApplicationConfigFileWriteCommand;
-import org.ifolks.generator.skeletons.rest.commands.configuration.SpringRestApplicationStarterFileWriteCommand;
-import org.ifolks.generator.skeletons.rest.commands.configuration.SpringRestExecutablePomFileWriteCommand;
-import org.ifolks.generator.skeletons.rest.commands.configuration.SpringRestLocalPropertiesFileWriteCommand;
-import org.ifolks.generator.skeletons.rest.commands.configuration.SpringRestLogbackFileWriteCommand;
-import org.ifolks.generator.skeletons.rest.commands.configuration.SpringRestPropertiesFileWriteCommand;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 
 public class SpringRestControllerLayer extends AbstractLayer {
@@ -21,36 +16,14 @@ public class SpringRestControllerLayer extends AbstractLayer {
 	}
 	
 	@Override
-	public FileWriteCommandTreeNode getResourcesNode(Project project) {
+	public FileWriteCommandTreeNode getInitializationNode(Project project) {
+		FileWriteCommandTreeNode initTreeNode = new FileWriteCommandTreeNode();
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/rest/pom.xml.vm", project.projectName + "-rest")));
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/rest/resources", project.projectName + "-rest/" + project.model.resourcesFolder)));
 		
-		FileWriteCommandTreeNode resourcesTreeNode = new FileWriteCommandTreeNode();
-		return resourcesTreeNode;
-	}
-
-	@Override
-	public FileWriteCommandTreeNode getConfigurationNode(Project project) {
-		
-		FileWriteCommandTreeNode configurationTreeNode = new FileWriteCommandTreeNode();
-		
-		FileWriteCommandTreeNode propertiesTreeNode = new FileWriteCommandTreeNode(new SpringRestPropertiesFileWriteCommand(project));
-		configurationTreeNode.add(propertiesTreeNode);
-		
-		FileWriteCommandTreeNode localPropertiesTreeNode = new FileWriteCommandTreeNode(new SpringRestLocalPropertiesFileWriteCommand(project));
-		configurationTreeNode.add(localPropertiesTreeNode);
-		
-		FileWriteCommandTreeNode logbackTreeNode = new FileWriteCommandTreeNode(new SpringRestLogbackFileWriteCommand(project));
-		configurationTreeNode.add(logbackTreeNode);
-		
-		FileWriteCommandTreeNode webappPomTreeNode = new FileWriteCommandTreeNode(new SpringRestExecutablePomFileWriteCommand(project));
-		configurationTreeNode.add(webappPomTreeNode);
-				
-		FileWriteCommandTreeNode springRestApplicationConfigTreeNode = new FileWriteCommandTreeNode(new SpringRestApplicationConfigFileWriteCommand(project));
-		configurationTreeNode.add(springRestApplicationConfigTreeNode);
-		
-		FileWriteCommandTreeNode springRestApplicationStarterTreeNode = new FileWriteCommandTreeNode(new SpringRestApplicationStarterFileWriteCommand(project));
-		configurationTreeNode.add(springRestApplicationStarterTreeNode);
-		
-		return configurationTreeNode;
+		String restPackagePath = project.model.restControllerPackageName.replace('.', '/');
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/rest/java", project.projectName + "-rest/" + project.model.javaSourcesFolder + "/" + restPackagePath)));
+		return initTreeNode;
 	}
 
 	@Override

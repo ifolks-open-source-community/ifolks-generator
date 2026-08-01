@@ -6,8 +6,7 @@ import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.skeletons.core.commands.persistence.BaseRepositoryInterfaceFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.persistence.RepositoryInterfaceFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.persistence.SpecificationFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.persistence.configuration.PersistencePomFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.persistence.configuration.SpringLocalPersistenceConfigFileWriteCommand;
+import org.ifolks.generator.skeletons.commands.impl.DirectoryResourceCopyCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 
@@ -18,22 +17,13 @@ public class RepositoryLayer extends AbstractLayer {
 	}
 	
 	@Override
-	public FileWriteCommandTreeNode getResourcesNode(Project project) {
-		return null;
-	}
-
-	@Override
-	public FileWriteCommandTreeNode getConfigurationNode(Project project) {
+	public FileWriteCommandTreeNode getInitializationNode(Project project) {
+		FileWriteCommandTreeNode initTreeNode = new FileWriteCommandTreeNode();
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/persistence/pom.xml.vm", project.projectName + "-persistence")));
 		
-		FileWriteCommandTreeNode configurationTreeNode = new FileWriteCommandTreeNode();
-		
-		FileWriteCommandTreeNode repositoryPomTreeNode = new FileWriteCommandTreeNode(new PersistencePomFileWriteCommand(project));
-		configurationTreeNode.add(repositoryPomTreeNode);
-		
-		FileWriteCommandTreeNode springRepositoryTreeNode = new FileWriteCommandTreeNode(new SpringLocalPersistenceConfigFileWriteCommand(project));
-		configurationTreeNode.add(springRepositoryTreeNode);
-		
-		return configurationTreeNode;
+		String persistencePackagePath = project.model.persistencePackageName.replace('.', '/');
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/persistence/java", project.projectName + "-persistence/" + project.model.javaSourcesFolder + "/" + persistencePackagePath)));
+		return initTreeNode;
 	}
 
 	@Override

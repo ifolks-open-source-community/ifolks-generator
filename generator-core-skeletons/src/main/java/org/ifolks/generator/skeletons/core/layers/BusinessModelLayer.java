@@ -5,7 +5,7 @@ import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.skeletons.core.commands.model.EntityBeanFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.model.EntityMetaModelFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.model.configuration.ModelPomFileWriteCommand;
+import org.ifolks.generator.skeletons.commands.impl.DirectoryResourceCopyCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 
@@ -16,24 +16,10 @@ public class BusinessModelLayer extends AbstractLayer {
 	}
 
 	@Override
-	public FileWriteCommandTreeNode getResourcesNode(Project project) {
-		
-		FileWriteCommandTreeNode resourcesTreeNode = new FileWriteCommandTreeNode();
-		
-
-		
-		return resourcesTreeNode;
-	}
-
-	@Override
-	public FileWriteCommandTreeNode getConfigurationNode(Project project) {
-		
-		FileWriteCommandTreeNode configurationTreeNode = new FileWriteCommandTreeNode();
-		
-		FileWriteCommandTreeNode businessModelPomTreeNode = new FileWriteCommandTreeNode(new ModelPomFileWriteCommand(project));
-		configurationTreeNode.add(businessModelPomTreeNode);
-		
-		return configurationTreeNode;
+	public FileWriteCommandTreeNode getInitializationNode(Project project) {
+		FileWriteCommandTreeNode initTreeNode = new FileWriteCommandTreeNode();
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/model", project.projectName + "-model")));
+		return initTreeNode;
 	}
 	
 	@Override

@@ -8,12 +8,7 @@ import org.ifolks.generator.model.domain.business.OneToOneComponent;
 import org.ifolks.generator.skeletons.core.commands.population.BeanPopulatorFileTemplateCommandFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.population.OneToManyComponentPopulatorFileTemplateCommandFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.population.OneToOneComponentPopulatorFileTemplateCommandFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.population.configuration.LogbackPopulatorFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.population.configuration.PopulatorConfigFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.population.configuration.PopulatorPomFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.population.configuration.PopulatorPropertiesFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.population.resources.PopulatorRunnerFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.population.resources.PopulatorStarterFileWriteCommand;
+import org.ifolks.generator.skeletons.commands.impl.DirectoryResourceCopyCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 
@@ -24,37 +19,14 @@ public class PopulatorLayer extends AbstractLayer {
 	}
 	
 	@Override
-	public FileWriteCommandTreeNode getResourcesNode(Project project) {
+	public FileWriteCommandTreeNode getInitializationNode(Project project) {
+		FileWriteCommandTreeNode initTreeNode = new FileWriteCommandTreeNode();
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/populator/pom.xml.vm", project.projectName + "-populator")));
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/populator/resources", project.projectName + "-populator/" + project.model.resourcesFolder)));
 		
-		FileWriteCommandTreeNode resourcesTreeNode = new FileWriteCommandTreeNode();
-		
-		FileWriteCommandTreeNode runnerTreeNode = new FileWriteCommandTreeNode(new PopulatorRunnerFileWriteCommand(project));
-		resourcesTreeNode.add(runnerTreeNode);
-		
-		FileWriteCommandTreeNode starterTreeNode = new FileWriteCommandTreeNode(new PopulatorStarterFileWriteCommand(project));
-		resourcesTreeNode.add(starterTreeNode);
-		
-		return resourcesTreeNode;
-	}
-
-	@Override
-	public FileWriteCommandTreeNode getConfigurationNode(Project project) {
-		
-		FileWriteCommandTreeNode configurationTreeNode = new FileWriteCommandTreeNode();
-		
-		FileWriteCommandTreeNode populatorPomTreeNode = new FileWriteCommandTreeNode(new PopulatorPomFileWriteCommand(project));
-		configurationTreeNode.add(populatorPomTreeNode);
-		
-		FileWriteCommandTreeNode logbackPopulatorTreeNode = new FileWriteCommandTreeNode(new LogbackPopulatorFileWriteCommand(project));
-		configurationTreeNode.add(logbackPopulatorTreeNode);
-		
-		FileWriteCommandTreeNode populatorPropertiesTreeNode = new FileWriteCommandTreeNode(new PopulatorPropertiesFileWriteCommand(project));
-		configurationTreeNode.add(populatorPropertiesTreeNode);
-		
-		FileWriteCommandTreeNode populatorConfigTreeNode = new FileWriteCommandTreeNode(new PopulatorConfigFileWriteCommand(project));
-		configurationTreeNode.add(populatorConfigTreeNode);
-		
-		return configurationTreeNode;
+		String populatorPackagePath = project.model.populationPackageName.replace('.', '/');
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/populator/java", project.projectName + "-populator/" + project.model.javaSourcesFolder + "/" + populatorPackagePath)));
+		return initTreeNode;
 	}
 
 	@Override

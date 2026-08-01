@@ -5,8 +5,7 @@ import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.skeletons.core.commands.services.BaseServiceImplFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.services.ServiceImplFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.services.configuration.ServicesPomFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.services.configuration.SpringServicesConfigFileWriteCommand;
+import org.ifolks.generator.skeletons.commands.impl.DirectoryResourceCopyCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 
@@ -17,22 +16,13 @@ public class ServiceLayer extends AbstractLayer {
 	}
 
 	@Override
-	public FileWriteCommandTreeNode getResourcesNode(Project project) {
-		return null;
-	}
-
-	@Override
-	public FileWriteCommandTreeNode getConfigurationNode(Project project) {
+	public FileWriteCommandTreeNode getInitializationNode(Project project) {
+		FileWriteCommandTreeNode initTreeNode = new FileWriteCommandTreeNode();
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/services/pom.xml.vm", project.projectName + "-services")));
 		
-		FileWriteCommandTreeNode configurationTreeNode = new FileWriteCommandTreeNode();
-		
-		FileWriteCommandTreeNode springServicesTreeNode = new FileWriteCommandTreeNode(new SpringServicesConfigFileWriteCommand(project));
-		configurationTreeNode.add(springServicesTreeNode);
-		
-		FileWriteCommandTreeNode servicesPomTreeNode = new FileWriteCommandTreeNode(new ServicesPomFileWriteCommand(project));
-		configurationTreeNode.add(servicesPomTreeNode);
-		
-		return configurationTreeNode;
+		String servicesPackagePath = project.model.servicesPackageName.replace('.', '/');
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/services/java", project.projectName + "-services/" + project.model.javaSourcesFolder + "/" + servicesPackagePath)));
+		return initTreeNode;
 	}
 	
 	@Override

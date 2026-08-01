@@ -3,8 +3,7 @@ package org.ifolks.generator.skeletons.core.layers;
 import org.ifolks.generator.model.domain.Package;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.business.Bean;
-import org.ifolks.generator.skeletons.core.commands.components.configuration.ComponentsPomFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.components.configuration.SpringComponentsConfigFileWriteCommand;
+import org.ifolks.generator.skeletons.commands.impl.DirectoryResourceCopyCommand;
 import org.ifolks.generator.skeletons.core.commands.components.mapper.BaseBasicViewMapperFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.components.mapper.BaseFormMapperFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.components.mapper.BaseFullViewMapperFileWriteCommand;
@@ -27,22 +26,13 @@ public class BusinessComponentLayer extends AbstractLayer {
 	}
 	
 	@Override
-	public FileWriteCommandTreeNode getResourcesNode(Project project) {
-		return null;
-	}
-
-	@Override
-	public FileWriteCommandTreeNode getConfigurationNode(Project project) {
+	public FileWriteCommandTreeNode getInitializationNode(Project project) {
+		FileWriteCommandTreeNode initTreeNode = new FileWriteCommandTreeNode();
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/components/pom.xml.vm", project.projectName + "-components")));
 		
-		FileWriteCommandTreeNode configurationTreeNode = new FileWriteCommandTreeNode();
-		
-		FileWriteCommandTreeNode businessComponentPomTreeNode = new FileWriteCommandTreeNode(new ComponentsPomFileWriteCommand(project));
-		configurationTreeNode.add(businessComponentPomTreeNode);
-		
-		FileWriteCommandTreeNode springBusinessComponentTreeNode = new FileWriteCommandTreeNode(new SpringComponentsConfigFileWriteCommand(project));
-		configurationTreeNode.add(springBusinessComponentTreeNode);
-		
-		return configurationTreeNode;
+		String componentsPackagePath = project.model.componentsPackageName.replace('.', '/');
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/components/java", project.projectName + "-components/" + project.model.javaSourcesFolder + "/" + componentsPackagePath)));
+		return initTreeNode;
 	}
 	
 	@Override

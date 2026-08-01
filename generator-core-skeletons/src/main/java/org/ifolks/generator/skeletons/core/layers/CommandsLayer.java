@@ -8,7 +8,7 @@ import org.ifolks.generator.model.domain.business.OneToOneComponent;
 import org.ifolks.generator.skeletons.core.commands.commands.BeanPopulatorCommandFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.commands.OneToManyComponentPopulatorCommandFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.commands.OneToOneComponentPopulatorCommandFileWriteCommand;
-import org.ifolks.generator.skeletons.core.commands.commands.configuration.CommandsPomFileWriteCommand;
+import org.ifolks.generator.skeletons.commands.impl.DirectoryResourceCopyCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 
@@ -19,18 +19,10 @@ public class CommandsLayer extends AbstractLayer {
 	}
 	
 	@Override
-	public FileWriteCommandTreeNode getResourcesNode(Project project) {
-		return null;
-	}
-
-	@Override
-	public FileWriteCommandTreeNode getConfigurationNode(Project project) {
-		FileWriteCommandTreeNode configurationTreeNode = new FileWriteCommandTreeNode();
-		
-		FileWriteCommandTreeNode commandsPomTreeNode = new FileWriteCommandTreeNode(new CommandsPomFileWriteCommand(project));
-		configurationTreeNode.add(commandsPomTreeNode);
-		
-		return configurationTreeNode;
+	public FileWriteCommandTreeNode getInitializationNode(Project project) {
+		FileWriteCommandTreeNode initTreeNode = new FileWriteCommandTreeNode();
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/commands", project.projectName + "-commands")));
+		return initTreeNode;
 	}
 
 	@Override

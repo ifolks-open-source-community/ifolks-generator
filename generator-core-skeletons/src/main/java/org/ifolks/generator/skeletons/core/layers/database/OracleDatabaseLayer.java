@@ -3,7 +3,7 @@ package org.ifolks.generator.skeletons.core.layers.database;
 import org.ifolks.generator.model.domain.Package;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.database.Table;
-import org.ifolks.generator.skeletons.core.commands.database.configuration.oracle.OracleMainDefinitionFileWriteCommand;
+import org.ifolks.generator.skeletons.commands.impl.DirectoryResourceCopyCommand;
 import org.ifolks.generator.skeletons.core.commands.database.oracle.OracleTableDefinitionFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.database.oracle.OracleTableFkDefinitionFileWriteCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
@@ -16,19 +16,10 @@ public class OracleDatabaseLayer extends AbstractLayer {
 	}
 	
 	@Override
-	public FileWriteCommandTreeNode getResourcesNode(Project project) {
-		return null;
-	}
-
-	@Override
-	public FileWriteCommandTreeNode getConfigurationNode(Project project) {
-		
-		FileWriteCommandTreeNode configurationTreeNode = new FileWriteCommandTreeNode();
-		
-		FileWriteCommandTreeNode mainFileTreeNode = new FileWriteCommandTreeNode(new OracleMainDefinitionFileWriteCommand(project));
-		configurationTreeNode.add(mainFileTreeNode);
-		
-		return configurationTreeNode;
+	public FileWriteCommandTreeNode getInitializationNode(Project project) {
+		FileWriteCommandTreeNode initTreeNode = new FileWriteCommandTreeNode();
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/database/scripts/SQL/ORACLE", project.projectName + "-populator/" + project.model.resourcesFolder + "/scripts/SQL/ORACLE")));
+		return initTreeNode;
 	}
 
 	@Override

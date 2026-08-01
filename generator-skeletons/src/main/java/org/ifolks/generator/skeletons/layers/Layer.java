@@ -5,7 +5,7 @@ import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 
 /**
  * An Application Skeleton is divided into several Layers which takes care of a particular role<br>
- * Each Layer can have resources, configuration files and generated files
+ * Each Layer can have initialization files (skeleton & resources) and generated files
  * @author Nicolas Thibault
  *
  */
@@ -16,23 +16,16 @@ public interface Layer {
 	 * @return
 	 */
 	String getName();
-	
+
 	/**
-	 * get the resources to be copied when initializing a {@Link Project}
+	 * get the initialization node (resources, configs, skeleton) to be written when initializing a {@link Project}
 	 * @param project
 	 * @return
 	 */
-	FileWriteCommandTreeNode getResourcesNode(Project project);
-	
+	FileWriteCommandTreeNode getInitializationNode(Project project);
+
 	/**
-	 * get the configuration files to be written when initializing a {@Link Project}
-	 * @param project
-	 * @return
-	 */
-	FileWriteCommandTreeNode getConfigurationNode(Project project);
-	
-	/**
-	 * get the files to be written when generating code for a {@Link Project}
+	 * get the files to be written when generating code for a {@link Project}
 	 * @param project
 	 * @return
 	 */

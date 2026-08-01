@@ -3,7 +3,7 @@ package org.ifolks.generator.skeletons.core.layers;
 import org.ifolks.generator.model.domain.Package;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.business.Bean;
-import org.ifolks.generator.skeletons.core.commands.api.configuration.ApiPomFileWriteCommand;
+import org.ifolks.generator.skeletons.commands.impl.DirectoryResourceCopyCommand;
 import org.ifolks.generator.skeletons.core.commands.api.interfaces.BaseServiceInterfaceFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.api.interfaces.ServiceInterfaceFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.api.model.BasicViewBeanFileWriteCommand;
@@ -21,19 +21,10 @@ public class ApiLayer extends AbstractLayer {
 	}
 
 	@Override
-	public FileWriteCommandTreeNode getResourcesNode(Project project) {
-		return null;
-	}
-
-	@Override
-	public FileWriteCommandTreeNode getConfigurationNode(Project project) {
-		
-		FileWriteCommandTreeNode configurationTreeNode = new FileWriteCommandTreeNode();
-		
-		FileWriteCommandTreeNode apiPomTreeNode = new FileWriteCommandTreeNode(new ApiPomFileWriteCommand(project));
-		configurationTreeNode.add(apiPomTreeNode);
-		
-		return configurationTreeNode;
+	public FileWriteCommandTreeNode getInitializationNode(Project project) {
+		FileWriteCommandTreeNode initTreeNode = new FileWriteCommandTreeNode();
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/api", project.projectName + "-api")));
+		return initTreeNode;
 	}
 
 	@Override

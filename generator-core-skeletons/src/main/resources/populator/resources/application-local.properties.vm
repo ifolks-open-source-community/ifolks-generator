@@ -1,0 +1,24 @@
+# Logger settings
+log.level=INFO
+
+# Access logs settings
+accessLog.traceRequestBody=true
+accessLog.traceResponseBody=true
+accessLog.traceSentBody=true
+accessLog.traceReceivedBody=true
+accessLog.printErrorStack=true
+
+# DB
+db.driverClassName=${project.dataSource.driverClassName}
+db.url=${project.dataSource.url}
+db.userName=${project.dataSource.userName}
+db.password=${project.dataSource.password}
+db.maximumPoolSize=10
+db.minimumIdle=5
+db.idleTimeout=300000
+db.connectionTimeout=20000
+db.engine=${project.databaseEngine}
+
+# Hibernate settings
+hibernate.showSql=false
+hibernate.dialect=${project.dataSource.dialect}

@@ -14,13 +14,7 @@ public class TypeScriptServicesLayer extends AbstractLayer {
 	}
 
 	@Override
-	public FileWriteCommandTreeNode getResourcesNode(Project project) {
-		return null;
-	}
-
-	@Override
-	public FileWriteCommandTreeNode getConfigurationNode(Project project) {
-		
+	public FileWriteCommandTreeNode getInitializationNode(Project project) {
 		return null;
 	}
 

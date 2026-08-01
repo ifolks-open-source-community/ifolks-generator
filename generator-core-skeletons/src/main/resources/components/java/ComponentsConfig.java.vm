@@ -1,0 +1,27 @@
+package ${project.model.componentsPackageName};
+
+import org.ifolks.commons.log.logger.AccessLogger;
+import org.ifolks.commons.log.logger.ErrorLogger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+
+@Configuration
+public class ComponentsConfig {
+
+	@Autowired
+	private Environment env;
+	
+	@Bean
+	public AccessLogger accessLogger() {
+		return new AccessLogger();
+	}
+	
+	@Bean
+	public ErrorLogger errorLogger() {
+		ErrorLogger result = new ErrorLogger();
+		result.setPrintErrorStackInRootLogger(env.getRequiredProperty("accessLog.printErrorStack", Boolean.class));
+		return result;
+	}
+}

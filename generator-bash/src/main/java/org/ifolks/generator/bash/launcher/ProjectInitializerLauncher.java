@@ -88,23 +88,11 @@ public class ProjectInitializerLauncher {
 			}
 			
 			try {
-				logger.info("start copying resources");
+				logger.info("start initializing project skeleton");
 				
-				codeGenerator.initResources(project);
+				codeGenerator.initProject(project);
 				
-				logger.info("copying resources completed");
-				
-			} catch (Exception e) {
-				logger.error("failed", e);
-				return;
-			}
-			
-			try {
-				logger.info("start writing configuration");
-				
-				codeGenerator.initConfiguration(project);
-				
-				logger.info("writing configuration completed");
+				logger.info("initializing project skeleton completed");
 				
 			} catch (Exception e) {
 				logger.error("failed", e);
