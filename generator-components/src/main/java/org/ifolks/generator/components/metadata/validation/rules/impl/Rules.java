@@ -10,7 +10,8 @@ public enum Rules {
 	ZERO_CARDINALITY_REFERENCE_TABLE_CHECKER(ZeroCardinalityReferenceTableChecker.class),
 	INVALID_ID_TYPE_CHECKER(InvalidIdTypeChecker.class),
 	SELECTION_CARDINALITY_CHECKER(SelectionCardinalityChecker.class),
-	SELECTION_LABEL_UNIQUENESS_CHECKER(SelectionLabelUniquenessChecker.class);
+	SELECTION_LABEL_UNIQUENESS_CHECKER(SelectionLabelUniquenessChecker.class),
+	INVALID_TEXT_CONSTRAINT_CHECKER(InvalidTextConstraintChecker.class);
 	
 	private Class<? extends ProjectMetaDataRuleChecker> checkerClass; 
 	
