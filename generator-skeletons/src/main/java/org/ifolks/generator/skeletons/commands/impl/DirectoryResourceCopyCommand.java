@@ -2,16 +2,21 @@ package org.ifolks.generator.skeletons.commands.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystem;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.skeletons.commands.impl.templatized.TemplatizedReourceCopier;
@@ -62,7 +67,8 @@ public class DirectoryResourceCopyCommand implements FileWriteCommand {
 
 		URL url = clazz.getResource(resourcesRoot);
 		if (url == null) {
-			url = Thread.currentThread().getContextClassLoader().getResource(resourcesRoot.startsWith("/") ? resourcesRoot.substring(1) : resourcesRoot);
+			String relPath = resourcesRoot.startsWith("/") ? resourcesRoot.substring(1) : resourcesRoot;
+			url = Thread.currentThread().getContextClassLoader().getResource(relPath);
 		}
 		if (url == null) {
 			throw new IOException("Resource root path not found on classpath: " + resourcesRoot);
@@ -71,30 +77,40 @@ public class DirectoryResourceCopyCommand implements FileWriteCommand {
 		Path targetPath = Paths.get(project.workspaceFolder + File.separator + targetRootPath);
 		targetPath = Files.createDirectories(targetPath);
 
-		if (url.getProtocol().equals("file")) {
+		if ("file".equalsIgnoreCase(url.getProtocol())) {
 			Path resourcesPath = Paths.get(url.toURI());
 			if (Files.isDirectory(resourcesPath)) {
 				copyRecursively(resourcesRoot, resourcesPath, targetPath);
 			} else {
 				copySingleFile(resourcesRoot, resourcesPath, targetPath);
 			}
-		} else {
-
-			File jar;
+		} else if ("jar".equalsIgnoreCase(url.getProtocol())) {
+			URI uri = url.toURI();
+			String[] array = uri.toString().split("!");
+			Map<String, String> env = new HashMap<>();
+			FileSystem fs = null;
+			boolean needsClose = false;
 			try {
-				jar = new File(clazz.getProtectionDomain().getCodeSource().getLocation().toURI());
-			} catch (URISyntaxException e) {
-				throw new IOException("failed to find jar path", e);
-			}
-
-			try (FileSystem jarMount = FileSystems.newFileSystem(jar.toPath())) {
-				Path resourcesPath = jarMount.getPath(resourcesRoot);
+				URI jarUri = URI.create(array[0]);
+				try {
+					fs = FileSystems.getFileSystem(jarUri);
+				} catch (FileSystemNotFoundException e) {
+					fs = FileSystems.newFileSystem(jarUri, env);
+					needsClose = true;
+				}
+				Path resourcesPath = fs.getPath(array[1]);
 				if (Files.isDirectory(resourcesPath)) {
 					copyRecursively(resourcesRoot, resourcesPath, targetPath);
 				} else {
 					copySingleFile(resourcesRoot, resourcesPath, targetPath);
 				}
+			} finally {
+				if (needsClose && fs != null) {
+					fs.close();
+				}
 			}
+		} else {
+			throw new IOException("Unsupported URL protocol for classpath resource copying: " + url.getProtocol());
 		}
 	}
 
