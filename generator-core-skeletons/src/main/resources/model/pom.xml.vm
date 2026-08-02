@@ -30,12 +30,12 @@
 			<artifactId>commons-jpa</artifactId>
 		</dependency>
 		
-		
-		<!-- Hibernate -->
+		<!-- jpa2 -->
 		<dependency>
-			<groupId>org.hibernate.orm</groupId>
-			<artifactId>hibernate-core</artifactId>
+			<groupId>jakarta.persistence</groupId>
+			<artifactId>jakarta.persistence-api</artifactId>
 		</dependency>
+		
 	</dependencies>
 
 </project>

@@ -43,10 +43,6 @@ public class EntityBeanFileWriteCommand extends JavaFileWriteCommand {
 	protected void fetchSpecificImports() {
 
 		
-		javaImports.add("import org.hibernate.Length;");
-		javaImports.add("import org.hibernate.annotations.JdbcTypeCode;");
-		javaImports.add("import org.hibernate.type.SqlTypes;");
-		
 		javaImports.add("import java.util.Set;");
 		javaImports.add("import java.time.OffsetDateTime;");
 		javaImports.add("import java.time.LocalDate;");
@@ -68,11 +64,8 @@ public class EntityBeanFileWriteCommand extends JavaFileWriteCommand {
 		javaImports.add("import jakarta.persistence.Temporal;");
 		javaImports.add("import jakarta.persistence.TemporalType;");
 		javaImports.add("import jakarta.persistence.Lob;");
-		javaImports.add("import org.hibernate.annotations.Fetch;");
-		javaImports.add("import org.hibernate.annotations.FetchMode;");
 		javaImports.add("import jakarta.persistence.UniqueConstraint;");
 		javaImports.add("import jakarta.persistence.Index;");
-		javaImports.add("import org.hibernate.annotations.Type;");
 		
 		
 
@@ -227,9 +220,6 @@ public class EntityBeanFileWriteCommand extends JavaFileWriteCommand {
 			if (property.referenceBean != null) {
 				if (!property.embedded) {
 					writeLine("@ManyToOne(fetch = FetchType.LAZY)");
-					if (bean.isComponent) {
-						writeLine("@Fetch(FetchMode.JOIN)");
-					}
 	
 					write("@JoinColumn(name = " + CHAR_34 + property.column.name + CHAR_34);
 					if (!property.nullable) {
@@ -252,12 +242,8 @@ public class EntityBeanFileWriteCommand extends JavaFileWriteCommand {
 			} else {
 				if (property.dataType.equals(DataType.TEXT)) {
 					writeLine("@Lob");
-					writeLine("@JdbcTypeCode(SqlTypes.LONGVARCHAR)");
 				}
 				write("@Column(name = " + CHAR_34 + property.column.name + CHAR_34);
-				if (property.dataType.equals(DataType.TEXT)) {
-					write(", length = Length.LOB_DEFAULT");
-				}
 				if (!property.nullable) {
 					write(", nullable = false");
 				}
@@ -287,7 +273,6 @@ public class EntityBeanFileWriteCommand extends JavaFileWriteCommand {
 				
 		for (OneToOneComponent oneToOneComponent : this.bean.oneToOneComponentList) {
 			writeLine("@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = " + CHAR_34 + oneToOneComponent.parentBean.objectName + CHAR_34 + ")");
-			writeLine("@Fetch(FetchMode.JOIN)");
 			writeLine("private " + oneToOneComponent.referenceBean.className + " " + oneToOneComponent.referenceBean.objectName + ";");
 			skipLine();
 		}
@@ -295,7 +280,6 @@ public class EntityBeanFileWriteCommand extends JavaFileWriteCommand {
 		
 		for (OneToOne oneToOne : this.bean.oneToOneList) {
 			writeLine("@OneToOne(fetch = FetchType.LAZY, mappedBy = " + CHAR_34 + bean.objectName + CHAR_34 + ")");
-			writeLine("@Fetch(FetchMode.JOIN)");
 			writeLine("private " + oneToOne.referenceBean.className + " " + oneToOne.referenceBean.objectName + ";");
 			skipLine();
 		}

@@ -67,6 +67,16 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 				javaImports.add("import " + currentBean.myPackage.omPackageName + "." + currentBean.className + "_;");
 			}
 		}
+		for (org.ifolks.generator.model.domain.business.OneToOne oneToOne : this.bean.oneToOneList) {
+			Bean currentBean = oneToOne.referenceBean;
+			javaImports.add("import " + currentBean.myPackage.omPackageName + "." + currentBean.className + ";");
+			javaImports.add("import " + currentBean.myPackage.omPackageName + "." + currentBean.className + "_;");
+		}
+		for (org.ifolks.generator.model.domain.business.OneToOneComponent oneToOneComponent : this.bean.oneToOneComponentList) {
+			Bean currentBean = oneToOneComponent.referenceBean;
+			javaImports.add("import " + currentBean.myPackage.omPackageName + "." + currentBean.className + ";");
+			javaImports.add("import " + currentBean.myPackage.omPackageName + "." + currentBean.className + "_;");
+		}
 		javaImports.add("import " + bean.myPackage.filtersPackageName + "." + bean.basicViewBean.filter.className + ";");
 	}
 
@@ -281,7 +291,29 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 	}
 	
 	private List<Alias> getAllAliases(Bean bean, String parentName) {
-		return getAliases(bean, bean.properties.size(), parentName, true);
+		List<Alias> aliasList = getAliases(bean, bean.properties.size(), parentName, true);
+
+		for (org.ifolks.generator.model.domain.business.OneToOne oneToOne : bean.oneToOneList) {
+			Alias alias = new Alias();
+			alias.propertyName = oneToOne.referenceBean.objectName;
+			alias.parentName = StringUtils.isEmpty(parentName) ? "root" : parentName;
+			alias.name = StringUtils.isEmpty(parentName) ? oneToOne.referenceBean.objectName : parentName + JavaClassNaming.getClassNameFromObjectName(oneToOne.referenceBean.objectName);
+			alias.parentBeanDataType = bean.className;
+			alias.beanDataType = oneToOne.referenceBean.className;
+			aliasList.add(alias);
+		}
+
+		for (org.ifolks.generator.model.domain.business.OneToOneComponent oneToOneComponent : bean.oneToOneComponentList) {
+			Alias alias = new Alias();
+			alias.propertyName = oneToOneComponent.referenceBean.objectName;
+			alias.parentName = StringUtils.isEmpty(parentName) ? "root" : parentName;
+			alias.name = StringUtils.isEmpty(parentName) ? oneToOneComponent.referenceBean.objectName : parentName + JavaClassNaming.getClassNameFromObjectName(oneToOneComponent.referenceBean.objectName);
+			alias.parentBeanDataType = bean.className;
+			alias.beanDataType = oneToOneComponent.referenceBean.className;
+			aliasList.add(alias);
+		}
+
+		return aliasList;
 	}
 	
 	private List<Alias> getAliases(Property property, String parentName, boolean checkVisibility) {
