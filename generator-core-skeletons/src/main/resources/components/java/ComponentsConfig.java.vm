@@ -7,11 +7,25 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import tools.jackson.databind.cfg.DateTimeFeature;
+import tools.jackson.databind.json.JsonMapper;
+
 @Configuration
 public class ComponentsConfig {
 
 	@Autowired
 	private Environment env;
+	
+	@Bean
+	public JsonMapper jsonMapper() {
+		JsonMapper result = JsonMapper.builder()
+			.changeDefaultPropertyInclusion(incl -> incl.withValueInclusion(Include.NON_NULL))
+			.disable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)
+			.build();
+		return result;
+	}
 	
 	@Bean
 	public AccessLogger accessLogger() {
