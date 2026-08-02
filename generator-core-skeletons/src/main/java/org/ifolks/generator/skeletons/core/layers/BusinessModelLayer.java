@@ -3,9 +3,9 @@ package org.ifolks.generator.skeletons.core.layers;
 import org.ifolks.generator.model.domain.Package;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.skeletons.commands.impl.DirectoryResourceCopyCommand;
 import org.ifolks.generator.skeletons.core.commands.model.EntityBeanFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.model.EntityMetaModelFileWriteCommand;
-import org.ifolks.generator.skeletons.commands.impl.DirectoryResourceCopyCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 

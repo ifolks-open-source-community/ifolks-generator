@@ -15,9 +15,9 @@ END;
 /
 
 -------------------------------------------------------------
----- FUNCTION normalize : unaccent and lowercase  ----
+---- FUNCTION UNACCENT : unaccent and lowercase  ----
 -------------------------------------------------------------
-CREATE OR REPLACE FUNCTION NORMALIZE(ARG IN VARCHAR2)
+CREATE OR REPLACE FUNCTION UNACCENT(ARG IN VARCHAR2)
 RETURN VARCHAR2
 IS
 BEGIN

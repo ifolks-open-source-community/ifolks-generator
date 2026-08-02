@@ -2,9 +2,9 @@ DROP SCHEMA IF EXISTS public CASCADE;
 CREATE SCHEMA public;
 
 -------------------------------------------------------------
----- FUNCTION normalize : unaccent and lowercase  ----
+---- FUNCTION UNACCENT : unaccent and lowercase  ----
 -------------------------------------------------------------
-CREATE OR REPLACE FUNCTION "normalize"(text)
+CREATE OR REPLACE FUNCTION "UNACCENT"(text)
 RETURNS text
 IMMUTABLE
 STRICT

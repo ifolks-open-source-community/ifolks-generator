@@ -10,7 +10,6 @@ import org.ifolks.generator.bash.arguments.BasicFreeChoicesHelper;
 import org.ifolks.generator.bash.arguments.ChoicesHelper;
 import org.ifolks.generator.bash.arguments.DatabaseEngineChoicesHelper;
 import org.ifolks.generator.bash.arguments.SkeletonChoicesHelper;
-import org.ifolks.generator.bash.arguments.TrueFalseChoicesHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -5,10 +5,10 @@ import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.business.OneToManyComponent;
 import org.ifolks.generator.model.domain.business.OneToOneComponent;
+import org.ifolks.generator.skeletons.commands.impl.DirectoryResourceCopyCommand;
 import org.ifolks.generator.skeletons.core.commands.commands.BeanPopulatorCommandFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.commands.OneToManyComponentPopulatorCommandFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.commands.OneToOneComponentPopulatorCommandFileWriteCommand;
-import org.ifolks.generator.skeletons.commands.impl.DirectoryResourceCopyCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 
