@@ -13,7 +13,15 @@ export class I18nService {
   constructor(private http: HttpClient) {}
 
   public async init(): Promise<void> {
-    const savedLocale = localStorage.getItem('locale') || localStorage.getItem('lang');
+    const legacyLang = localStorage.getItem('lang');
+    if (legacyLang) {
+      if (!localStorage.getItem('locale')) {
+        localStorage.setItem('locale', legacyLang);
+      }
+      localStorage.removeItem('lang');
+    }
+
+    const savedLocale = localStorage.getItem('locale');
     if (savedLocale) {
       this.currentLocale = savedLocale.replace('-', '_');
     } else if (navigator.language) {
@@ -67,7 +75,6 @@ export class I18nService {
 
   public setLocale(locale: string): void {
     localStorage.setItem('locale', locale);
-    localStorage.setItem('lang', locale);
     window.location.reload();
   }
 
