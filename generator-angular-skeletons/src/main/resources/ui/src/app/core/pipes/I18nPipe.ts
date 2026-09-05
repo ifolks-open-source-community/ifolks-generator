@@ -9,7 +9,7 @@ import { I18nService } from '../services/I18nService';
 export class I18nPipe implements PipeTransform {
   constructor(private i18nService: I18nService) {}
 
-  transform(key: string): string {
-    return this.i18nService.translate(key);
+  transform(key: string, params?: Record<string, any>): string {
+    return this.i18nService.translate(key, params);
   }
 }
