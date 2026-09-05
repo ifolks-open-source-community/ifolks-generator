@@ -1,4 +1,4 @@
-﻿{
+{
   "appName": "Your application",
   "welcomeContent": "Congratulations ! Your application is up !",
   "delete": "Delete",
@@ -23,5 +23,12 @@
   "technical.error": "A technical error occurred. Please try again later.",
   "backToHome": "Back to home",
   "minValue": "Min value",
-  "maxValue": "Max value"
+  "maxValue": "Max value",
+  "ok": "OK",
+  "confirmChoice": "Please confirm your choice",
+  "operation.completed": "Operation completed",
+  "operationCompleted": "Operation completed",
+  "generic.error": "An error occurred.",
+  "auth.gettingToken": "Getting your access token...",
+  "auth.disconnected": "You have been disconnected."
 }

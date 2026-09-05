@@ -46,15 +46,15 @@ export class RestRequestInterceptor implements HttpInterceptor {
           if (isReadRequest) {
             this.router.navigate(['/403']);
           } else {
-            this.notifications.error(error.error?.detail || "Action non autorisée");
+            this.notifications.error(error.error?.detail || "access.denied");
           }
         } else if (error.status === 409 || (error.status === 400 && !isReadRequest)) {
-          this.notifications.error(error.error?.detail || "Une erreur est survenue");
+          this.notifications.error(error.error?.detail || "generic.error");
         } else if (error.status === 0 || error.status >= 500) {
           if (isReadRequest) {
             this.router.navigate(['/500']);
           } else {
-            this.notifications.error("Une erreur technique est survenue sur le serveur.");
+            this.notifications.error("technical.error");
           }
         }
         return throwError(() => error);
