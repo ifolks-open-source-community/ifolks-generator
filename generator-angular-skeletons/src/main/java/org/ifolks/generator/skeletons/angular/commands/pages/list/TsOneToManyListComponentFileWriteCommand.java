@@ -209,7 +209,7 @@ public class TsOneToManyListComponentFileWriteCommand extends TsFileWriteCommand
         writeLine("delete(id: " + referenceBean.idTsType + "): void {");
         writeLine("this.dialog.open(ConfirmationModalComponent).afterClosed().subscribe(result => {");
         writeLine("if (result) {");
-        writeLine("this.service.delete(id).subscribe(success => {this.notifications.info(\"Operation completed\");this.refresh()});");
+        writeLine("this.service.delete(id).subscribe(success => {this.notifications.info(\"operation.completed\");this.refresh()});");
         writeLine("}");
         writeLine("});");
         writeLine("}");

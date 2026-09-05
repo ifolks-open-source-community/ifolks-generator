@@ -1,12 +1,14 @@
 import { Injectable } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { I18nService } from "./I18nService";
 
-@Injectable({providedIn:'root'})
+@Injectable({ providedIn: 'root' })
 export class NotificationService {
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private snackBar: MatSnackBar, private i18n: I18nService) {}
 
-  public info(message:string) {
-    this.snackBar.open(message, 'X', {
+  public info(message: string, params?: Record<string, any>) {
+    const translatedMessage = this.i18n.translate(message, params);
+    this.snackBar.open(translatedMessage, 'X', {
       duration: 5000,
       verticalPosition: "top",
       horizontalPosition: "center",
@@ -14,8 +16,9 @@ export class NotificationService {
     });
   }
 
-  public error(message:string) {
-    this.snackBar.open(message, 'X', {
+  public error(message: string, params?: Record<string, any>) {
+    const translatedMessage = this.i18n.translate(message, params);
+    this.snackBar.open(translatedMessage, 'X', {
       duration: 5000,
       verticalPosition: "top",
       horizontalPosition: "center",

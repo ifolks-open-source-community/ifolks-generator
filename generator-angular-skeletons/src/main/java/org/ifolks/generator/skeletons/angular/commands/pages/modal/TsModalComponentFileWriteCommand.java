@@ -188,13 +188,13 @@ public class TsModalComponentFileWriteCommand extends TsFileWriteCommand {
         
         writeLine("save(): void {");
         writeLine("this.applyForm();");
-        writeLine("this.service.save(this.view.form).subscribe(success => {this.notifications.info(\"Operation completed\");this.dialogRef.close();});");
+        writeLine("this.service.save(this.view.form).subscribe(success => {this.notifications.info(\"operation.completed\");this.dialogRef.close();});");
         writeLine("}");
         skipLine();
         
         writeLine("update(): void {");
         writeLine("this.applyForm();");
-        writeLine("this.service.update(this.view.id, this.view.form).subscribe(success => {this.notifications.info(\"Operation completed\");this.dialogRef.close();});");
+        writeLine("this.service.update(this.view.id, this.view.form).subscribe(success => {this.notifications.info(\"operation.completed\");this.dialogRef.close();});");
         writeLine("}");
         skipLine();
         

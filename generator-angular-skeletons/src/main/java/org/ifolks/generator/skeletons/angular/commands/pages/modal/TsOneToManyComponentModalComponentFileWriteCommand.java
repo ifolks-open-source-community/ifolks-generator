@@ -195,13 +195,13 @@ public class TsOneToManyComponentModalComponentFileWriteCommand extends TsFileWr
         
         writeLine("save(): void {");
         writeLine("this.applyForm();");
-        writeLine("this.service.save" + referenceBean.className + "(this.parentId, this.view.form).subscribe(success => {this.notifications.info(\"Operation completed\");this.dialogRef.close();});");
+        writeLine("this.service.save" + referenceBean.className + "(this.parentId, this.view.form).subscribe(success => {this.notifications.info(\"operation.completed\");this.dialogRef.close();});");
         writeLine("}");
         skipLine();
         
         writeLine("update(): void {");
         writeLine("this.applyForm();");
-        writeLine("this.service.update" + referenceBean.className + "(this.view.id, this.view.form).subscribe(success => {this.notifications.info(\"Operation completed\");this.dialogRef.close();});");
+        writeLine("this.service.update" + referenceBean.className + "(this.view.id, this.view.form).subscribe(success => {this.notifications.info(\"operation.completed\");this.dialogRef.close();});");
         writeLine("}");
         skipLine();
         

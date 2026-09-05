@@ -212,14 +212,14 @@ public class TsOneToOneComponentDetailsComponentFileWriteCommand extends TsFileW
         
         writeLine("save(): void {");
         writeLine("this.applyForm();");
-        writeLine("this.service.save" + referenceBean.className + "(this.id, this.view.form).subscribe(success => {this.notifications.info(\"Operation completed\");this.load();});");
+        writeLine("this.service.save" + referenceBean.className + "(this.id, this.view.form).subscribe(success => {this.notifications.info(\"operation.completed\");this.load();});");
         writeLine("this.load();");
         writeLine("}");
         skipLine();
         
         writeLine("update(): void {");
         writeLine("this.applyForm();");
-        writeLine("this.service.update" + referenceBean.className + "(this.id, this.view.form).subscribe(success => {this.notifications.info(\"Operation completed\");this.load();});");
+        writeLine("this.service.update" + referenceBean.className + "(this.id, this.view.form).subscribe(success => {this.notifications.info(\"operation.completed\");this.load();});");
         writeLine("}");
         skipLine();
         
@@ -229,7 +229,7 @@ public class TsOneToOneComponentDetailsComponentFileWriteCommand extends TsFileW
         skipLine();
         
         writeLine("delete(): void {");
-        writeLine("this.service.delete" + referenceBean.className + "(this.id).subscribe(success => {this.notifications.info(\"Operation completed\");this.load();});");
+        writeLine("this.service.delete" + referenceBean.className + "(this.id).subscribe(success => {this.notifications.info(\"operation.completed\");this.load();});");
         writeLine("}");
         skipLine();
 
