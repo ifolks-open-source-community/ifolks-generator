@@ -4,8 +4,7 @@
 
 @echo off
 
-set IGEN_VERSION=1.0.0
-set IGEN_RUNNABLE_JAR=%IGEN_HOME%\boot\generator-bash-%IGEN_VERSION%.jar
+set IGEN_RUNNABLE_JAR=%IGEN_HOME%\boot\*
 set IGEN_LIB=%IGEN_HOME%\lib
 set IGEN_CLASSPATH=%IGEN_RUNNABLE_JAR%;%IGEN_LIB%\*
 
@@ -13,7 +12,6 @@ set RUNNABLE_CLASS=org.ifolks.generator.bash.launcher.MainLauncher
 
 echo current directory : %CD%
 echo generator home : %IGEN_HOME%
-echo version : %IGEN_VERSION%
 
 @REM ==== START VALIDATION ====
 if not "%JAVA_HOME%" == "" goto OK_JAVA_HOME
