@@ -6,16 +6,14 @@
 ###############################################################################
 
 
-IGEN_VERSION=1.0.0-M2
-IGEN_RUNNABLE_JAR="$IGEN_HOME/boot/generator-bash-$IGEN_VERSION.jar"
+IGEN_RUNNABLE_JAR="$IGEN_HOME/boot/*"
 IGEN_LIB=$IGEN_HOME/lib
-IGEN_CLASSPATH=$IGEN_RUNNABLE_JAR:$IGEN_LIB/*
+IGEN_CLASSPATH="$IGEN_RUNNABLE_JAR:$IGEN_LIB/*"
 
 RUNNABLE_CLASS="org.ifolks.generator.bash.launcher.MainLauncher"
 
 echo current directory : $PWD
 echo generator home : $IGEN_HOME
-echo version : $IGEN_VERSION
 echo java home : $JAVA_HOME
 
 IGEN_CMD_LINE_ARGS=$1
