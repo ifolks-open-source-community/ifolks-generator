@@ -24,9 +24,7 @@ public class HelpLauncher {
 	public static void main(String[] args) {
 		String version = getGeneratorVersion();
 		String content = getHelpContent();
-		content = content.replace("@project.version@", version)
-		                 .replace("${project.version}", version)
-		                 .replace("{0}", version);
+		content = content.replace("{0}", version);
 		System.out.println(content);
 	}
 

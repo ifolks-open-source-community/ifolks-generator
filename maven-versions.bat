@@ -17,7 +17,7 @@ echo.
 echo ========================================================
 echo Synchronizing skeleton templates with generator version...
 echo ========================================================
-powershell -NoProfile -Command "$v = '%NEW_VERSION%'.Replace('-SNAPSHOT', ''); (Get-Content 'generator-rest-skeletons\src\main\resources\root\pom.xml.vm') -replace '<ifolks\.generator\.version>.*?</ifolks\.generator\.version>', ('<ifolks.generator.version>' + $v + '</ifolks.generator.version>') | Set-Content 'generator-rest-skeletons\src\main\resources\root\pom.xml.vm'"
+powershell -NoProfile -Command "(Get-Content 'generator-rest-skeletons\src\main\resources\root\pom.xml.vm') -replace '<ifolks\.generator\.version>.*?</ifolks\.generator\.version>', ('<ifolks.generator.version>%NEW_VERSION%</ifolks.generator.version>') | Set-Content 'generator-rest-skeletons\src\main\resources\root\pom.xml.vm'"
 
 echo.
 echo ========================================================
