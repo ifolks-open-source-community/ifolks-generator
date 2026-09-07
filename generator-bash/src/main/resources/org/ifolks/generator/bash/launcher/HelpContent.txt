@@ -1,4 +1,4 @@
-You are using iFolks generator version @project.version@
+You are using iFolks generator version {0}
 
 Use one of the following commands :
 . init : to setup a project from scratch.
