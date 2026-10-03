@@ -1,0 +1,27 @@
+target/
+bin/
+
+# Logs
+*.log
+
+# Eclipse
+.classpath
+.project
+.settings/
+.metadata/
+.recommenders/
+Servers/
+*/MANIFEST.MF
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+
+# Visual Studio Code
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
