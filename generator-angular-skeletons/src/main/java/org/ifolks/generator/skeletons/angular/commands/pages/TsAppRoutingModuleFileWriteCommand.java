@@ -26,6 +26,7 @@ public class TsAppRoutingModuleFileWriteCommand extends TsFileWriteCommand {
 	protected void fetchSpecificImports() {
 		imports.add("import { Routes } from '@angular/router';");
 		imports.add("import { AuthGuard } from './core/services/AuthGuard';");
+		imports.add("import { IndexComponent } from './features/components/index/index.component';");
 	}
 	
 	

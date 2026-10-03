@@ -19,7 +19,7 @@
   "access.denied": "Access denied. You do not have the required permissions.",
   "resource.not.found": "The requested resource could not be found.",
   "invalid.state": "The operation cannot be completed in the current state.",
-  "invalid.arguments": "Some fields are invalid.",
+  "invalid.arguments": "Some parameters or fields are invalid.",
   "technical.error": "A technical error occurred. Please try again later.",
   "backToHome": "Back to home",
   "minValue": "Min value",
