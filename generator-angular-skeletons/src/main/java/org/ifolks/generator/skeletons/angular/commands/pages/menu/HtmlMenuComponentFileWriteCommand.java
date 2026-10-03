@@ -33,10 +33,11 @@ public class HtmlMenuComponentFileWriteCommand extends AngularHtmlFileWriteComma
 		writeLine("<!-- -->");
 		skipLine();
 		
-		writeLine("<nav mat-tab-nav-bar>");
+		writeLine("<nav mat-tab-nav-bar [tabPanel]=\"tabPanel\">");
 		writeLine("<a mat-tab-link *ngFor=\"let link of links\"");
 		writeLine("[active]=\"activePath == link.path\" [routerLink]=\"link.path\"> {{link.text}} </a>");
 		writeLine("</nav>");
+		writeLine("<mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>");
 		
     }
 }
