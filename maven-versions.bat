@@ -1,9 +1,10 @@
 @echo off
-set /p NEW_VERSION=Enter new version (e.g. 1.1.0 or 1.2.0-SNAPSHOT): 
+set "NEW_VERSION=%~1"
+if "%NEW_VERSION%"=="" set /p "NEW_VERSION=Enter new version [e.g. 1.1.0 or 1.2.0-SNAPSHOT]: "
 
 if "%NEW_VERSION%"=="" (
     echo No version entered. Aborting.
-    pause
+    if "%~1"=="" pause
     exit /b 1
 )
 
@@ -23,4 +24,4 @@ echo.
 echo ========================================================
 echo Version successfully updated to %NEW_VERSION%!
 echo ========================================================
-pause
+if "%~1"=="" pause
