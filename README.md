@@ -1,101 +1,59 @@
-# iFolks Generator 🚀
+<p align="center">
+  <img src="assets/ifolks-generator-logo.jpg" alt="iFolks Generator Logo" width="220" />
+</p>
 
-[![Maven Build](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
-[![Java Version](https://img.shields.io/badge/Java-21-blue.svg)]()
-[![JUnit 5](https://img.shields.io/badge/JUnit-5%20Jupiter-orange.svg)]()
-[![License](https://img.shields.io/badge/License-Apache%202.0-red.svg)]()
+<h1 align="center">iFolks Generator</h1>
 
-**iFolks Generator** is a premium, open-source, high-productivity scaffolding tool based on model-driven code generation. It enables developers to bootstrap and generate complete, ready-to-run full-stack applications (Spring Boot 4 + Spring Data JPA + Angular) from a simple XML metadata model (`skeleton.xml`) in a matter of seconds.
+<p align="center">
+  <a href="https://generator.ifolks.org"><img src="https://img.shields.io/badge/Documentation-generator.ifolks.org-blue.svg" alt="Documentation" /></a>
+  <img src="https://img.shields.io/badge/Java-21-orange.svg" alt="Java 21" />
+  <img src="https://img.shields.io/badge/Spring%20Boot-4.1.1-brightgreen.svg" alt="Spring Boot 4.1.1" />
+  <img src="https://img.shields.io/badge/Angular-22-red.svg" alt="Angular 22" />
+  <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License" />
+</p>
 
----
-
-## 🌟 Key Features
-
-* **Model-Driven Development (MDD):** Define your domain model, relations and constraints between entities, UI behaviors (selection mode, filters and sortings, display mode) in a single `skeleton.xml` file, and let the generator build the rest.
-* **Multi-Tier Standardized Architecture:** Generates clean, decoupled, and industry-standard maven sub-modules for:
-  * **API & Model:** Clean interfaces and entities (fully leveraging modern **Java Records** for lightweight DTOs).
-  * **JPA Persistence & Services:** Decoupled data access layer with Spring Data JPA and standard transaction-managed services.
-  * **REST Web Services:** Fully configured Spring MVC Controllers with robust error handlers and Jackson `JsonMapper` serialization.
-  * **Angular Frontend:** Generates complete TypeScript models, REST clients, search filters, lists, details components, and modals automatically!
-* **Automated JUnit 5 Test Harness:** Generates fully configured, warning-free integration testing environments using **JUnit 5 Jupiter** and `@SpringJUnitConfig`.
-* **Zero Boilerplate Database Seeding:** Generates automatic JPA-based database populators that read CSV files and seed your local database instantly for quick prototyping.
+<p align="center">
+  <strong>The Model-Driven Scaffolding &amp; Code Generation Platform for the iFolks Ecosystem</strong>
+</p>
 
 ---
 
-## 📦 Project Architecture Overview
+## 📖 Official Documentation
 
-```mermaid
-graph TD
-    A[skeleton.xml Model] --> B(igen CLI)
-    B --> C{iFolks Generator}
-    C --> D[Backend: Maven Multi-Module]
-    C --> E[Frontend: Angular UI]
-    
-    D --> D1[API & Entities]
-    D --> D2[JPA Repository]
-    D --> D3[JPA Data Populator]
-    D --> D4[REST API Controllers]
-    D --> D5[JUnit 5 Test Suite]
-    
-    E --> E1[TypeScript Models]
-    E --> E2[REST API Services]
-    E --> E3[Detail, List & Modal Pages]
-```
+To avoid documentation drift, complete architectural guides, reference manuals, and tutorials are maintained on our official portal:
+
+👉 **[https://generator.ifolks.org](https://generator.ifolks.org)**
+
+* 📖 **[User Guide](https://generator.ifolks.org)**: CLI installation, `skeleton.xml` full specification, business key cardinalities, relationships, and multi-step data populator.
+* 🛠 **[Developer Guide](https://generator.ifolks.org)**: Internal 9-module architecture, 4-phase generation pipeline, `DatabaseHandler` SPI, validation checkers, and extension recipes.
+* 📦 **[Releases & Changelogs](https://generator.ifolks.org)**: Detailed version history and upgrade paths.
 
 ---
 
-## 🛠️ Getting Started
+## ⚡ Quickstart
 
-### Prerequisites
-* **Java 21** or higher.
-* **Maven 3.9** or higher.
-
-### 1. Bootstrapping a Project (`igen init`)
-Install the `igen` CLI binary and initialize a new project workspace:
 ```bash
-# Start the guided interactive prompt to initialize a new project structure
+# 1. Initialize a new project metadata workspace
 igen init
-```
-This interactive wizard will guide you through configuring your project, then generate a starter workspace containing your `data-model/skeleton.xml` and initial configuration files.
 
-### 2. Defining your Domains & Entities
-Edit your `skeleton.xml` to declare your database tables, primary keys, relationships, and selection behaviors.
+# 2. Edit your data-model/skeleton.xml to declare your entities and relations
 
-### 3. Generating Code (`igen generate`)
-Run the generator within your project folder to build the complete full-stack application:
-```bash
-# Run code generation
+# 3. Generate your decoupled Spring Boot 4 + Angular application
 igen generate
-```
-The generator will instantly write all Maven modules, Java packages, Spring configurations, TypeScript files, and Angular components based on your metadata.
 
-### 4. Running the Tests
-Compile and run the generated test harness to verify your environment is ready to use:
-```bash
-cd myawesomeproject-tests
-mvn clean install
+# 4. Compile and run integration tests
+cd [project]-tests && mvn clean install
 ```
 
 ---
 
-## 📂 Repository Structure
+## 📦 Distribution & Artifacts
 
-The generator is organized into modular components:
-
-| Module | Description |
-| :--- | :--- |
-| **`generator-model`** | Core definitions of the metadata representation, Java class naming, and XML schemas (`skeleton-metadata-1.0.xsd`). |
-| **`generator-components`** | Business rules factories, selection column uniqueness checks, and JAXB parsing services. |
-| **`generator-skeletons`** | Core file-writing command executor and template engine hooks. |
-| **`generator-core-skeletons`** | Templates and writers for Spring configuration, database schemas, entities, and JUnit 5 components. |
-| **`generator-rest-skeletons`** | Templates and writers for Spring Boot REST starters, configuration, and controller endpoints. |
-| **`generator-angular-skeletons`** | Templates and writers for TypeScript UI models, REST clients, list/details layouts, and routing. |
-| **`generator-services`** | Higher-level services coordinating metadata loading, validation, and generation. |
-| **`generator-bash`** | The Command Line Interface (CLI) executing package (compiles to the `igen` ZIP binary). |
-| **`generator-tests`** | Full integration test suites asserting complete compilation and test passes on simulated metadata. |
+* **CLI Binary**: [`generator-bash-1.2.0-bin.zip`](https://repo1.maven.org/maven2/org/ifolks/generator/generator-bash/1.2.0/generator-bash-1.2.0-bin.zip) on Maven Central.
+* **Metadata Schema**: `skeleton-metadata-1.0.xsd` under `generator-model`.
 
 ---
 
 ## 📝 License
 
-Distributed under the Apache Software License, Version 2.0. See `LICENCE.md` for more details.
+Distributed under the **Apache Software License, Version 2.0**. See [`LICENCE.md`](LICENCE.md) for details.
