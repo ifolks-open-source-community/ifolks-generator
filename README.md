@@ -5,7 +5,7 @@
 <h1 align="center">iFolks Generator</h1>
 
 <p align="center">
-  <a href="https://generator.ifolks.org"><img src="https://img.shields.io/badge/Documentation-generator.ifolks.org-blue.svg" alt="Documentation" /></a>
+  <a href="https://ifolks-org.atlassian.net/wiki/spaces/GENERATOR/overview"><img src="https://img.shields.io/badge/Documentation-generator.ifolks.org-blue.svg" alt="Documentation" /></a>
   <img src="https://img.shields.io/badge/Java-21-orange.svg" alt="Java 21" />
   <img src="https://img.shields.io/badge/Spring%20Boot-4.1.1-brightgreen.svg" alt="Spring Boot 4.1.1" />
   <img src="https://img.shields.io/badge/Angular-22-red.svg" alt="Angular 22" />
@@ -22,11 +22,11 @@
 
 To avoid documentation drift, complete architectural guides, reference manuals, and tutorials are maintained on our official portal:
 
-👉 **[https://generator.ifolks.org](https://generator.ifolks.org)**
+👉 **[generator.ifolks.org](https://ifolks-org.atlassian.net/wiki/spaces/GENERATOR/overview)**
 
-* 📖 **[User Guide](https://generator.ifolks.org)**: CLI installation, `skeleton.xml` full specification, business key cardinalities, relationships, and multi-step data populator.
-* 🛠 **[Developer Guide](https://generator.ifolks.org)**: Internal 9-module architecture, 4-phase generation pipeline, `DatabaseHandler` SPI, validation checkers, and extension recipes.
-* 📦 **[Releases & Changelogs](https://generator.ifolks.org)**: Detailed version history and upgrade paths.
+* 📖 **[User Guide](https://ifolks-org.atlassian.net/wiki/spaces/GENERATOR/pages/1898086413/User+guide)**: CLI installation, `skeleton.xml` full specification, business key cardinalities, relationships, and multi-step data populator.
+* 🛠 **[Developer Guide](https://ifolks-org.atlassian.net/wiki/spaces/GENERATOR/pages/1898151960/Developer+guide)**: Internal 9-module architecture, 4-phase generation pipeline, `DatabaseHandler` SPI, validation checkers, and extension recipes.
+* 📦 **[Releases & Changelogs](https://ifolks-org.atlassian.net/wiki/spaces/GENERATOR/pages/1893269505/Releases)**: Detailed version history and upgrade paths.
 
 ---
 
