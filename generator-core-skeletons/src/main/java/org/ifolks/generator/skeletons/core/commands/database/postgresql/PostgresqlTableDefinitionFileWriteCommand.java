@@ -112,6 +112,9 @@ public class PostgresqlTableDefinitionFileWriteCommand extends SqlFileWriteComma
 	
 			case BOOLEAN:
 				return "BOOLEAN";
+
+			case ENUM:
+				return "VARCHAR(32)";
 	
 			default:
 				throw new IllegalArgumentException("Unhandled data type " + type);

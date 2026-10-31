@@ -116,6 +116,9 @@ public class OracleTableDefinitionFileWriteCommand extends SqlFileWriteCommand {
 	
 			case BOOLEAN:
 				return "NUMBER(1,0)";
+
+			case ENUM:
+				return "VARCHAR2(32)";
 	
 			default:
 				throw new IllegalArgumentException("Unhandled data type " + this);

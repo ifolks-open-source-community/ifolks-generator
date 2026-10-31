@@ -7,8 +7,14 @@ import java.nio.file.Path;
 import java.util.Comparator;
 
 import org.ifolks.generator.model.domain.Project;
+import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.business.Enumeration;
+import org.ifolks.generator.model.domain.database.Table;
 import org.ifolks.generator.model.metadata.ProjectMetaData;
+import org.ifolks.generator.skeletons.core.commands.database.oracle.OracleTableDefinitionFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.database.postgresql.PostgresqlTableDefinitionFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.model.EntityBeanFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.model.EntityMetaModelFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.model.EnumFileWriteCommand;
 import org.ifolks.generator.skeletons.core.layers.BusinessModelLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
@@ -80,6 +86,83 @@ public class EnumGenerationTest {
 			Assertions.assertTrue(content.contains("BRANCH;"));
 			Assertions.assertTrue(content.contains("/* Specific Code Start */"));
 			Assertions.assertTrue(content.contains("/* Specific Code End */"));
+		} finally {
+			Files.walk(tempDir)
+					.sorted(Comparator.reverseOrder())
+					.map(Path::toFile)
+					.forEach(File::delete);
+		}
+	}
+
+	@Test
+	public void testEntityBeanWithEnumGeneration() throws IOException {
+		Path tempDir = Files.createTempDirectory("ifolks-entity-enum-test");
+		try {
+			ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/2");
+			Project project = loader.loadProject(projectMetaData);
+			project.workspaceFolder = tempDir.toAbsolutePath().toString();
+
+			Bean organizationBean = project.model.findBean("ORGANIZATION");
+			EntityBeanFileWriteCommand beanCommand = new EntityBeanFileWriteCommand(organizationBean);
+			beanCommand.execute();
+
+			File targetFile = new File(beanCommand.getLabel());
+			Assertions.assertTrue(targetFile.exists());
+
+			String content = Files.readString(targetFile.toPath());
+			Assertions.assertTrue(content.contains("import jakarta.persistence.Enumerated;"));
+			Assertions.assertTrue(content.contains("import jakarta.persistence.EnumType;"));
+			Assertions.assertTrue(content.contains("@Enumerated(EnumType.STRING)"));
+			Assertions.assertTrue(content.contains("@Column(name = \"ROLE\", length = 32, nullable = false)"));
+			Assertions.assertTrue(content.contains("private OrganizationRole role;"));
+
+			// Metamodel
+			EntityMetaModelFileWriteCommand metaModelCommand = new EntityMetaModelFileWriteCommand(organizationBean);
+			metaModelCommand.execute();
+			File metaModelFile = new File(metaModelCommand.getLabel());
+			Assertions.assertTrue(metaModelFile.exists());
+			String metaContent = Files.readString(metaModelFile.toPath());
+			Assertions.assertTrue(metaContent.contains("public static volatile SingularAttribute<Organization, OrganizationRole> role;"));
+		} finally {
+			Files.walk(tempDir)
+					.sorted(Comparator.reverseOrder())
+					.map(Path::toFile)
+					.forEach(File::delete);
+		}
+	}
+
+	@Test
+	public void testTableDefinitionWithEnumSqlGeneration() throws IOException {
+		Path tempDir = Files.createTempDirectory("ifolks-sql-enum-test");
+		try {
+			ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/2");
+			Project project = loader.loadProject(projectMetaData);
+			project.workspaceFolder = tempDir.toAbsolutePath().toString();
+
+			Table organizationTable = project.model.findTable("ORGANIZATION");
+			Table foolTable = project.model.findTable("FOOL");
+
+			// PostgreSQL
+			PostgresqlTableDefinitionFileWriteCommand pgOrgCommand = new PostgresqlTableDefinitionFileWriteCommand(organizationTable);
+			pgOrgCommand.execute();
+			String pgOrgContent = Files.readString(new File(pgOrgCommand.getLabel()).toPath());
+			Assertions.assertTrue(pgOrgContent.contains("ROLE VARCHAR(32) NOT NULL"));
+
+			PostgresqlTableDefinitionFileWriteCommand pgFoolCommand = new PostgresqlTableDefinitionFileWriteCommand(foolTable);
+			pgFoolCommand.execute();
+			String pgFoolContent = Files.readString(new File(pgFoolCommand.getLabel()).toPath());
+			Assertions.assertTrue(pgFoolContent.contains("STATUS VARCHAR(32) NULL"));
+
+			// Oracle
+			OracleTableDefinitionFileWriteCommand oraOrgCommand = new OracleTableDefinitionFileWriteCommand(organizationTable);
+			oraOrgCommand.execute();
+			String oraOrgContent = Files.readString(new File(oraOrgCommand.getLabel()).toPath());
+			Assertions.assertTrue(oraOrgContent.contains("ROLE VARCHAR2(32) NOT NULL"));
+
+			OracleTableDefinitionFileWriteCommand oraFoolCommand = new OracleTableDefinitionFileWriteCommand(foolTable);
+			oraFoolCommand.execute();
+			String oraFoolContent = Files.readString(new File(oraFoolCommand.getLabel()).toPath());
+			Assertions.assertTrue(oraFoolContent.contains("STATUS VARCHAR2(32) NULL"));
 		} finally {
 			Files.walk(tempDir)
 					.sorted(Comparator.reverseOrder())
