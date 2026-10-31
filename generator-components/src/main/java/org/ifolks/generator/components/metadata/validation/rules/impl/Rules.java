@@ -11,7 +11,9 @@ public enum Rules {
 	INVALID_ID_TYPE_CHECKER(InvalidIdTypeChecker.class),
 	SELECTION_CARDINALITY_CHECKER(SelectionCardinalityChecker.class),
 	SELECTION_LABEL_UNIQUENESS_CHECKER(SelectionLabelUniquenessChecker.class),
-	INVALID_TEXT_CONSTRAINT_CHECKER(InvalidTextConstraintChecker.class);
+	INVALID_TEXT_CONSTRAINT_CHECKER(InvalidTextConstraintChecker.class),
+	INVALID_ENUMERATION_CHECKER(InvalidEnumerationChecker.class),
+	INVALID_ENUM_COLUMN_CHECKER(InvalidEnumColumnChecker.class);
 	
 	private Class<? extends ProjectMetaDataRuleChecker> checkerClass; 
 	

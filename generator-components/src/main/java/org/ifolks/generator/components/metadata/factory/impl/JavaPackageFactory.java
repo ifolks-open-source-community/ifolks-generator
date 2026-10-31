@@ -44,6 +44,26 @@ public class JavaPackageFactory implements PackageFactory {
 		List<Package> result = new ArrayList<>();
 		
 		Package myPackage = setUpPackage(packageMetaData, model, parent);
+		if (packageMetaData.getEnumerations() != null) {
+			for (org.ifolks.generator.model.metadata.EnumerationMetaData enumMetaData : packageMetaData.getEnumerations()) {
+				org.ifolks.generator.model.domain.business.Enumeration enumeration = new org.ifolks.generator.model.domain.business.Enumeration();
+				enumeration.myPackage = myPackage;
+				enumeration.name = enumMetaData.getName();
+				enumeration.className = org.ifolks.generator.model.util.naming.JavaClassNaming.toClassName(enumeration.name);
+				enumeration.description = enumMetaData.getDescription();
+				if (enumMetaData.getItems() != null) {
+					for (org.ifolks.generator.model.metadata.EnumItemMetaData itemMetaData : enumMetaData.getItems()) {
+						org.ifolks.generator.model.domain.business.EnumItem item = new org.ifolks.generator.model.domain.business.EnumItem();
+						item.enumeration = enumeration;
+						item.name = itemMetaData.getName();
+						item.label = itemMetaData.getLabel() != null ? itemMetaData.getLabel() : itemMetaData.getName();
+						item.value = itemMetaData.getValue() != null ? itemMetaData.getValue() : itemMetaData.getName();
+						enumeration.items.add(item);
+					}
+				}
+				myPackage.enumerations.add(enumeration);
+			}
+		}
 		logger.trace("Package found : " + myPackage.name);
 		
 		if (packageMetaData.getTables() != null) {

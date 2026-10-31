@@ -60,6 +60,9 @@ public class TableFactoryImpl implements TableFactory {
             column.name = DatabaseHandlerDiscovery.getDatabaseHandler(model.project).rename(column.originalName);
             if (columnMetaData.getDataType() != null) {
             	column.dataType = columnMetaData.getDataType();
+            }
+            if (columnMetaData.getEnumName() != null) {
+            	column.enumName = columnMetaData.getEnumName();
             }            
             
             if (columnMetaData.getReferenceTableRelation() != null) {
