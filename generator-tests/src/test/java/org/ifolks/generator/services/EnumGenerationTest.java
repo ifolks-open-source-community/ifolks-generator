@@ -13,6 +13,15 @@ import org.ifolks.generator.model.domain.database.Table;
 import org.ifolks.generator.model.metadata.ProjectMetaData;
 import org.ifolks.generator.skeletons.core.commands.database.oracle.OracleTableDefinitionFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.database.postgresql.PostgresqlTableDefinitionFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.api.interfaces.BaseServiceInterfaceFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.components.mapper.BaseBasicViewMapperFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.components.mapper.BaseFormMapperFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.persistence.BaseRepositoryInterfaceFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.services.BaseServiceImplFileWriteCommand;
+import org.ifolks.generator.skeletons.rest.commands.SpringRestBaseControllerCommand;
+import org.ifolks.generator.skeletons.core.commands.api.model.BasicViewBeanFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.api.model.FilterFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.api.model.FormBeanFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.model.EntityBeanFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.model.EntityMetaModelFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.model.EnumFileWriteCommand;
@@ -37,6 +46,9 @@ public class EnumGenerationTest {
 	public void testBusinessModelLayerRegistersEnumerations() {
 		ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/2");
 		Project project = loader.loadProject(projectMetaData);
+
+		org.ifolks.generator.skeletons.core.layers.ApiLayer apiLayer = new org.ifolks.generator.skeletons.core.layers.ApiLayer();
+		apiLayer.getGenerationNode(project).execute();
 
 		BusinessModelLayer layer = new BusinessModelLayer();
 		FileWriteCommandTreeNode rootNode = layer.getGenerationNode(project);
@@ -217,11 +229,11 @@ public class EnumGenerationTest {
 		root.execute();
 
 		// Check OrganizationRole.java was generated
-		File orgRoleFile = new File(demoDir, "demo-model/src/main/java/org/ifolks/demo/model/organizations/OrganizationRole.java");
+		File orgRoleFile = new File(demoDir, "demo-api/src/main/java/org/ifolks/demo/model/organizations/OrganizationRole.java");
 		Assertions.assertTrue(orgRoleFile.exists(), "OrganizationRole.java must exist");
 
 		// Check FoolStatus.java was generated
-		File foolStatusFile = new File(demoDir, "demo-model/src/main/java/org/ifolks/demo/model/dummy/FoolStatus.java");
+		File foolStatusFile = new File(demoDir, "demo-api/src/main/java/org/ifolks/demo/model/dummy/FoolStatus.java");
 		Assertions.assertTrue(foolStatusFile.exists(), "FoolStatus.java must exist");
 
 		// Check Organization.java has @Enumerated
@@ -239,11 +251,104 @@ public class EnumGenerationTest {
 		// Verify maven compilation of demo-model
 		String mvnCmd = System.getProperty("os.name").toLowerCase().contains("win") ? "mvn.cmd" : "mvn";
 		ProcessBuilder pb = new ProcessBuilder(mvnCmd, "compile");
-		pb.directory(new File(demoDir, "demo-model"));
+		pb.directory(demoDir);
 		pb.redirectErrorStream(true);
 		Process process = pb.start();
 		String output = new String(process.getInputStream().readAllBytes());
 		int exitCode = process.waitFor();
 		Assertions.assertEquals(0, exitCode, "demo-model compilation failed:\n" + output);
+	}
+
+	@Test
+	public void testDtoWithEnumGeneration() throws IOException {
+		Path tempDir = Files.createTempDirectory("ifolks-dto-enum-test");
+		try {
+			ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/2");
+			Project project = loader.loadProject(projectMetaData);
+			project.workspaceFolder = tempDir.toAbsolutePath().toString();
+
+			Bean organizationBean = project.model.findBean("ORGANIZATION");
+
+			// BasicView
+			BasicViewBeanFileWriteCommand basicViewCmd = new BasicViewBeanFileWriteCommand(organizationBean);
+			basicViewCmd.execute();
+			String basicViewContent = Files.readString(new File(basicViewCmd.getLabel()).toPath());
+			Assertions.assertTrue(basicViewContent.contains("import org.ifolks.demo.model.organizations.OrganizationRole;"));
+			Assertions.assertTrue(basicViewContent.contains("OrganizationRole role"));
+
+			// Form
+			FormBeanFileWriteCommand formCmd = new FormBeanFileWriteCommand(organizationBean);
+			formCmd.execute();
+			String formContent = Files.readString(new File(formCmd.getLabel()).toPath());
+			Assertions.assertTrue(formContent.contains("import org.ifolks.demo.model.organizations.OrganizationRole;"));
+			Assertions.assertTrue(formContent.contains("@NotNull OrganizationRole role"));
+
+			// Filter
+			FilterFileWriteCommand filterCmd = new FilterFileWriteCommand(organizationBean);
+			filterCmd.execute();
+			String filterContent = Files.readString(new File(filterCmd.getLabel()).toPath());
+			Assertions.assertTrue(filterContent.contains("import org.ifolks.demo.model.organizations.OrganizationRole;"));
+			Assertions.assertTrue(filterContent.contains("private OrganizationRole role;"));
+			Assertions.assertTrue(filterContent.contains("public OrganizationRole getRole() {"));
+			Assertions.assertTrue(filterContent.contains("public void setRole(OrganizationRole role) {"));
+		} finally {
+			Files.walk(tempDir)
+					.sorted(Comparator.reverseOrder())
+					.map(Path::toFile)
+					.forEach(File::delete);
+		}
+	}
+
+	@Test
+	public void testMappersAndServicesWithEnumGeneration() throws IOException {
+		Path tempDir = Files.createTempDirectory("ifolks-mapper-enum-test");
+		try {
+			ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/2");
+			Project project = loader.loadProject(projectMetaData);
+			project.workspaceFolder = tempDir.toAbsolutePath().toString();
+
+			Bean organizationBean = project.model.findBean("ORGANIZATION");
+
+			// BaseBasicViewMapper
+			BaseBasicViewMapperFileWriteCommand bvmCmd = new BaseBasicViewMapperFileWriteCommand(organizationBean);
+			bvmCmd.execute();
+			String bvmContent = Files.readString(new File(bvmCmd.getLabel()).toPath());
+			Assertions.assertTrue(bvmContent.contains("import org.ifolks.demo.model.organizations.OrganizationRole;"));
+			Assertions.assertTrue(bvmContent.contains("OrganizationRole role = organization.getRole();"));
+
+			// BaseFormMapper
+			BaseFormMapperFileWriteCommand bfmCmd = new BaseFormMapperFileWriteCommand(organizationBean);
+			bfmCmd.execute();
+			String bfmContent = Files.readString(new File(bfmCmd.getLabel()).toPath());
+			Assertions.assertTrue(bfmContent.contains("import org.ifolks.demo.model.organizations.OrganizationRole;"));
+			Assertions.assertTrue(bfmContent.contains("organization.setRole(organizationForm.role());"));
+			Assertions.assertTrue(bfmContent.contains("OrganizationRole role = organization.getRole();"));
+			Assertions.assertTrue(bfmContent.contains("OrganizationRole.valueOf(args["));
+
+			// BaseRepositoryInterface
+			BaseRepositoryInterfaceFileWriteCommand repoCmd = new BaseRepositoryInterfaceFileWriteCommand(organizationBean);
+			repoCmd.execute();
+			Assertions.assertTrue(new File(repoCmd.getLabel()).exists());
+
+			// BaseServiceInterface
+			BaseServiceInterfaceFileWriteCommand srvIntfCmd = new BaseServiceInterfaceFileWriteCommand(organizationBean);
+			srvIntfCmd.execute();
+			Assertions.assertTrue(new File(srvIntfCmd.getLabel()).exists());
+
+			// BaseServiceImpl
+			BaseServiceImplFileWriteCommand srvImplCmd = new BaseServiceImplFileWriteCommand(organizationBean);
+			srvImplCmd.execute();
+			Assertions.assertTrue(new File(srvImplCmd.getLabel()).exists());
+
+			// SpringRestBaseController
+			SpringRestBaseControllerCommand restCmd = new SpringRestBaseControllerCommand(organizationBean);
+			restCmd.execute();
+			Assertions.assertTrue(new File(restCmd.getLabel()).exists());
+		} finally {
+			Files.walk(tempDir)
+					.sorted(Comparator.reverseOrder())
+					.map(Path::toFile)
+					.forEach(File::delete);
+		}
 	}
 }

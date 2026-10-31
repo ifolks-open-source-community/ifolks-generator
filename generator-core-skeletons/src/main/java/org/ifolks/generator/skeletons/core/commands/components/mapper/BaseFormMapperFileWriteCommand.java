@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.model.domain.business.Enumeration;
+import org.ifolks.generator.model.metadata.DataType;
 import org.ifolks.generator.model.domain.business.Property;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
 import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
@@ -39,6 +41,24 @@ public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {
 		javaImports.add("import org.ifolks.commons.api.exception.repository.ObjectNotFoundException;");
 		javaImports.add("import " + this.bean.myPackage.omPackageName + "." + this.bean.className + ";");
 		javaImports.add("import " + this.bean.myPackage.formsPackageName + "." + this.bean.formBean.className + ";");
+		for (Property property : this.bean.properties) {
+			if (property.dataType != null && property.dataType.equals(DataType.ENUM) && property.javaType != null) {
+				Enumeration enumeration = this.bean.myPackage.model.findEnumeration(property.javaType);
+				if (enumeration != null) {
+					javaImports.add("import " + enumeration.myPackage.omPackageName + "." + enumeration.className + ";");
+				}
+			}
+		}
+		if (this.bean.formBean != null && this.bean.formBean.properties != null) {
+			for (ViewProperty property : this.bean.formBean.properties) {
+				if (property.dataType != null && property.dataType.equals(DataType.ENUM) && property.javaType != null) {
+					Enumeration enumeration = this.bean.myPackage.model.findEnumeration(property.javaType);
+				if (enumeration != null) {
+					javaImports.add("import " + enumeration.myPackage.omPackageName + "." + enumeration.className + ";");
+				}
+			}
+		}
+		}
 
 		for (Property property : this.bean.properties) {
 			if (property.referenceBean != null && property.visibility.isDetailVisible() && !property.relation.isComponentLink()) {
@@ -138,7 +158,11 @@ public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {
         	} else {
         		writeLine(",");
         	}
-        	write("(" + property.javaType + ")args[" + i + "]" );
+        	if (property.dataType != null && property.dataType.equals(DataType.ENUM)) {
+        		write("(args[" + i + "] != null ? (" + property.javaType + ") (args[" + i + "] instanceof " + property.javaType + " ? args[" + i + "] : " + property.javaType + ".valueOf(args[" + i + "].toString())) : null)");
+        	} else {
+        		write("(" + property.javaType + ")args[" + i + "]" );
+        	}
         	i++;
         }
         writeLine(");");

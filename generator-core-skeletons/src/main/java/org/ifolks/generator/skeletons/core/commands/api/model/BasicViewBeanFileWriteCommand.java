@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.model.domain.business.Enumeration;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
+import org.ifolks.generator.model.metadata.DataType;
 import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 
 
@@ -27,6 +29,14 @@ public class BasicViewBeanFileWriteCommand extends JavaFileWriteCommand {
 		javaImports.add("import java.time.OffsetDateTime;");
 		javaImports.add("import java.time.LocalDate;");
 		javaImports.add("import java.math.BigDecimal;");
+		for (ViewProperty property : this.bean.basicViewBean.properties) {
+			if (property.dataType != null && property.dataType.equals(DataType.ENUM) && property.javaType != null) {
+				Enumeration enumeration = this.bean.myPackage.model.findEnumeration(property.javaType);
+				if (enumeration != null) {
+					javaImports.add("import " + enumeration.myPackage.omPackageName + "." + enumeration.className + ";");
+				}
+			}
+		}
 	}
 	
 	

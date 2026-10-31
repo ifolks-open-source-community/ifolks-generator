@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.model.domain.business.Enumeration;
+import org.ifolks.generator.model.metadata.DataType;
 import org.ifolks.generator.model.domain.business.OneToManyComponent;
 import org.ifolks.generator.model.domain.business.OneToOneComponent;
 import org.ifolks.generator.model.domain.business.Property;
@@ -38,6 +40,16 @@ public class BaseServiceInterfaceFileWriteCommand extends JavaFileWriteCommand {
 		javaImports.add("import " + this.bean.myPackage.formsPackageName + "." + this.bean.formBean.className + ";");
 		javaImports.add("import " + bean.myPackage.filtersPackageName + "." + bean.basicViewBean.filter.className + ";");
 		javaImports.add("import " + bean.myPackage.sortingsPackageName + "." + bean.basicViewBean.sortingClassName + ";");
+		if (bean.referenceViewProperties != null) {
+			for (ViewProperty property : bean.referenceViewProperties) {
+				if (property.dataType != null && property.dataType.equals(DataType.ENUM) && property.javaType != null) {
+					Enumeration enumeration = this.bean.myPackage.model.findEnumeration(property.javaType);
+					if (enumeration != null) {
+						javaImports.add("import " + enumeration.myPackage.omPackageName + "." + enumeration.className + ";");
+					}
+				}
+			}
+		}
 		
 		for (OneToOneComponent OneToOneComponent : this.bean.oneToOneComponentList) {
 			Bean currentBean = OneToOneComponent.referenceBean;

@@ -17,7 +17,7 @@ public class EnumFileWriteCommand extends JavaFileWriteCommand {
 
 	public EnumFileWriteCommand(Enumeration enumeration) {
 		super(enumeration.myPackage.model.project.workspaceFolder + File.separator
-				+ enumeration.myPackage.model.modelArtefactName + File.separator
+				+ enumeration.myPackage.model.apiArtefactName + File.separator
 				+ enumeration.myPackage.model.javaSourcesFolder + File.separator
 				+ enumeration.myPackage.omPackageName.replace(".", File.separator), enumeration.className);
 		this.enumeration = enumeration;
