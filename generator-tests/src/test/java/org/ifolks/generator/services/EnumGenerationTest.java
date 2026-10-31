@@ -13,6 +13,9 @@ import org.ifolks.generator.model.domain.database.Table;
 import org.ifolks.generator.model.metadata.ProjectMetaData;
 import org.ifolks.generator.skeletons.core.commands.database.oracle.OracleTableDefinitionFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.database.postgresql.PostgresqlTableDefinitionFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.api.model.BasicViewBeanFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.api.model.FilterFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.api.model.FormBeanFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.model.EntityBeanFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.model.EntityMetaModelFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.model.EnumFileWriteCommand;
@@ -245,5 +248,45 @@ public class EnumGenerationTest {
 		String output = new String(process.getInputStream().readAllBytes());
 		int exitCode = process.waitFor();
 		Assertions.assertEquals(0, exitCode, "demo-model compilation failed:\n" + output);
+	}
+
+	@Test
+	public void testDtoWithEnumGeneration() throws IOException {
+		Path tempDir = Files.createTempDirectory("ifolks-dto-enum-test");
+		try {
+			ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/2");
+			Project project = loader.loadProject(projectMetaData);
+			project.workspaceFolder = tempDir.toAbsolutePath().toString();
+
+			Bean organizationBean = project.model.findBean("ORGANIZATION");
+
+			// BasicView
+			BasicViewBeanFileWriteCommand basicViewCmd = new BasicViewBeanFileWriteCommand(organizationBean);
+			basicViewCmd.execute();
+			String basicViewContent = Files.readString(new File(basicViewCmd.getLabel()).toPath());
+			Assertions.assertTrue(basicViewContent.contains("import org.ifolks.demo.model.organizations.OrganizationRole;"));
+			Assertions.assertTrue(basicViewContent.contains("OrganizationRole role"));
+
+			// Form
+			FormBeanFileWriteCommand formCmd = new FormBeanFileWriteCommand(organizationBean);
+			formCmd.execute();
+			String formContent = Files.readString(new File(formCmd.getLabel()).toPath());
+			Assertions.assertTrue(formContent.contains("import org.ifolks.demo.model.organizations.OrganizationRole;"));
+			Assertions.assertTrue(formContent.contains("@NotNull OrganizationRole role"));
+
+			// Filter
+			FilterFileWriteCommand filterCmd = new FilterFileWriteCommand(organizationBean);
+			filterCmd.execute();
+			String filterContent = Files.readString(new File(filterCmd.getLabel()).toPath());
+			Assertions.assertTrue(filterContent.contains("import org.ifolks.demo.model.organizations.OrganizationRole;"));
+			Assertions.assertTrue(filterContent.contains("private OrganizationRole role;"));
+			Assertions.assertTrue(filterContent.contains("public OrganizationRole getRole() {"));
+			Assertions.assertTrue(filterContent.contains("public void setRole(OrganizationRole role) {"));
+		} finally {
+			Files.walk(tempDir)
+					.sorted(Comparator.reverseOrder())
+					.map(Path::toFile)
+					.forEach(File::delete);
+		}
 	}
 }
