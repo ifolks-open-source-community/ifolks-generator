@@ -10,7 +10,9 @@ import org.ifolks.generator.skeletons.core.commands.api.model.BasicViewBeanFileW
 import org.ifolks.generator.skeletons.core.commands.api.model.FilterFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.api.model.FormBeanFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.api.model.FullViewBeanFileWriteCommand;
+import org.ifolks.generator.model.domain.business.Enumeration;
 import org.ifolks.generator.skeletons.core.commands.api.model.SortingFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.model.EnumFileWriteCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 
@@ -57,6 +59,15 @@ public class ApiLayer extends AbstractLayer {
 		for (Package myPackage : project.model.packages) {
 			FileWriteCommandTreeNode packageTreeNode = new FileWriteCommandTreeNode(myPackage.name);
 			modelTreeNode.add(packageTreeNode);
+
+			if (myPackage.enumerations != null && !myPackage.enumerations.isEmpty()) {
+				FileWriteCommandTreeNode enumTreeNode = new FileWriteCommandTreeNode("Enumerations");
+				packageTreeNode.add(enumTreeNode);
+				for (Enumeration enumeration : myPackage.enumerations) {
+					FileWriteCommandTreeNode singleEnumNode = new FileWriteCommandTreeNode(new EnumFileWriteCommand(enumeration));
+					enumTreeNode.add(singleEnumNode);
+				}
+			}
 
 			FileWriteCommandTreeNode ovTreeNode = new FileWriteCommandTreeNode("Views");
 			packageTreeNode.add(ovTreeNode);

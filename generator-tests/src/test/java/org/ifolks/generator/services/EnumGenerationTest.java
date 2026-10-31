@@ -47,6 +47,9 @@ public class EnumGenerationTest {
 		ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/2");
 		Project project = loader.loadProject(projectMetaData);
 
+		org.ifolks.generator.skeletons.core.layers.ApiLayer apiLayer = new org.ifolks.generator.skeletons.core.layers.ApiLayer();
+		apiLayer.getGenerationNode(project).execute();
+
 		BusinessModelLayer layer = new BusinessModelLayer();
 		FileWriteCommandTreeNode rootNode = layer.getGenerationNode(project);
 		Assertions.assertNotNull(rootNode);
@@ -226,11 +229,11 @@ public class EnumGenerationTest {
 		root.execute();
 
 		// Check OrganizationRole.java was generated
-		File orgRoleFile = new File(demoDir, "demo-model/src/main/java/org/ifolks/demo/model/organizations/OrganizationRole.java");
+		File orgRoleFile = new File(demoDir, "demo-api/src/main/java/org/ifolks/demo/model/organizations/OrganizationRole.java");
 		Assertions.assertTrue(orgRoleFile.exists(), "OrganizationRole.java must exist");
 
 		// Check FoolStatus.java was generated
-		File foolStatusFile = new File(demoDir, "demo-model/src/main/java/org/ifolks/demo/model/dummy/FoolStatus.java");
+		File foolStatusFile = new File(demoDir, "demo-api/src/main/java/org/ifolks/demo/model/dummy/FoolStatus.java");
 		Assertions.assertTrue(foolStatusFile.exists(), "FoolStatus.java must exist");
 
 		// Check Organization.java has @Enumerated
@@ -248,7 +251,7 @@ public class EnumGenerationTest {
 		// Verify maven compilation of demo-model
 		String mvnCmd = System.getProperty("os.name").toLowerCase().contains("win") ? "mvn.cmd" : "mvn";
 		ProcessBuilder pb = new ProcessBuilder(mvnCmd, "compile");
-		pb.directory(new File(demoDir, "demo-model"));
+		pb.directory(demoDir);
 		pb.redirectErrorStream(true);
 		Process process = pb.start();
 		String output = new String(process.getInputStream().readAllBytes());
