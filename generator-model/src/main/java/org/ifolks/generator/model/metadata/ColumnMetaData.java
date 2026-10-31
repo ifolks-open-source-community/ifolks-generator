@@ -22,6 +22,8 @@ public class ColumnMetaData {
 	@XmlAttribute
 	private DataType dataType;
 	@XmlAttribute
+	private String enumName;
+	@XmlAttribute
 	private Boolean nullable = true;
 	@XmlAttribute
 	private Boolean unique = false;
@@ -58,6 +60,12 @@ public class ColumnMetaData {
 	}
 	public void setDataType(DataType dataType) {
 		this.dataType = dataType;
+	}
+	public String getEnumName() {
+		return enumName;
+	}
+	public void setEnumName(String enumName) {
+		this.enumName = enumName;
 	}
 	public Boolean getNullable() {
 		return nullable;

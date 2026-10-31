@@ -13,6 +13,7 @@ import jakarta.xml.bind.annotation.XmlEnum;
  * <li>DATE
  * <li>DATETIME
  * <li>BOOLEAN
+ * <li>ENUM
  * @author Nicolas Thibault
  *
  */
@@ -27,12 +28,9 @@ public enum DataType {
 	BIG_DECIMAL("BigDecimal", "number", true, false, IdGeneratorType.NONE),
 	DATE("LocalDate", "string", true, false, IdGeneratorType.NONE),
 	DATETIME("OffsetDateTime", "Date", true, false, IdGeneratorType.NONE),
-	BOOLEAN("Boolean", "boolean", false, false, IdGeneratorType.NONE);	
-	
+	BOOLEAN("Boolean", "boolean", false, false, IdGeneratorType.NONE),
+	ENUM(null, null, false, false, IdGeneratorType.NONE);
 
-	
-	
-	
 	private DataType(String javaType, String tsType, boolean limitable, boolean idElligible, IdGeneratorType defaultGenerator) {
 		this.javaType = javaType;
 		this.tsType = tsType;
@@ -46,7 +44,6 @@ public enum DataType {
 	private boolean limitable;
 	private boolean idElligible;
 	private IdGeneratorType defaultGenerator;
-
 
 	public String getJavaType() {
 		return javaType;

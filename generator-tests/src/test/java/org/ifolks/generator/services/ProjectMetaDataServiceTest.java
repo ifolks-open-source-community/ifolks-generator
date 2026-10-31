@@ -13,7 +13,6 @@ public class ProjectMetaDataServiceTest {
 	@Autowired
 	private ProjectMetaDataService service;
 	
-	
 	@Test
 	public void testLoadSuccess() {
 		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/success/1");
@@ -21,7 +20,6 @@ public class ProjectMetaDataServiceTest {
 		Assertions.assertFalse(report.hasErrors);
 		Assertions.assertFalse(report.hasWarnings);
 	}
-	
 	
 	@Test
 	public void testLoadFailureOnDuplicateTables() {
@@ -32,7 +30,6 @@ public class ProjectMetaDataServiceTest {
 		Assertions.assertFalse(report.hasWarnings);
 	}
 	
-	
 	@Test
 	public void testLoadFailureOnInvalidTableReference() {
 		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/failure/2");
@@ -42,7 +39,6 @@ public class ProjectMetaDataServiceTest {
 		Assertions.assertFalse(report.hasWarnings);
 	}
 	
-	
 	@Test
 	public void testLoadFailureOnInvalidIdType() {
 		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/failure/3");
@@ -51,5 +47,63 @@ public class ProjectMetaDataServiceTest {
 		Assertions.assertTrue(report.hasErrors);
 		Assertions.assertFalse(report.hasWarnings);
 	}
-}
 
+	@Test
+	public void testLoadSuccessWithEnumerations() {
+		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/success/2");
+		ProjectValidationReport report = service.validate(project);
+		report.print();
+		Assertions.assertFalse(report.hasErrors);
+		Assertions.assertFalse(report.hasWarnings);
+	}
+
+	@Test
+	public void testLoadFailureOnEnumWithTableReference() {
+		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/failure/4");
+		ProjectValidationReport report = service.validate(project);
+		report.print();
+		Assertions.assertTrue(report.hasErrors);
+		Assertions.assertTrue(report.records.stream()
+				.anyMatch(r -> r.message.contains("Enum column cannot define referenceTableName")));
+	}
+
+	@Test
+	public void testLoadFailureOnUnknownEnumName() {
+		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/failure/5");
+		ProjectValidationReport report = service.validate(project);
+		report.print();
+		Assertions.assertTrue(report.hasErrors);
+		Assertions.assertTrue(report.records.stream()
+				.anyMatch(r -> r.message.contains("Unknown enum reference: 'NonExistentEnum'")));
+	}
+
+	@Test
+	public void testLoadFailureOnDuplicateEnumItem() {
+		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/failure/6");
+		ProjectValidationReport report = service.validate(project);
+		report.print();
+		Assertions.assertTrue(report.hasErrors);
+		Assertions.assertTrue(report.records.stream()
+				.anyMatch(r -> r.message.contains("Duplicate item 'ACTIVE' in enumeration 'FoolStatus'")));
+	}
+
+	@Test
+	public void testLoadFailureOnEnumNameOnNonEnumColumn() {
+		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/failure/7");
+		ProjectValidationReport report = service.validate(project);
+		report.print();
+		Assertions.assertTrue(report.hasErrors);
+		Assertions.assertTrue(report.records.stream()
+				.anyMatch(r -> r.message.contains("enumName attribute is only permitted when dataType is ENUM")));
+	}
+
+	@Test
+	public void testLoadFailureOnEnumWithTextFilterType() {
+		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/failure/8");
+		ProjectValidationReport report = service.validate(project);
+		report.print();
+		Assertions.assertTrue(report.hasErrors);
+		Assertions.assertTrue(report.records.stream()
+				.anyMatch(r -> r.message.contains("Enum column cannot define textFilterType")));
+	}
+}
