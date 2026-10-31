@@ -6,6 +6,7 @@ import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.business.Enumeration;
 import org.ifolks.generator.model.domain.database.Table;
 import org.ifolks.generator.model.exception.BeanNotFoundException;
+import org.ifolks.generator.model.exception.EnumerationNotFoundException;
 import org.ifolks.generator.model.exception.TableNotFoundException;
 
 
@@ -394,6 +395,6 @@ public class Model {
 				}
 			}
 		}
-		return null;
+		throw new EnumerationNotFoundException("Invalid enumeration reference : " + enumName);
 	}
 }

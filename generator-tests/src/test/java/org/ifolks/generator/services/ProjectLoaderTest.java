@@ -71,5 +71,13 @@ public class ProjectLoaderTest {
 		Assertions.assertEquals("FoolStatus", statusProp.javaType);
 		Assertions.assertEquals("FoolStatus", statusProp.tsType);
 		Assertions.assertTrue(statusProp.nullable);
+
+		// Verify strict fail-fast behavior
+		Assertions.assertNull(project.model.findEnumeration(null));
+		Assertions.assertNull(project.model.findEnumeration(""));
+		Assertions.assertThrows(
+				org.ifolks.generator.model.exception.EnumerationNotFoundException.class,
+				() -> project.model.findEnumeration("UnknownEnum")
+		);
 	}
 }
