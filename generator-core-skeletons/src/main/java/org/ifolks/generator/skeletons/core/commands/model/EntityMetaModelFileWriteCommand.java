@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.model.domain.business.Enumeration;
 import org.ifolks.generator.model.domain.business.OneToMany;
+import org.ifolks.generator.model.metadata.DataType;
 import org.ifolks.generator.model.domain.business.OneToManyComponent;
 import org.ifolks.generator.model.domain.business.OneToOne;
 import org.ifolks.generator.model.domain.business.OneToOneComponent;
@@ -51,6 +53,12 @@ public class EntityMetaModelFileWriteCommand extends JavaFileWriteCommand {
 		for (Property property : this.bean.properties) {
 			if (property.referenceBean != null) {
 				javaImports.add("import " + property.referenceBean.myPackage.omPackageName + "." + property.referenceBean.className + ";");
+			}
+			if (property.dataType != null && property.dataType.equals(DataType.ENUM) && property.enumName != null) {
+				Enumeration enumeration = this.bean.myPackage.model.findEnumeration(property.enumName);
+				if (enumeration != null && !enumeration.myPackage.omPackageName.equals(this.bean.myPackage.omPackageName)) {
+					javaImports.add("import " + enumeration.myPackage.omPackageName + "." + enumeration.className + ";");
+				}
 			}
 		}
 

@@ -49,7 +49,7 @@ public class JavaPackageFactory implements PackageFactory {
 				org.ifolks.generator.model.domain.business.Enumeration enumeration = new org.ifolks.generator.model.domain.business.Enumeration();
 				enumeration.myPackage = myPackage;
 				enumeration.name = enumMetaData.getName();
-				enumeration.className = org.ifolks.generator.model.util.naming.JavaClassNaming.toClassName(enumeration.name);
+				enumeration.className = enumeration.name;
 				enumeration.description = enumMetaData.getDescription();
 				if (enumMetaData.getItems() != null) {
 					for (org.ifolks.generator.model.metadata.EnumItemMetaData itemMetaData : enumMetaData.getItems()) {
