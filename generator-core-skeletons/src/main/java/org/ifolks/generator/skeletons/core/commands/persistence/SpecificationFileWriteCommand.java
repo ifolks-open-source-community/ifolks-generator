@@ -7,7 +7,9 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.model.domain.business.Enumeration;
 import org.ifolks.generator.model.domain.business.Property;
+import org.ifolks.generator.model.metadata.DataType;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
 import org.ifolks.generator.model.metadata.RelationType;
 import org.ifolks.generator.model.metadata.SelectionMode;
@@ -59,12 +61,24 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 				javaImports.add("import " + currentBean.myPackage.omPackageName + "." + currentBean.className + ";");
 				javaImports.add("import " + currentBean.myPackage.omPackageName + "." + currentBean.className + "_;");
 			}
+			if (viewProperty.dataType != null && viewProperty.dataType.equals(DataType.ENUM) && viewProperty.javaType != null) {
+				Enumeration enumeration = this.bean.myPackage.model.findEnumeration(viewProperty.javaType);
+				if (enumeration != null) {
+					javaImports.add("import " + enumeration.myPackage.omPackageName + "." + enumeration.className + ";");
+				}
+			}
 		}
 		for (Property property : this.bean.properties) {
 			if (property.referenceBean != null) {
 				Bean currentBean = property.referenceBean;
 				javaImports.add("import " + currentBean.myPackage.omPackageName + "." + currentBean.className + ";");
 				javaImports.add("import " + currentBean.myPackage.omPackageName + "." + currentBean.className + "_;");
+			}
+			if (property.dataType != null && property.dataType.equals(DataType.ENUM) && property.enumName != null) {
+				Enumeration enumeration = this.bean.myPackage.model.findEnumeration(property.enumName);
+				if (enumeration != null) {
+					javaImports.add("import " + enumeration.myPackage.omPackageName + "." + enumeration.className + ";");
+				}
 			}
 		}
 		for (org.ifolks.generator.model.domain.business.OneToOne oneToOne : this.bean.oneToOneList) {
@@ -350,6 +364,9 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 			case TEXT :
 				writeTextRestriction(property);
 				return;
+			case ENUM :
+				writeEnumRestriction(property);
+				return;
 		}
 	}
 	
@@ -371,6 +388,11 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 		}
 	}
 	
+
+	private void writeEnumRestriction(ViewProperty property) {
+		String joinedAliasName = StringUtils.isEmpty(property.joinedAliasName) ? "root" : property.joinedAliasName;
+		writeLine("\t\t\taddEqualsIfNotNullRestriction(cb, predicates, " + joinedAliasName + ".get(" + property.lastParentBeanClassName + "_." + property.lastPropertyName + "), filter.get" + property.capName + "());");
+	}
 	private void writeBooleanRestriction(ViewProperty property) {
 		String joinedAliasName = StringUtils.isEmpty(property.joinedAliasName)?"root":property.joinedAliasName;
 		writeLine("\t\t\taddBooleanRestriction(cb, predicates, " + joinedAliasName + ".get(" + property.lastParentBeanClassName + "_." + property.lastPropertyName + "), filter.get" + property.capName + "());");

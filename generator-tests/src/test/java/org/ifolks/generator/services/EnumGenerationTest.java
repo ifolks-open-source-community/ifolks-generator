@@ -16,6 +16,7 @@ import org.ifolks.generator.skeletons.core.commands.database.postgresql.Postgres
 import org.ifolks.generator.skeletons.core.commands.model.EntityBeanFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.model.EntityMetaModelFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.model.EnumFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.persistence.SpecificationFileWriteCommand;
 import org.ifolks.generator.skeletons.core.layers.BusinessModelLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 import org.junit.jupiter.api.Assertions;
@@ -169,5 +170,80 @@ public class EnumGenerationTest {
 					.map(Path::toFile)
 					.forEach(File::delete);
 		}
+	}
+
+	@Test
+	public void testSpecificationWithEnumGeneration() throws IOException {
+		Path tempDir = Files.createTempDirectory("ifolks-spec-enum-test");
+		try {
+			ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/2");
+			Project project = loader.loadProject(projectMetaData);
+			project.workspaceFolder = tempDir.toAbsolutePath().toString();
+
+			Bean organizationBean = project.model.findBean("ORGANIZATION");
+			SpecificationFileWriteCommand specCommand = new SpecificationFileWriteCommand(organizationBean);
+			specCommand.execute();
+
+			File targetFile = new File(specCommand.getLabel());
+			Assertions.assertTrue(targetFile.exists());
+
+			String content = Files.readString(targetFile.toPath());
+			Assertions.assertTrue(content.contains("import org.ifolks.demo.model.organizations.OrganizationRole;"));
+			Assertions.assertTrue(content.contains("addEqualsIfNotNullRestriction(cb, predicates, root.get(Organization_.role), filter.getRole());"));
+		} finally {
+			Files.walk(tempDir)
+					.sorted(Comparator.reverseOrder())
+					.map(Path::toFile)
+					.forEach(File::delete);
+		}
+	}
+
+	@Test
+	public void testDemoBusinessModelLayerGenerationAndCompilation() throws IOException, InterruptedException {
+		File demoDir = new File("../../ifolks-demo");
+		if (!demoDir.exists()) {
+			demoDir = new File("c:/Users/nicol/dev/sources/ifolks-open-source/ifolks-demo");
+		}
+		if (!demoDir.exists()) {
+			return;
+		}
+
+		ProjectMetaData projectMetaData = service.loadProjectMetaData(demoDir.getAbsolutePath());
+		Project project = loader.loadProject(projectMetaData);
+		project.workspaceFolder = demoDir.getAbsolutePath();
+
+		BusinessModelLayer layer = new BusinessModelLayer();
+		FileWriteCommandTreeNode root = layer.getGenerationNode(project);
+		root.execute();
+
+		// Check OrganizationRole.java was generated
+		File orgRoleFile = new File(demoDir, "demo-model/src/main/java/org/ifolks/demo/model/organizations/OrganizationRole.java");
+		Assertions.assertTrue(orgRoleFile.exists(), "OrganizationRole.java must exist");
+
+		// Check FoolStatus.java was generated
+		File foolStatusFile = new File(demoDir, "demo-model/src/main/java/org/ifolks/demo/model/dummy/FoolStatus.java");
+		Assertions.assertTrue(foolStatusFile.exists(), "FoolStatus.java must exist");
+
+		// Check Organization.java has @Enumerated
+		File orgEntityFile = new File(demoDir, "demo-model/src/main/java/org/ifolks/demo/model/organizations/Organization.java");
+		String orgEntityContent = Files.readString(orgEntityFile.toPath());
+		Assertions.assertTrue(orgEntityContent.contains("@Enumerated(EnumType.STRING)"));
+		Assertions.assertTrue(orgEntityContent.contains("private OrganizationRole role;"));
+
+		// Check Fool.java has @Enumerated
+		File foolEntityFile = new File(demoDir, "demo-model/src/main/java/org/ifolks/demo/model/dummy/Fool.java");
+		String foolEntityContent = Files.readString(foolEntityFile.toPath());
+		Assertions.assertTrue(foolEntityContent.contains("@Enumerated(EnumType.STRING)"));
+		Assertions.assertTrue(foolEntityContent.contains("private FoolStatus status;"));
+
+		// Verify maven compilation of demo-model
+		String mvnCmd = System.getProperty("os.name").toLowerCase().contains("win") ? "mvn.cmd" : "mvn";
+		ProcessBuilder pb = new ProcessBuilder(mvnCmd, "compile");
+		pb.directory(new File(demoDir, "demo-model"));
+		pb.redirectErrorStream(true);
+		Process process = pb.start();
+		String output = new String(process.getInputStream().readAllBytes());
+		int exitCode = process.waitFor();
+		Assertions.assertEquals(0, exitCode, "demo-model compilation failed:\n" + output);
 	}
 }
