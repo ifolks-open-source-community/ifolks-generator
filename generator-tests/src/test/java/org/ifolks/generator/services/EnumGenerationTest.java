@@ -13,6 +13,12 @@ import org.ifolks.generator.model.domain.database.Table;
 import org.ifolks.generator.model.metadata.ProjectMetaData;
 import org.ifolks.generator.skeletons.core.commands.database.oracle.OracleTableDefinitionFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.database.postgresql.PostgresqlTableDefinitionFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.api.interfaces.BaseServiceInterfaceFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.components.mapper.BaseBasicViewMapperFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.components.mapper.BaseFormMapperFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.persistence.BaseRepositoryInterfaceFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.services.BaseServiceImplFileWriteCommand;
+import org.ifolks.generator.skeletons.rest.commands.SpringRestBaseControllerCommand;
 import org.ifolks.generator.skeletons.core.commands.api.model.BasicViewBeanFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.api.model.FilterFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.api.model.FormBeanFileWriteCommand;
@@ -282,6 +288,59 @@ public class EnumGenerationTest {
 			Assertions.assertTrue(filterContent.contains("private OrganizationRole role;"));
 			Assertions.assertTrue(filterContent.contains("public OrganizationRole getRole() {"));
 			Assertions.assertTrue(filterContent.contains("public void setRole(OrganizationRole role) {"));
+		} finally {
+			Files.walk(tempDir)
+					.sorted(Comparator.reverseOrder())
+					.map(Path::toFile)
+					.forEach(File::delete);
+		}
+	}
+
+	@Test
+	public void testMappersAndServicesWithEnumGeneration() throws IOException {
+		Path tempDir = Files.createTempDirectory("ifolks-mapper-enum-test");
+		try {
+			ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/2");
+			Project project = loader.loadProject(projectMetaData);
+			project.workspaceFolder = tempDir.toAbsolutePath().toString();
+
+			Bean organizationBean = project.model.findBean("ORGANIZATION");
+
+			// BaseBasicViewMapper
+			BaseBasicViewMapperFileWriteCommand bvmCmd = new BaseBasicViewMapperFileWriteCommand(organizationBean);
+			bvmCmd.execute();
+			String bvmContent = Files.readString(new File(bvmCmd.getLabel()).toPath());
+			Assertions.assertTrue(bvmContent.contains("import org.ifolks.demo.model.organizations.OrganizationRole;"));
+			Assertions.assertTrue(bvmContent.contains("OrganizationRole role = organization.getRole();"));
+
+			// BaseFormMapper
+			BaseFormMapperFileWriteCommand bfmCmd = new BaseFormMapperFileWriteCommand(organizationBean);
+			bfmCmd.execute();
+			String bfmContent = Files.readString(new File(bfmCmd.getLabel()).toPath());
+			Assertions.assertTrue(bfmContent.contains("import org.ifolks.demo.model.organizations.OrganizationRole;"));
+			Assertions.assertTrue(bfmContent.contains("organization.setRole(organizationForm.role());"));
+			Assertions.assertTrue(bfmContent.contains("OrganizationRole role = organization.getRole();"));
+			Assertions.assertTrue(bfmContent.contains("OrganizationRole.valueOf(args["));
+
+			// BaseRepositoryInterface
+			BaseRepositoryInterfaceFileWriteCommand repoCmd = new BaseRepositoryInterfaceFileWriteCommand(organizationBean);
+			repoCmd.execute();
+			Assertions.assertTrue(new File(repoCmd.getLabel()).exists());
+
+			// BaseServiceInterface
+			BaseServiceInterfaceFileWriteCommand srvIntfCmd = new BaseServiceInterfaceFileWriteCommand(organizationBean);
+			srvIntfCmd.execute();
+			Assertions.assertTrue(new File(srvIntfCmd.getLabel()).exists());
+
+			// BaseServiceImpl
+			BaseServiceImplFileWriteCommand srvImplCmd = new BaseServiceImplFileWriteCommand(organizationBean);
+			srvImplCmd.execute();
+			Assertions.assertTrue(new File(srvImplCmd.getLabel()).exists());
+
+			// SpringRestBaseController
+			SpringRestBaseControllerCommand restCmd = new SpringRestBaseControllerCommand(organizationBean);
+			restCmd.execute();
+			Assertions.assertTrue(new File(restCmd.getLabel()).exists());
 		} finally {
 			Files.walk(tempDir)
 					.sorted(Comparator.reverseOrder())

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.model.domain.business.Enumeration;
+import org.ifolks.generator.model.metadata.DataType;
 import org.ifolks.generator.model.domain.business.OneToManyComponent;
 import org.ifolks.generator.model.domain.business.OneToOneComponent;
 import org.ifolks.generator.model.domain.business.Property;
@@ -91,6 +93,16 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
 		javaImports.add("import org.ifolks.commons.api.exception.repository.ResourceNotFoundException;");
 		javaImports.add("import org.springframework.data.jpa.domain.Specification;");
 		javaImports.add("import org.springframework.data.domain.PageRequest;");
+		if (bean.referenceViewProperties != null) {
+			for (ViewProperty property : bean.referenceViewProperties) {
+				if (property.dataType != null && property.dataType.equals(DataType.ENUM) && property.javaType != null) {
+					Enumeration enumeration = this.bean.myPackage.model.findEnumeration(property.javaType);
+					if (enumeration != null) {
+						javaImports.add("import " + enumeration.myPackage.omPackageName + "." + enumeration.className + ";");
+					}
+				}
+			}
+		}
 		
 
 
