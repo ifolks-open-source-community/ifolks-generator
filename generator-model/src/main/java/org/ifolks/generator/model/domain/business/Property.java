@@ -19,6 +19,7 @@ public class Property {
 	public String javaType;
 	public String tsType;
 	public DataType dataType;
+	public String enumName;
 	public boolean nullable;
 	public boolean unique;
 	public Bean referenceBean;

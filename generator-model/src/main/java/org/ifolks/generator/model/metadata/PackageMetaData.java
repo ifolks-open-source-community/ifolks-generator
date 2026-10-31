@@ -19,6 +19,10 @@ public class PackageMetaData {
 	@XmlAttribute(required=true)
 	private String name;
 	
+	@XmlElementWrapper(name="enumerations")
+	@XmlElement(name="enumeration")
+	private List<EnumerationMetaData> enumerations;
+
 	@XmlElementWrapper(name="tables")
 	@XmlElement(name="table")
 	private List<TableMetaData> tables;
@@ -37,6 +41,12 @@ public class PackageMetaData {
 	public void setName(String name) {
 		this.name = name;
 	}	
+	public List<EnumerationMetaData> getEnumerations() {
+		return enumerations;
+	}
+	public void setEnumerations(List<EnumerationMetaData> enumerations) {
+		this.enumerations = enumerations;
+	}
 	public List<TableMetaData> getTables() {
 		return tables;
 	}

@@ -1,8 +1,10 @@
 package org.ifolks.generator.model.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.model.domain.business.Enumeration;
 import org.ifolks.generator.model.domain.database.Table;
 
 
@@ -20,6 +22,7 @@ public class Package {
 	public String urlPiece;
 	public List<Table> tables;
 	public List<Bean> beans;
+	public List<Enumeration> enumerations = new ArrayList<>();
 
 	public String omPackageName;
 

@@ -12,6 +12,7 @@ public class Column {
 	public String name;
     public String originalName;
     public DataType dataType;
+    public String enumName;
     public boolean nullable;
     public boolean unique;
     public Table referenceTable;

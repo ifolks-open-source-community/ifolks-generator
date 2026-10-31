@@ -3,6 +3,7 @@ package org.ifolks.generator.model.domain;
 import java.util.List;
 
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.model.domain.business.Enumeration;
 import org.ifolks.generator.model.domain.database.Table;
 import org.ifolks.generator.model.exception.BeanNotFoundException;
 import org.ifolks.generator.model.exception.TableNotFoundException;
@@ -377,5 +378,22 @@ public class Model {
 			}
 		}
 		throw new BeanNotFoundException("invalid table reference : " + tableOriginalName);
+	}
+	public Enumeration findEnumeration(String enumName) {
+		if (enumName == null || enumName.isEmpty()) {
+			return null;
+		}
+		if (this.packages != null) {
+			for (Package myPackage : this.packages) {
+				if (myPackage.enumerations != null) {
+					for (Enumeration enumeration : myPackage.enumerations) {
+						if (enumName.equals(enumeration.name)) {
+							return enumeration;
+						}
+					}
+				}
+			}
+		}
+		return null;
 	}
 }
