@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<metadata:project xmlns:metadata="http://generator.ifolks.org/schema/model/metadata"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://generator.ifolks.org/schema/model/metadata skeleton-metadata-1.3.xsd">
+	<domainName>org.ifolks</domainName>
+	<projectName>demo</projectName>
+	<skeleton>SPRING_REST_ANGULAR</skeleton>
+	<databaseEngine>POSTGRESQL</databaseEngine>
+
+	<packages>
+		<package name="REFERENCE">
+			<packages>
+				<package name="LOCALIZATION">
+					<tables>
+						<table name="COUNTRY" idType="SHORT" cardinality="1" listRendering="Countries"
+							detailRendering="Country details" createEnabled="true"
+							updateEnabled="true" deleteEnabled="true">
+							<selectionBehavior selectionMode="DROPDOWN_OPTIONS" labelColumn="LABEL" />
+							<columns>
+								<column name="CODE" dataType="STRING" nullable="false"
+									editable="true" rendering="ISO Code">
+								</column>
+								<column name="LABEL" dataType="STRING" nullable="false" unique="true"
+									editable="true" rendering="Label">
+								</column>
+							</columns>
+						</table>
+					</tables>
+				</package>
+			</packages>
+		</package>
+		<package name="ORGANIZATIONS">
+			<enumerations>
+				<enumeration name="OrganizationRole">
+					<item name="HEADQUARTERS" />
+					<item name="SUBSIDIARY" />
+					<item name="BRANCH" />
+				</enumeration>
+			</enumerations>
+			<tables>
+				<table cardinality="1" idType="INTEGER" name="ORGANIZATION" listRendering="Organizations"
+					detailRendering="Organization">
+					<selectionBehavior selectionMode="AUTO_COMPLETE" />
+					<columns>
+						<column name="CODE" dataType="STRING" nullable="false"
+							editable="true" rendering="Code">
+						</column>
+						<column name="ROLE" dataType="ENUM" enumName="OrganizationRole" nullable="false"
+							editable="true" rendering="Organization Role">
+						</column>
+					</columns>
+				</table>
+			</tables>
+		</package>
+		<package name="DUMMY">
+			<enumerations>
+				<enumeration name="FoolStatus">
+					<item name="DRAFT" />
+					<item name="ACTIVE" />
+					<item name="ARCHIVED" />
+				</enumeration>
+			</enumerations>
+			<tables>
+				<table name="FOOL" idType="STRING" idGeneratorType="UUID" cardinality="1" listRendering="Fools"
+					detailRendering="Fool details" createEnabled="true" updateEnabled="true"
+					deleteEnabled="true">
+					<selectionBehavior selectionMode="AUTO_COMPLETE" labelColumn="LABEL" />
+					<columns>
+						<column name="CODE" dataType="STRING" nullable="false"
+							editable="true" rendering="Code">
+						</column>
+						<column name="LABEL" dataType="STRING" nullable="false" unique="true"
+							editable="true" rendering="Label">
+						</column>
+						<column name="STATUS" dataType="ENUM" enumName="FoolStatus" nullable="true"
+							editable="true" rendering="Status">
+						</column>
+					</columns>
+				</table>
+			</tables>
+		</package>
+	</packages>
+</metadata:project>
