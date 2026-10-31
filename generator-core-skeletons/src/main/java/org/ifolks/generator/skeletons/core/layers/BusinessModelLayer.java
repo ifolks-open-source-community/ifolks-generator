@@ -3,9 +3,11 @@ package org.ifolks.generator.skeletons.core.layers;
 import org.ifolks.generator.model.domain.Package;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.model.domain.business.Enumeration;
 import org.ifolks.generator.skeletons.commands.impl.DirectoryResourceCopyCommand;
 import org.ifolks.generator.skeletons.core.commands.model.EntityBeanFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.model.EntityMetaModelFileWriteCommand;
+import org.ifolks.generator.skeletons.core.commands.model.EnumFileWriteCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
 
@@ -39,6 +41,15 @@ public class BusinessModelLayer extends AbstractLayer {
 				
 				FileWriteCommandTreeNode beanMetaModelTreeNode = new FileWriteCommandTreeNode(new EntityMetaModelFileWriteCommand(bean));
 				omTreeNode.add(beanMetaModelTreeNode);
+			}
+
+			if (myPackage.enumerations != null && !myPackage.enumerations.isEmpty()) {
+				FileWriteCommandTreeNode enumTreeNode = new FileWriteCommandTreeNode("Enumerations");
+				packageTreeNode.add(enumTreeNode);
+				for (Enumeration enumeration : myPackage.enumerations) {
+					FileWriteCommandTreeNode singleEnumNode = new FileWriteCommandTreeNode(new EnumFileWriteCommand(enumeration));
+					enumTreeNode.add(singleEnumNode);
+				}
 			}
 		}
 
