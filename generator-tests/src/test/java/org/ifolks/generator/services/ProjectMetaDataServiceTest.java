@@ -106,4 +106,14 @@ public class ProjectMetaDataServiceTest {
 		Assertions.assertTrue(report.records.stream()
 				.anyMatch(r -> r.message.contains("Enum column cannot define textFilterType")));
 	}
+
+	@Test
+	public void testLoadFailureOnEnumInCardinality() {
+		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/failure/9");
+		ProjectValidationReport report = service.validate(project);
+		report.print();
+		Assertions.assertTrue(report.hasErrors);
+		Assertions.assertTrue(report.records.stream()
+				.anyMatch(r -> r.message.contains("Column STATUS of type ENUM cannot be part of the business key (cardinality)")));
+	}
 }

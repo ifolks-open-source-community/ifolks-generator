@@ -33,8 +33,13 @@ public class InvalidEnumColumnChecker implements ProjectMetaDataRuleChecker {
 			if (packageMetaData.getTables() != null) {
 				for (TableMetaData table : packageMetaData.getTables()) {
 					if (table.getColumns() != null) {
-						for (ColumnMetaData column : table.getColumns()) {
+						for (int i = 0; i < table.getColumns().size(); i++) {
+							ColumnMetaData column = table.getColumns().get(i);
 							if (column.getDataType() != null && column.getDataType().equals(DataType.ENUM)) {
+
+								if (i < table.getCardinality()) {
+									report.addError(table, column, "Column " + column.getName() + " of type ENUM cannot be part of the business key (cardinality)");
+								}
 
 								if (column.getEnumName() == null || column.getEnumName().trim().isEmpty()) {
 									report.addError(table, column, "Column with dataType ENUM must declare a non-empty enumName");

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<metadata:project xmlns:metadata="http://generator.ifolks.org/schema/model/metadata"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://generator.ifolks.org/schema/model/metadata skeleton-metadata-1.3.xsd">
+	<domainName>org.ifolks</domainName>
+	<projectName>demo</projectName>
+	<skeleton>SPRING_REST_ANGULAR</skeleton>
+	<databaseEngine>POSTGRESQL</databaseEngine>
+
+	<packages>
+		<package name="DUMMY">
+			<enumerations>
+				<enumeration name="FoolStatus">
+					<item name="ACTIVE" />
+				</enumeration>
+			</enumerations>
+			<tables>
+				<table name="FOOL" idType="STRING" cardinality="1" listRendering="Fools" detailRendering="Fool">
+					<columns>
+						<column name="STATUS" dataType="ENUM" enumName="FoolStatus"
+							nullable="false" editable="true" rendering="Status" />
+					</columns>
+				</table>
+			</tables>
+		</package>
+	</packages>
+</metadata:project>

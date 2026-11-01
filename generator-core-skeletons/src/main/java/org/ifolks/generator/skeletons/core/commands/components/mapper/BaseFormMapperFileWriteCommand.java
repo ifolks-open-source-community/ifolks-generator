@@ -159,7 +159,7 @@ public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {
         		writeLine(",");
         	}
         	if (property.dataType != null && property.dataType.equals(DataType.ENUM)) {
-        		write("(args[" + i + "] != null ? (" + property.javaType + ") (args[" + i + "] instanceof " + property.javaType + " ? args[" + i + "] : " + property.javaType + ".valueOf(args[" + i + "].toString())) : null)");
+        		write("(args[" + i + "] != null ? (" + property.javaType + ") (args[" + i + "] instanceof " + property.javaType + " ? args[" + i + "] : " + property.javaType + ".valueOf(args[" + i + "].toString().trim())) : null)");
         	} else {
         		write("(" + property.javaType + ")args[" + i + "]" );
         	}

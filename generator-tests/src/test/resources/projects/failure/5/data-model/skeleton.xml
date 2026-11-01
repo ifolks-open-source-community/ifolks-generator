@@ -17,6 +17,7 @@
 			<tables>
 				<table name="FOOL" idType="STRING" cardinality="1" listRendering="Fools" detailRendering="Fool">
 					<columns>
+						<column name="CODE" dataType="STRING" nullable="false" editable="true" rendering="Code" />
 						<column name="STATUS" dataType="ENUM" enumName="NonExistentEnum"
 							nullable="true" editable="true" rendering="Status" />
 					</columns>
