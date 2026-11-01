@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<metadata:project xmlns:metadata="http://generator.ifolks.org/schema/model/metadata"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://generator.ifolks.org/schema/model/metadata skeleton-metadata-1.0.xsd">
+	<domainName>org.ifolks</domainName>
+	<projectName>demo</projectName>
+	<skeleton>SPRING_HIBERNATE_PRIMEFACES</skeleton>
+	<databaseEngine>POSTGRESQL</databaseEngine>
+
+	<packages>
+		<package name="REFERENCE">
+			<tables>
+				<table name="COUNTRY" cardinality="1" listRendering="Countries"
+					detailRendering="Country details" createEnabled="true"
+					updateEnabled="true" deleteEnabled="true">
+					<columns>
+						<column name="CODE" dataType="STRING" nullable="false"
+							editable="true" unique="true" rendering="ISO Code">
+						</column>
+						<column name="LABEL" dataType="STRING" nullable="false"
+							editable="true" rendering="Label">
+						</column>
+					</columns>
+				</table>
+			</tables>
+		</package>
+	</packages>
+</metadata:project>
