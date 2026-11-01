@@ -55,6 +55,7 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 			break;
 
 		case TEXT:
+		case ENUM:
 			writeLine("<mat-cell *matCellDef=\"let element\"> {{element." + property.name + "}} </mat-cell>");
 			break;
 		}
@@ -95,6 +96,7 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 					writeLongInput(property, bean);
 					break;
 				case STRING:
+				case ENUM:
 					writeStringInput(property, bean);
 					break;
 				case TEXT:
@@ -246,6 +248,7 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 		switch (property.dataType) {
 			case STRING:
 			case TEXT:
+			case ENUM:
 				writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
 				writeLine("<mat-label>" + labelExpr + "</mat-label>");
 				writeLine("<input matInput placeholder=\"" + labelExpr + "\" formControlName=\"" + property.name + "\"/>");

@@ -7,6 +7,9 @@ import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.business.Enumeration;
 import org.ifolks.generator.model.domain.database.Table;
 import org.ifolks.generator.model.metadata.ProjectMetaData;
+import org.ifolks.generator.skeletons.angular.commands.pages.details.HtmlDetailsComponentFileWriteCommand;
+import org.ifolks.generator.skeletons.angular.commands.pages.list.HtmlListComponentFileWriteCommand;
+import org.ifolks.generator.skeletons.angular.commands.pages.modal.HtmlModalComponentFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.api.interfaces.BaseServiceInterfaceFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.api.model.BasicViewBeanFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.api.model.FilterFileWriteCommand;
@@ -229,5 +232,32 @@ public class EnumGenerationTest {
 		String restContent = restCmd.generateContent();
 		Assertions.assertNotNull(restContent);
 		Assertions.assertTrue(restContent.contains("public class OrganizationBaseController"));
+	}
+
+	@Test
+	public void testAngularHtmlComponentsWithEnumGeneration() throws IOException {
+		ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/2");
+		Project project = loader.loadProject(projectMetaData);
+
+		Bean organizationBean = project.model.findBean("ORGANIZATION");
+
+		// List HTML
+		HtmlListComponentFileWriteCommand listCmd = new HtmlListComponentFileWriteCommand(organizationBean);
+		String listHtml = listCmd.generateContent();
+		Assertions.assertTrue(listHtml.contains("<ng-container matColumnDef=\"role\">"));
+		Assertions.assertTrue(listHtml.contains("<mat-cell *matCellDef=\"let element\"> {{element.role}} </mat-cell>"));
+		Assertions.assertTrue(listHtml.contains("formControlName=\"role\""));
+
+		// Modal HTML
+		HtmlModalComponentFileWriteCommand modalCmd = new HtmlModalComponentFileWriteCommand(organizationBean);
+		String modalHtml = modalCmd.generateContent();
+		Assertions.assertTrue(modalHtml.contains("formControlName=\"role\""));
+		Assertions.assertTrue(modalHtml.contains("<input matInput placeholder=\"{{ 'organizationRole' | i18n }}\" formControlName=\"role\"/>"));
+
+		// Details HTML
+		HtmlDetailsComponentFileWriteCommand detailsCmd = new HtmlDetailsComponentFileWriteCommand(organizationBean);
+		String detailsHtml = detailsCmd.generateContent();
+		Assertions.assertTrue(detailsHtml.contains("formControlName=\"role\""));
+		Assertions.assertTrue(detailsHtml.contains("<input matInput placeholder=\"{{ 'organizationRole' | i18n }}\" formControlName=\"role\"/>"));
 	}
 }

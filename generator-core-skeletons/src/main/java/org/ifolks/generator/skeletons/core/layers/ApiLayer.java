@@ -3,6 +3,7 @@ package org.ifolks.generator.skeletons.core.layers;
 import org.ifolks.generator.model.domain.Package;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.model.domain.business.Enumeration;
 import org.ifolks.generator.skeletons.commands.impl.DirectoryResourceCopyCommand;
 import org.ifolks.generator.skeletons.core.commands.api.interfaces.BaseServiceInterfaceFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.api.interfaces.ServiceInterfaceFileWriteCommand;
@@ -10,7 +11,6 @@ import org.ifolks.generator.skeletons.core.commands.api.model.BasicViewBeanFileW
 import org.ifolks.generator.skeletons.core.commands.api.model.FilterFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.api.model.FormBeanFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.api.model.FullViewBeanFileWriteCommand;
-import org.ifolks.generator.model.domain.business.Enumeration;
 import org.ifolks.generator.skeletons.core.commands.api.model.SortingFileWriteCommand;
 import org.ifolks.generator.skeletons.core.commands.model.EnumFileWriteCommand;
 import org.ifolks.generator.skeletons.layers.AbstractLayer;

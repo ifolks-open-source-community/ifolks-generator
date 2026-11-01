@@ -8,9 +8,9 @@ import java.util.Set;
 
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.business.Enumeration;
-import org.ifolks.generator.model.metadata.DataType;
 import org.ifolks.generator.model.domain.business.Property;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
+import org.ifolks.generator.model.metadata.DataType;
 import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
 
 public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {

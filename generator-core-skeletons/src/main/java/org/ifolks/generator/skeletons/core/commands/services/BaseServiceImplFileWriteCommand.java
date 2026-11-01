@@ -5,11 +5,11 @@ import java.io.IOException;
 
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.business.Enumeration;
-import org.ifolks.generator.model.metadata.DataType;
 import org.ifolks.generator.model.domain.business.OneToManyComponent;
 import org.ifolks.generator.model.domain.business.OneToOneComponent;
 import org.ifolks.generator.model.domain.business.Property;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
+import org.ifolks.generator.model.metadata.DataType;
 import org.ifolks.generator.model.metadata.RelationType;
 import org.ifolks.generator.model.metadata.SelectionMode;
 import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
