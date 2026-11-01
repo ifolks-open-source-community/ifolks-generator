@@ -51,5 +51,15 @@ public class ProjectMetaDataServiceTest {
 		Assertions.assertTrue(report.hasErrors);
 		Assertions.assertFalse(report.hasWarnings);
 	}
+	
+	
+	@Test
+	public void testLoadFailureOnRedundantUniqueConstraint() {
+		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/failure/4");
+		ProjectValidationReport report = service.validate(project);
+		report.print();
+		Assertions.assertTrue(report.hasErrors);
+		Assertions.assertFalse(report.hasWarnings);
+	}
 }
 
