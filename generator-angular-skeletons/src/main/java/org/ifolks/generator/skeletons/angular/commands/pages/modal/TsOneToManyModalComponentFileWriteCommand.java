@@ -40,6 +40,7 @@ public class TsOneToManyModalComponentFileWriteCommand extends TsFileWriteComman
 	@Override
 	protected void fetchSpecificImports() {
 		imports.add("import { Component, OnInit, ViewChild } from '@angular/core';");
+		imports.add("import { ChangeDetectorRef } from '@angular/core';");
 		imports.add("import { CommonModule } from '@angular/common';");
 		imports.add("import { I18nPipe } from 'src/app/core/pipes/I18nPipe';");
 		imports.add("import { SharedModule } from 'src/app/shared/shared.module';");
@@ -107,7 +108,7 @@ public class TsOneToManyModalComponentFileWriteCommand extends TsFileWriteComman
 
 		}
         
-        writeLine(", private formBuilder: FormBuilder, private notifications: NotificationService, private dialogRef: MatDialogRef<" + referenceBean.className + "ModalComponent>) {}");
+        writeLine(", private formBuilder: FormBuilder, private changeDetector: ChangeDetectorRef, private notifications: NotificationService, private dialogRef: MatDialogRef<" + referenceBean.className + "ModalComponent>) {}");
         skipLine();
         boolean start = true;
         writeLine("ngOnInit(): void {");
@@ -188,7 +189,7 @@ public class TsOneToManyModalComponentFileWriteCommand extends TsFileWriteComman
         		}
         		if (property.selectableBean.selectionBehavior.selectionMode.equals(SelectionMode.DROPDOWN_OPTIONS)) {
         			writeLine("loadOptionsFor" + property.capName + "() {");
-        			writeLine("this." + property.selectableBean.serviceObjectName + ".getOptions().subscribe((t) => {this." + property.name + "Options=t;});");
+        			writeLine("this." + property.selectableBean.serviceObjectName + ".getOptions().subscribe((t) => {this." + property.name + "Options=t;this.changeDetector.markForCheck();});");
         			writeLine("}");
         			skipLine();
         		}
@@ -204,7 +205,7 @@ public class TsOneToManyModalComponentFileWriteCommand extends TsFileWriteComman
 			writeLine("this.view.form." + oneToMany.referenceProperty.name + property.capName + " = " + parentBean.fullViewBean.objectName + ".form." + property.name + ";");
 		}
         
-        writeLine("this.service.save(this.view.form).subscribe(success => {this.notifications.info(\"operation.completed\");this.dialogRef.close();});");
+        writeLine("this.service.save(this.view.form).subscribe(success => {this.notifications.info(\"operation.completed\");this.dialogRef.close(true);});");
         
         writeLine("});");
         writeLine("}");
@@ -212,7 +213,7 @@ public class TsOneToManyModalComponentFileWriteCommand extends TsFileWriteComman
         
         writeLine("update(): void {");
         writeLine("this.applyForm();");
-        writeLine("this.service.update(this.view.id, this.view.form).subscribe(success => {this.notifications.info(\"operation.completed\");this.dialogRef.close();});");
+        writeLine("this.service.update(this.view.id, this.view.form).subscribe(success => {this.notifications.info(\"operation.completed\");this.dialogRef.close(true);});");
         writeLine("}");
         skipLine();
         
