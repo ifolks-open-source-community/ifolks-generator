@@ -78,6 +78,26 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 			javaImports.add("import " + currentBean.myPackage.omPackageName + "." + currentBean.className + "_;");
 		}
 		javaImports.add("import " + bean.myPackage.filtersPackageName + "." + bean.basicViewBean.filter.className + ";");
+
+		List<Alias> allAliases = new ArrayList<>();
+		allAliases.addAll(getAllAliases(bean, ""));
+		allAliases.addAll(getReferenceAliases(bean, ""));
+		for (Alias alias : allAliases) {
+			if (alias.parentBean != null) {
+				javaImports.add("import " + alias.parentBean.myPackage.omPackageName + "." + alias.parentBean.className + ";");
+				javaImports.add("import " + alias.parentBean.myPackage.omPackageName + "." + alias.parentBean.className + "_;");
+			}
+			if (alias.bean != null) {
+				javaImports.add("import " + alias.bean.myPackage.omPackageName + "." + alias.bean.className + ";");
+				javaImports.add("import " + alias.bean.myPackage.omPackageName + "." + alias.bean.className + "_;");
+			}
+		}
+		for (ViewProperty property : this.bean.referenceViewProperties) {
+			if (property.referenceBean != null) {
+				javaImports.add("import " + property.referenceBean.myPackage.omPackageName + "." + property.referenceBean.className + ";");
+				javaImports.add("import " + property.referenceBean.myPackage.omPackageName + "." + property.referenceBean.className + "_;");
+			}
+		}
 	}
 
 	@Override
@@ -264,6 +284,8 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 	    public String parentName;
 	    public String beanDataType;
 	    public String parentBeanDataType;
+	    public Bean bean;
+	    public Bean parentBean;
 	}	
 	
 	private List<Alias> getAliases(Bean bean, int size, String parentName, boolean checkVisibility) {
@@ -278,6 +300,8 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 				alias.name = StringUtils.isEmpty(parentName)?currentProperty.name:parentName+JavaClassNaming.getClassNameFromObjectName(currentProperty.name);
 				alias.parentBeanDataType = bean.className;
 				alias.beanDataType = currentProperty.javaType;
+				alias.parentBean = bean;
+				alias.bean = currentProperty.referenceBean;
 				aliasList.add(alias);
 				aliasList.addAll(getAliases(currentProperty, alias.name, checkVisibility));
 			}
@@ -300,6 +324,8 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 			alias.name = StringUtils.isEmpty(parentName) ? oneToOne.referenceBean.objectName : parentName + JavaClassNaming.getClassNameFromObjectName(oneToOne.referenceBean.objectName);
 			alias.parentBeanDataType = bean.className;
 			alias.beanDataType = oneToOne.referenceBean.className;
+			alias.parentBean = bean;
+			alias.bean = oneToOne.referenceBean;
 			aliasList.add(alias);
 		}
 
@@ -310,6 +336,8 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 			alias.name = StringUtils.isEmpty(parentName) ? oneToOneComponent.referenceBean.objectName : parentName + JavaClassNaming.getClassNameFromObjectName(oneToOneComponent.referenceBean.objectName);
 			alias.parentBeanDataType = bean.className;
 			alias.beanDataType = oneToOneComponent.referenceBean.className;
+			alias.parentBean = bean;
+			alias.bean = oneToOneComponent.referenceBean;
 			aliasList.add(alias);
 		}
 
