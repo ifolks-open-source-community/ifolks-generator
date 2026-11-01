@@ -40,6 +40,7 @@ public class TsOneToManyComponentModalComponentFileWriteCommand extends TsFileWr
 	@Override
 	protected void fetchSpecificImports() {
 		imports.add("import { Component, OnInit, ViewChild } from '@angular/core';");
+		imports.add("import { ChangeDetectorRef } from '@angular/core';");
 		imports.add("import { CommonModule } from '@angular/common';");
 		imports.add("import { I18nPipe } from 'src/app/core/pipes/I18nPipe';");
 		imports.add("import { SharedModule } from 'src/app/shared/shared.module';");
@@ -105,7 +106,7 @@ public class TsOneToManyComponentModalComponentFileWriteCommand extends TsFileWr
 
 		}
         
-        writeLine(", private formBuilder: FormBuilder, private notifications: NotificationService, private dialogRef: MatDialogRef<" + referenceBean.className + "ModalComponent>) {}");
+        writeLine(", private formBuilder: FormBuilder, private changeDetector: ChangeDetectorRef, private notifications: NotificationService, private dialogRef: MatDialogRef<" + referenceBean.className + "ModalComponent>) {}");
         skipLine();
         boolean start = true;
         writeLine("ngOnInit(): void {");
@@ -186,7 +187,7 @@ public class TsOneToManyComponentModalComponentFileWriteCommand extends TsFileWr
         		}
         		if (property.selectableBean.selectionBehavior.selectionMode.equals(SelectionMode.DROPDOWN_OPTIONS)) {
         			writeLine("loadOptionsFor" + property.capName + "() {");
-        			writeLine("this." + property.selectableBean.serviceObjectName + ".getOptions().subscribe((t) => {this." + property.name + "Options=t;});");
+        			writeLine("this." + property.selectableBean.serviceObjectName + ".getOptions().subscribe((t) => {this." + property.name + "Options=t;this.changeDetector.markForCheck();});");
         			writeLine("}");
         			skipLine();
         		}
@@ -195,13 +196,13 @@ public class TsOneToManyComponentModalComponentFileWriteCommand extends TsFileWr
         
         writeLine("save(): void {");
         writeLine("this.applyForm();");
-        writeLine("this.service.save" + referenceBean.className + "(this.parentId, this.view.form).subscribe(success => {this.notifications.info(\"operation.completed\");this.dialogRef.close();});");
+        writeLine("this.service.save" + referenceBean.className + "(this.parentId, this.view.form).subscribe(success => {this.notifications.info(\"operation.completed\");this.dialogRef.close(true);});");
         writeLine("}");
         skipLine();
         
         writeLine("update(): void {");
         writeLine("this.applyForm();");
-        writeLine("this.service.update" + referenceBean.className + "(this.view.id, this.view.form).subscribe(success => {this.notifications.info(\"operation.completed\");this.dialogRef.close();});");
+        writeLine("this.service.update" + referenceBean.className + "(this.view.id, this.view.form).subscribe(success => {this.notifications.info(\"operation.completed\");this.dialogRef.close(true);});");
         writeLine("}");
         skipLine();
         

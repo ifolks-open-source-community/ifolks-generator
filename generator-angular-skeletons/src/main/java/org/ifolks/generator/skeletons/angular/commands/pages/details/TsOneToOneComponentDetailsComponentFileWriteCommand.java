@@ -40,6 +40,7 @@ public class TsOneToOneComponentDetailsComponentFileWriteCommand extends TsFileW
 	@Override
 	protected void fetchSpecificImports() {
 		imports.add("import { Component, OnInit, ViewChild } from '@angular/core';");
+		imports.add("import { ChangeDetectorRef } from '@angular/core';");
 		imports.add("import { CommonModule } from '@angular/common';");
 		imports.add("import { I18nPipe } from 'src/app/core/pipes/I18nPipe';");
 		imports.add("import { SharedModule } from 'src/app/shared/shared.module';");
@@ -108,7 +109,7 @@ public class TsOneToOneComponentDetailsComponentFileWriteCommand extends TsFileW
         	write(", private " + selectableBean.serviceObjectName + ":" + selectableBean.restClientClassName);
 		}
         
-        writeLine(", private route: ActivatedRoute, private formBuilder: FormBuilder, private notifications: NotificationService) {");
+        writeLine(", private route: ActivatedRoute, private formBuilder: FormBuilder, private changeDetector: ChangeDetectorRef, private notifications: NotificationService) {");
         
         if (parentBean.idTsType.equals(DataType.INTEGER.getTsType())) {
         	writeLine("this.id = parseInt(this.route.snapshot.paramMap.get('id'));");
@@ -181,7 +182,7 @@ public class TsOneToOneComponentDetailsComponentFileWriteCommand extends TsFileW
         skipLine();
         
         writeLine("load(): void {");
-        writeLine("this.service.load" + referenceBean.className + "(this.id).subscribe((t) => {if(t){this.view=t}else{this.view = new " + referenceBean.fullViewBean.className + "()};this.restoreForm();});");
+        writeLine("this.service.load" + referenceBean.className + "(this.id).subscribe((t) => {if(t){this.view=t}else{this.view = new " + referenceBean.fullViewBean.className + "()};this.restoreForm();this.changeDetector.markForCheck();});");
         for (ViewProperty property:this.referenceBean.formBean.properties) {
         	if (property.selectableBean!=null && property.selectableBean.selectionBehavior.selectionMode.equals(SelectionMode.DROPDOWN_OPTIONS)) {
         		writeLine("this.loadOptionsFor" + property.capName + "();");
@@ -203,7 +204,7 @@ public class TsOneToOneComponentDetailsComponentFileWriteCommand extends TsFileW
         		}
         		if (property.selectableBean.selectionBehavior.selectionMode.equals(SelectionMode.DROPDOWN_OPTIONS)) {
         			writeLine("loadOptionsFor" + property.capName + "() {");
-        			writeLine("this." + property.selectableBean.serviceObjectName + ".getOptions().subscribe((t) => {this." + property.name + "Options=t;});");
+        			writeLine("this." + property.selectableBean.serviceObjectName + ".getOptions().subscribe((t) => {this." + property.name + "Options=t;this.changeDetector.markForCheck();});");
         			writeLine("}");
         			skipLine();
         		}
@@ -213,7 +214,6 @@ public class TsOneToOneComponentDetailsComponentFileWriteCommand extends TsFileW
         writeLine("save(): void {");
         writeLine("this.applyForm();");
         writeLine("this.service.save" + referenceBean.className + "(this.id, this.view.form).subscribe(success => {this.notifications.info(\"operation.completed\");this.load();});");
-        writeLine("this.load();");
         writeLine("}");
         skipLine();
         

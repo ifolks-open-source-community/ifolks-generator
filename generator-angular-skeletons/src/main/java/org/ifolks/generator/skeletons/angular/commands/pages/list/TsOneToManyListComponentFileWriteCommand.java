@@ -32,6 +32,8 @@ public class TsOneToManyListComponentFileWriteCommand extends TsFileWriteCommand
 	@Override
 	protected void fetchSpecificImports() {
 		imports.add("import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';");
+		imports.add("import { ChangeDetectorRef } from '@angular/core';");
+		imports.add("import { Subscription } from 'rxjs';");
 		imports.add("import { CommonModule } from '@angular/common';");
 		imports.add("import { I18nPipe } from 'src/app/core/pipes/I18nPipe';");
 		imports.add("import { SharedModule } from 'src/app/shared/shared.module';");
@@ -102,9 +104,10 @@ public class TsOneToManyListComponentFileWriteCommand extends TsFileWriteCommand
         write("'Actions'");
         writeLine("];");
         writeLine("filter: FormGroup;");
+        writeLine("private refreshSubscription: Subscription;");
         skipLine();
 
-        writeLine("constructor(private service:" + referenceBean.restClientClassName + ", private route: ActivatedRoute, private formBuilder: FormBuilder, private dialog: MatDialog, private notifications: NotificationService) {");
+        writeLine("constructor(private service:" + referenceBean.restClientClassName + ", private route: ActivatedRoute, private formBuilder: FormBuilder, private dialog: MatDialog, private notifications: NotificationService, private changeDetector: ChangeDetectorRef) {");
         if (parentBean.idTsType.equals(DataType.INTEGER.getTsType())) {
         	writeLine("this.id = parseInt(this.route.snapshot.paramMap.get('id'));");
         } else {
@@ -160,9 +163,11 @@ public class TsOneToManyListComponentFileWriteCommand extends TsFileWriteCommand
         skipLine();
         
         writeLine("refresh(): void {");
-        writeLine("this.service.scrollFrom" + parentBean.className + "(this.id, this.scrollForm).subscribe((t) => {");
+        writeLine("this.refreshSubscription?.unsubscribe();");
+        writeLine("this.refreshSubscription = this.service.scrollFrom" + parentBean.className + "(this.id, this.scrollForm).subscribe((t) => {");
         writeLine("this.scrollView=t;");
         writeLine("this.dataSource = new MatTableDataSource(this.scrollView.elements);");
+        writeLine("this.changeDetector.markForCheck();");
         writeLine("});");
         writeLine("}");
         skipLine();
@@ -181,10 +186,10 @@ public class TsOneToManyListComponentFileWriteCommand extends TsFileWriteCommand
         	} else {
         		writeLine(",");
         	}
-            write(property.name + ": [null]");
+            write(property.name + ": null");
         }
         skipLine();    
-        writeLine("})");
+        writeLine("}, {emitEvent: false});");
         writeLine("this.refresh();");
         writeLine("}");
         skipLine();
@@ -193,7 +198,7 @@ public class TsOneToManyListComponentFileWriteCommand extends TsFileWriteCommand
         writeLine("let ref = this.dialog.open(" + referenceBean.className + "ModalComponent);");
         writeLine("ref.componentInstance.view = new " + referenceBean.fullViewBean.className + "();");
         writeLine("ref.componentInstance.parentId = this.id;");
-        writeLine("ref.afterClosed().subscribe(result => {this.refresh();});");
+        writeLine("ref.beforeClosed().subscribe(result => {if (result) {this.refresh();}});");
         writeLine("}");
         skipLine();
         
@@ -201,15 +206,15 @@ public class TsOneToManyListComponentFileWriteCommand extends TsFileWriteCommand
         writeLine("this.service.load(id).subscribe((t) => {");
         writeLine("let ref = this.dialog.open(" + referenceBean.className + "ModalComponent);");
         writeLine("ref.componentInstance.view = t;");
-        writeLine("ref.afterClosed().subscribe(result => {this.refresh();});");
+        writeLine("ref.beforeClosed().subscribe(result => {if (result) {this.refresh();}});");
         writeLine("});");
         writeLine("}");
         skipLine();
         
         writeLine("delete(id: " + referenceBean.idTsType + "): void {");
-        writeLine("this.dialog.open(ConfirmationModalComponent).afterClosed().subscribe(result => {");
+        writeLine("this.dialog.open(ConfirmationModalComponent).beforeClosed().subscribe(result => {");
         writeLine("if (result) {");
-        writeLine("this.service.delete(id).subscribe(success => {this.notifications.info(\"operation.completed\");this.refresh()});");
+        writeLine("this.service.delete(id).subscribe(success => {this.notifications.info(\"operation.completed\");this.refresh();});");
         writeLine("}");
         writeLine("});");
         writeLine("}");
