@@ -12,6 +12,7 @@ public enum Rules {
 	SELECTION_CARDINALITY_CHECKER(SelectionCardinalityChecker.class),
 	SELECTION_LABEL_UNIQUENESS_CHECKER(SelectionLabelUniquenessChecker.class),
 	INVALID_TEXT_CONSTRAINT_CHECKER(InvalidTextConstraintChecker.class),
+	REDUNDANT_UNIQUE_CONSTRAINT_CHECKER(RedundantUniqueConstraintChecker.class),
 	INVALID_ENUMERATION_CHECKER(InvalidEnumerationChecker.class),
 	INVALID_ENUM_COLUMN_CHECKER(InvalidEnumColumnChecker.class);
 	

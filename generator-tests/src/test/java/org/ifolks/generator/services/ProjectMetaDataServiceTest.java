@@ -47,6 +47,15 @@ public class ProjectMetaDataServiceTest {
 		Assertions.assertTrue(report.hasErrors);
 		Assertions.assertFalse(report.hasWarnings);
 	}
+	
+	@Test
+	public void testLoadFailureOnRedundantUniqueConstraint() {
+		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/failure/4");
+		ProjectValidationReport report = service.validate(project);
+		report.print();
+		Assertions.assertTrue(report.hasErrors);
+		Assertions.assertFalse(report.hasWarnings);
+	}
 
 	@Test
 	public void testLoadSuccessWithEnumerations() {
@@ -59,7 +68,7 @@ public class ProjectMetaDataServiceTest {
 
 	@Test
 	public void testLoadFailureOnEnumWithTableReference() {
-		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/failure/4");
+		ProjectMetaData project = service.loadProjectMetaData("src/test/resources/projects/failure/10");
 		ProjectValidationReport report = service.validate(project);
 		report.print();
 		Assertions.assertTrue(report.hasErrors);
