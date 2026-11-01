@@ -10,5 +10,7 @@ public class FilterProperty {
 	public FilterRangeType rangeType = FilterRangeType.NONE;
 	public DataType dataType;
 	public String tsType;
+	public String javaType;
+	public String enumName;
 	
 }

@@ -91,6 +91,8 @@ public class JavaBasicViewBeanFactory implements BasicViewBeanFactory {
 			minProperty.rangeType = FilterRangeType.MIN;
 			minProperty.dataType = property.dataType;
 			minProperty.tsType = property.tsType;
+			minProperty.javaType = property.javaType;
+			minProperty.enumName = property.enumName;
 			result.add(minProperty);
 			
 			FilterProperty maxProperty = new FilterProperty();
@@ -99,6 +101,8 @@ public class JavaBasicViewBeanFactory implements BasicViewBeanFactory {
 			maxProperty.rangeType = FilterRangeType.MAX;
 			maxProperty.dataType = property.dataType;
 			maxProperty.tsType = property.tsType;
+			maxProperty.javaType = property.javaType;
+			maxProperty.enumName = property.enumName;
 			result.add(maxProperty);
 		} else {
 			FilterProperty filterProperty = new FilterProperty();
@@ -107,6 +111,8 @@ public class JavaBasicViewBeanFactory implements BasicViewBeanFactory {
 			filterProperty.rangeType = FilterRangeType.NONE;
 			filterProperty.dataType = property.dataType;
 			filterProperty.tsType = property.tsType;
+			filterProperty.javaType = property.javaType;
+			filterProperty.enumName = property.enumName;
 			result.add(filterProperty);
 		}
 		return result;

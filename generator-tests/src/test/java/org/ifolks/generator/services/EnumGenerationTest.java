@@ -245,19 +245,28 @@ public class EnumGenerationTest {
 		HtmlListComponentFileWriteCommand listCmd = new HtmlListComponentFileWriteCommand(organizationBean);
 		String listHtml = listCmd.generateContent();
 		Assertions.assertTrue(listHtml.contains("<ng-container matColumnDef=\"role\">"));
-		Assertions.assertTrue(listHtml.contains("<mat-cell *matCellDef=\"let element\"> {{element.role}} </mat-cell>"));
-		Assertions.assertTrue(listHtml.contains("formControlName=\"role\""));
+		Assertions.assertTrue(listHtml.contains("<mat-cell *matCellDef=\"let element\"> {{element.role ? ('OrganizationRole.' + element.role | i18n) : ''}} </mat-cell>"));
+		Assertions.assertTrue(listHtml.contains("<mat-select placeholder=\"{{ 'organizationRole' | i18n }}\" formControlName=\"role\">"));
+		Assertions.assertTrue(listHtml.contains("<mat-option [value]=\"null\"></mat-option>"));
+		Assertions.assertTrue(listHtml.contains("@for (option of roleOptions; track option) {"));
+		Assertions.assertTrue(listHtml.contains("<mat-option [value]=\"option\">{{ 'OrganizationRole.' + option | i18n }}</mat-option>"));
 
 		// Modal HTML
 		HtmlModalComponentFileWriteCommand modalCmd = new HtmlModalComponentFileWriteCommand(organizationBean);
 		String modalHtml = modalCmd.generateContent();
 		Assertions.assertTrue(modalHtml.contains("formControlName=\"role\""));
-		Assertions.assertTrue(modalHtml.contains("<input matInput placeholder=\"{{ 'organizationRole' | i18n }}\" formControlName=\"role\"/>"));
+		Assertions.assertTrue(modalHtml.contains("<mat-select placeholder=\"{{ 'organizationRole' | i18n }}\" formControlName=\"role\">"));
+		Assertions.assertTrue(modalHtml.contains("<mat-option [value]=\"null\"></mat-option>"));
+		Assertions.assertTrue(modalHtml.contains("@for (option of roleOptions; track option) {"));
+		Assertions.assertTrue(modalHtml.contains("<mat-option [value]=\"option\">{{ 'OrganizationRole.' + option | i18n }}</mat-option>"));
 
 		// Details HTML
 		HtmlDetailsComponentFileWriteCommand detailsCmd = new HtmlDetailsComponentFileWriteCommand(organizationBean);
 		String detailsHtml = detailsCmd.generateContent();
 		Assertions.assertTrue(detailsHtml.contains("formControlName=\"role\""));
-		Assertions.assertTrue(detailsHtml.contains("<input matInput placeholder=\"{{ 'organizationRole' | i18n }}\" formControlName=\"role\"/>"));
+		Assertions.assertTrue(detailsHtml.contains("<mat-select placeholder=\"{{ 'organizationRole' | i18n }}\" formControlName=\"role\">"));
+		Assertions.assertTrue(detailsHtml.contains("<mat-option [value]=\"null\"></mat-option>"));
+		Assertions.assertTrue(detailsHtml.contains("@for (option of roleOptions; track option) {"));
+		Assertions.assertTrue(detailsHtml.contains("<mat-option [value]=\"option\">{{ 'OrganizationRole.' + option | i18n }}</mat-option>"));
 	}
 }

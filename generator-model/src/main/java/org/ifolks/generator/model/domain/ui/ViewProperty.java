@@ -14,6 +14,7 @@ public class ViewProperty {
 	public DataType dataType;
 	public String javaType;
 	public String tsType;
+	public String enumName;
 	public boolean nullable;
 	public boolean editable;
 	public boolean filterable;

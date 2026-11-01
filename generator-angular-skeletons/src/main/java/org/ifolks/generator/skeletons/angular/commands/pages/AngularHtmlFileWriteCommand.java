@@ -51,12 +51,13 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 			break;
 
 		case STRING:
+		case TEXT:
 			writeLine("<mat-cell *matCellDef=\"let element\"> {{element." + property.name + "}} </mat-cell>");
 			break;
 
-		case TEXT:
 		case ENUM:
-			writeLine("<mat-cell *matCellDef=\"let element\"> {{element." + property.name + "}} </mat-cell>");
+			String listEnumName = property.enumName != null ? property.enumName : property.javaType;
+			writeLine("<mat-cell *matCellDef=\"let element\"> {{element." + property.name + " ? ('" + listEnumName + ".' + element." + property.name + " | i18n) : ''}} </mat-cell>");
 			break;
 		}
 		
@@ -96,8 +97,10 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 					writeLongInput(property, bean);
 					break;
 				case STRING:
-				case ENUM:
 					writeStringInput(property, bean);
+					break;
+				case ENUM:
+					writeEnumCombobox(property, bean);
 					break;
 				case TEXT:
 					writeTextInput(property, bean);
@@ -107,6 +110,26 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
         skipLine();
 	}
 	
+
+	private void writeEnumCombobox(ViewProperty property, Bean bean) {
+		String enumName = property.enumName != null ? property.enumName : property.javaType;
+		writeLine("<p>");
+		writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
+		writeLine("<mat-label>{{ '" + bean.objectName + property.capName + "' | i18n }}</mat-label>");
+		if (!property.editable) {
+			writeLine("<input matInput placeholder=\"{{ '" + bean.objectName + property.capName + "' | i18n }}\" formControlName=\"" + property.name + "\"/>");
+		} else {
+			writeLine("<mat-select placeholder=\"{{ '" + bean.objectName + property.capName + "' | i18n }}\" formControlName=\"" + property.name + "\">");
+			writeLine("<mat-option [value]=\"null\"></mat-option>");
+			writeLine("@for (option of " + property.name + "Options; track option) {");
+			writeLine("  <mat-option [value]=\"option\">{{ '" + enumName + ".' + option | i18n }}</mat-option>");
+			writeLine("}");
+			writeLine("</mat-select>");
+		}
+		writeLine("</mat-form-field>");
+		writeLine("</p>");
+	}
+
 	private void writeCombobox(ViewProperty property, Bean bean){
 		
 		writeLine("<p>");
@@ -248,11 +271,23 @@ public abstract class AngularHtmlFileWriteCommand extends HtmlFileWriteCommand {
 		switch (property.dataType) {
 			case STRING:
 			case TEXT:
-			case ENUM:
 				writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
 				writeLine("<mat-label>" + labelExpr + "</mat-label>");
 				writeLine("<input matInput placeholder=\"" + labelExpr + "\" formControlName=\"" + property.name + "\"/>");
 				writeLine("</mat-form-field>");	
+				break;
+				
+			case ENUM:
+				String enumName = property.enumName != null ? property.enumName : property.javaType;
+				writeLine("<mat-form-field appearance=\"outline\" floatLabel=\"always\">");
+				writeLine("<mat-label>" + labelExpr + "</mat-label>");
+				writeLine("<mat-select placeholder=\"" + labelExpr + "\" formControlName=\"" + property.name + "\">");
+				writeLine("<mat-option [value]=\"null\"></mat-option>");
+				writeLine("@for (option of " + property.name + "Options; track option) {");
+				writeLine("  <mat-option [value]=\"option\">{{ '" + enumName + ".' + option | i18n }}</mat-option>");
+				writeLine("}");
+				writeLine("</mat-select>");
+				writeLine("</mat-form-field>");
 				break;
 				
 			case DATE:				

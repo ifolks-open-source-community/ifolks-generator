@@ -5,7 +5,10 @@ import java.io.IOException;
 
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.ui.FilterProperty;
+import org.ifolks.generator.model.domain.business.Enumeration;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
+import org.ifolks.generator.model.metadata.DataType;
+import org.ifolks.generator.model.util.naming.JavaClassNaming;
 import org.ifolks.generator.skeletons.commands.impl.typed.TsFileWriteCommand;
 
 
@@ -54,6 +57,12 @@ public class TsListComponentFileWriteCommand extends TsFileWriteCommand {
 		imports.add("import { " + bean.className + "ModalComponent } from './../modal/" + bean.urlPiece + "-modal.component';");
 		imports.add("import { ConfirmationModalComponent } from 'src/app/core/components/confirmation-modal/confirmation-modal.component';");
 		imports.add("import { NotificationService } from 'src/app/core/services/NotificationService';");
+		for (FilterProperty property : this.bean.basicViewBean.filter.properties) {
+			if (property.dataType == DataType.ENUM) {
+				Enumeration enumeration = this.bean.myPackage.model.findEnumeration(property.javaType);
+				imports.add("import { " + enumeration.className + ", " + JavaClassNaming.toDatabaseName(enumeration.className) + "_OPTIONS } from '" + enumeration.myPackage.tsModelsSourcePath + "/enums/" + enumeration.className + "';");
+			}
+		}
 	}
 	
 	
@@ -92,6 +101,11 @@ public class TsListComponentFileWriteCommand extends TsFileWriteCommand {
         write("'Actions'");
         writeLine("];");
         writeLine("filter: FormGroup;");
+        for (FilterProperty property : this.bean.basicViewBean.filter.properties) {
+        	if (property.dataType == DataType.ENUM) {
+        		writeLine("readonly " + property.name + "Options = " + JavaClassNaming.toDatabaseName(property.javaType) + "_OPTIONS;");
+        	}
+        }
         writeLine("private refreshSubscription: Subscription;");
         skipLine();
 

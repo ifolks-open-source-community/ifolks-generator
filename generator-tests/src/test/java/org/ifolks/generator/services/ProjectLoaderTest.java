@@ -11,6 +11,12 @@ import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.business.Enumeration;
 import org.ifolks.generator.model.domain.business.Property;
 import org.ifolks.generator.model.metadata.DataType;
+import org.ifolks.generator.model.domain.ui.FilterProperty;
+import org.ifolks.generator.model.domain.ui.ViewProperty;
+import org.ifolks.generator.skeletons.angular.commands.model.TsEnumerationFileWriteCommand;
+import org.ifolks.generator.skeletons.angular.commands.pages.list.TsListComponentFileWriteCommand;
+import org.ifolks.generator.skeletons.angular.commands.pages.modal.TsModalComponentFileWriteCommand;
+import org.ifolks.generator.skeletons.commands.impl.typed.TsFileWriteCommand;
 import org.ifolks.generator.model.metadata.ProjectMetaData;
 import org.ifolks.generator.model.metadata.validation.ProjectValidationReport;
 import org.ifolks.generator.skeletons.commands.impl.typed.JavaFileWriteCommand;
@@ -87,6 +93,44 @@ public class ProjectLoaderTest {
 				org.ifolks.generator.model.exception.EnumerationNotFoundException.class,
 				() -> project.model.findEnumeration("UnknownEnum")
 		);
+
+		// Verify ViewProperty and FilterProperty enum metadata
+		ViewProperty roleViewProp = orgBean.basicViewBean.properties.stream().filter(p -> "role".equals(p.name)).findFirst().orElse(null);
+		Assertions.assertNotNull(roleViewProp);
+		Assertions.assertEquals("OrganizationRole", roleViewProp.enumName);
+		Assertions.assertEquals(DataType.ENUM, roleViewProp.dataType);
+
+		FilterProperty roleFilterProp = orgBean.basicViewBean.filter.properties.stream().filter(p -> "role".equals(p.name)).findFirst().orElse(null);
+		Assertions.assertNotNull(roleFilterProp);
+		Assertions.assertEquals("OrganizationRole", roleFilterProp.enumName);
+		Assertions.assertEquals(DataType.ENUM, roleFilterProp.dataType);
+
+		// Verify Angular TsEnumerationFileWriteCommand
+		TsEnumerationFileWriteCommand enumCmd = new TsEnumerationFileWriteCommand(roleEnum);
+		Assertions.assertNotNull(enumCmd);
+
+		// Verify Angular TsModalComponentFileWriteCommand imports enum and options
+		try {
+			TsModalComponentFileWriteCommand modalCmd = new TsModalComponentFileWriteCommand(orgBean);
+			Method mModal = TsModalComponentFileWriteCommand.class.getDeclaredMethod("fetchSpecificImports");
+			mModal.setAccessible(true);
+			mModal.invoke(modalCmd);
+			Field fImports = TsFileWriteCommand.class.getDeclaredField("imports");
+			fImports.setAccessible(true);
+			@SuppressWarnings("unchecked")
+			Set<String> tsImports = (Set<String>) fImports.get(modalCmd);
+			assertTrue(tsImports.stream().anyMatch(i -> i.contains("OrganizationRole") && i.contains("ORGANIZATION_ROLE_OPTIONS")), "Missing OrganizationRole options import in OrganizationModalComponent");
+
+			TsListComponentFileWriteCommand listCmd = new TsListComponentFileWriteCommand(orgBean);
+			Method mList = TsListComponentFileWriteCommand.class.getDeclaredMethod("fetchSpecificImports");
+			mList.setAccessible(true);
+			mList.invoke(listCmd);
+			@SuppressWarnings("unchecked")
+			Set<String> listImports = (Set<String>) fImports.get(listCmd);
+			assertTrue(listImports.stream().anyMatch(i -> i.contains("OrganizationRole") && i.contains("ORGANIZATION_ROLE_OPTIONS")), "Missing OrganizationRole options import in OrganizationListComponent");
+		} catch (Exception e) {
+			Assertions.fail("Reflection error during Angular command import test: " + e.getMessage());
+		}
 	}
 
 	@Test

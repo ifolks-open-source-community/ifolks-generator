@@ -3,7 +3,9 @@ package org.ifolks.generator.skeletons.angular.layers;
 import org.ifolks.generator.model.domain.Package;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.business.Bean;
+import org.ifolks.generator.model.domain.business.Enumeration;
 import org.ifolks.generator.skeletons.angular.commands.model.TsBasicViewBeanFileWriteCommand;
+import org.ifolks.generator.skeletons.angular.commands.model.TsEnumerationFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.model.TsFilterFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.model.TsFormBeanFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.model.TsFullViewBeanFileWriteCommand;
@@ -27,10 +29,18 @@ public class TypeScriptModelLayer extends AbstractLayer {
 
 		FileWriteCommandTreeNode modelTreeNode = new FileWriteCommandTreeNode();
 		
-		
 		for (Package myPackage : project.model.packages) {
 			FileWriteCommandTreeNode packageTreeNode = new FileWriteCommandTreeNode(myPackage.name);
 			modelTreeNode.add(packageTreeNode);
+
+			if (myPackage.enumerations != null && !myPackage.enumerations.isEmpty()) {
+				FileWriteCommandTreeNode enumsTreeNode = new FileWriteCommandTreeNode("Enumerations");
+				packageTreeNode.add(enumsTreeNode);
+				for (Enumeration enumeration : myPackage.enumerations) {
+					FileWriteCommandTreeNode enumTreeNode = new FileWriteCommandTreeNode(new TsEnumerationFileWriteCommand(enumeration));
+					enumsTreeNode.add(enumTreeNode);
+				}
+			}
 
 			FileWriteCommandTreeNode basicViewsTreeNode = new FileWriteCommandTreeNode("Basic views");
 			packageTreeNode.add(basicViewsTreeNode);

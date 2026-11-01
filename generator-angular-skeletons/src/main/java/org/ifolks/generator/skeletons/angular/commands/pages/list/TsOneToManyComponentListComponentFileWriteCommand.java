@@ -6,7 +6,10 @@ import java.io.IOException;
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.business.OneToManyComponent;
 import org.ifolks.generator.model.domain.ui.FilterProperty;
+import org.ifolks.generator.model.domain.business.Enumeration;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
+import org.ifolks.generator.model.metadata.DataType;
+import org.ifolks.generator.model.util.naming.JavaClassNaming;
 import org.ifolks.generator.model.metadata.DataType;
 import org.ifolks.generator.skeletons.commands.impl.typed.TsFileWriteCommand;
 
@@ -65,6 +68,12 @@ public class TsOneToManyComponentListComponentFileWriteCommand extends TsFileWri
 		imports.add("import { " + referenceBean.className + "ModalComponent } from './../modal/" + referenceBean.urlPiece + "-modal.component';");
 		imports.add("import { ConfirmationModalComponent } from 'src/app/core/components/confirmation-modal/confirmation-modal.component';");
 		imports.add("import { NotificationService } from 'src/app/core/services/NotificationService';");
+		for (FilterProperty property : this.oneToManyComponent.referenceBean.basicViewBean.filter.properties) {
+			if (property.dataType == DataType.ENUM) {
+				Enumeration enumeration = this.referenceBean.myPackage.model.findEnumeration(property.javaType);
+				imports.add("import { " + enumeration.className + ", " + JavaClassNaming.toDatabaseName(enumeration.className) + "_OPTIONS } from '" + enumeration.myPackage.tsModelsSourcePath + "/enums/" + enumeration.className + "';");
+			}
+		}
 	}
 	
 	
@@ -105,6 +114,11 @@ public class TsOneToManyComponentListComponentFileWriteCommand extends TsFileWri
         write("'Actions'");
         writeLine("];");
         writeLine("filter: FormGroup;");
+        for (FilterProperty property : this.oneToManyComponent.referenceBean.basicViewBean.filter.properties) {
+        	if (property.dataType == DataType.ENUM) {
+        		writeLine("readonly " + property.name + "Options = " + JavaClassNaming.toDatabaseName(property.javaType) + "_OPTIONS;");
+        	}
+        }
         writeLine("private refreshSubscription: Subscription;");
         skipLine();
 

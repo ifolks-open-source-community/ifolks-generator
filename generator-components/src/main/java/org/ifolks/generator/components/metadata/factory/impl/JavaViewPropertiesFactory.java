@@ -27,6 +27,7 @@ public class JavaViewPropertiesFactory implements ViewPropertiesFactory {
 			viewProperty.javaType = property.javaType;
 			viewProperty.tsType = property.tsType;
 			viewProperty.dataType = property.dataType;
+			viewProperty.enumName = property.enumName;
 			viewProperty.nullable = property.nullable;
 			viewProperty.visibility = property.visibility;
 			viewProperty.editable = property.editable;
@@ -60,6 +61,7 @@ public class JavaViewPropertiesFactory implements ViewPropertiesFactory {
 						viewProperty.javaType = tempProperty.javaType;
 						viewProperty.tsType = tempProperty.tsType;
 						viewProperty.dataType = tempProperty.dataType;
+						viewProperty.enumName = tempProperty.enumName;
 						viewProperty.nullable = property.nullable || tempProperty.nullable;
 						viewProperty.visibility = Visibility.min(property.visibility, tempProperty.visibility);
 						viewProperty.editable = property.embedded?tempProperty.editable:property.editable;
@@ -86,6 +88,7 @@ public class JavaViewPropertiesFactory implements ViewPropertiesFactory {
 					viewProperty.javaType = referenceBeanProperty.javaType;
 					viewProperty.tsType = referenceBeanProperty.tsType;
 					viewProperty.dataType = referenceBeanProperty.dataType;
+					viewProperty.enumName = referenceBeanProperty.enumName;
 					viewProperty.nullable = property.nullable || referenceBeanProperty.nullable;
 					viewProperty.visibility = Visibility.min(property.visibility, referenceBeanProperty.visibility);
 					viewProperty.editable = property.embedded?referenceBeanProperty.editable:property.editable;

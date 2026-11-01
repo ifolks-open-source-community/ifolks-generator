@@ -8,7 +8,10 @@ import java.util.Map;
 import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.ui.ViewProperty;
 import org.ifolks.generator.model.metadata.DataType;
+import org.ifolks.generator.model.domain.business.Enumeration;
+import org.ifolks.generator.model.metadata.DataType;
 import org.ifolks.generator.model.metadata.SelectionMode;
+import org.ifolks.generator.model.util.naming.JavaClassNaming;
 import org.ifolks.generator.skeletons.commands.impl.typed.TsFileWriteCommand;
 
 
@@ -55,6 +58,10 @@ public class TsDetailsComponentFileWriteCommand extends TsFileWriteCommand {
         	if (property.selectableBean!=null) {
         		imports.add("import { " + property.selectableBean.restClientClassName + " } from '" + property.selectableBean.myPackage.tsServicesSourcePath + "/" + property.selectableBean.restClientClassName + "';");
         	}
+        	if (property.dataType == DataType.ENUM) {
+        		Enumeration enumeration = this.bean.myPackage.model.findEnumeration(property.javaType);
+        		imports.add("import { " + enumeration.className + ", " + JavaClassNaming.toDatabaseName(enumeration.className) + "_OPTIONS } from '" + enumeration.myPackage.tsModelsSourcePath + "/enums/" + enumeration.className + "';");
+        	}
 		}
 	}
 	
@@ -85,6 +92,11 @@ public class TsDetailsComponentFileWriteCommand extends TsFileWriteCommand {
         writeLine("activePath:string;");
         writeLine("view: " + bean.fullViewBean.className + " = new " + bean.fullViewBean.className + "();");
         writeLine("form: FormGroup;");
+        for (ViewProperty property:this.bean.formBean.properties) {
+        	if (property.dataType == DataType.ENUM) {
+        		writeLine("readonly " + property.name + "Options = " + JavaClassNaming.toDatabaseName(property.javaType) + "_OPTIONS;");
+        	}
+        }
         
         for (ViewProperty property:this.bean.formBean.properties) {
         	if (property.selectableBean!=null) {
