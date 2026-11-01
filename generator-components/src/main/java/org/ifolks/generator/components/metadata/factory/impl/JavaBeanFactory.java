@@ -127,7 +127,7 @@ public class JavaBeanFactory implements BeanFactory {
 				property.capName = JavaClassNaming.toClassName(column.originalName);
 				if (column.dataType == org.ifolks.generator.model.metadata.DataType.ENUM) {
 					property.javaType = column.enumName;
-					property.tsType = column.enumName;
+					property.tsType = "string";
 					property.enumName = column.enumName;
 				} else {
 					property.javaType = column.dataType.getJavaType();

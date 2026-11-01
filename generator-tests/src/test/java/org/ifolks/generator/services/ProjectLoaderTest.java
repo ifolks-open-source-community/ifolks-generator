@@ -60,7 +60,7 @@ public class ProjectLoaderTest {
 		Assertions.assertEquals(DataType.ENUM, roleProp.dataType);
 		Assertions.assertEquals("OrganizationRole", roleProp.enumName);
 		Assertions.assertEquals("OrganizationRole", roleProp.javaType);
-		Assertions.assertEquals("OrganizationRole", roleProp.tsType);
+		Assertions.assertEquals("string", roleProp.tsType);
 		Assertions.assertFalse(roleProp.nullable);
 
 		Bean foolBean = project.model.findBean("FOOL");
@@ -69,7 +69,7 @@ public class ProjectLoaderTest {
 		Assertions.assertEquals(DataType.ENUM, statusProp.dataType);
 		Assertions.assertEquals("FoolStatus", statusProp.enumName);
 		Assertions.assertEquals("FoolStatus", statusProp.javaType);
-		Assertions.assertEquals("FoolStatus", statusProp.tsType);
+		Assertions.assertEquals("string", statusProp.tsType);
 		Assertions.assertTrue(statusProp.nullable);
 
 		// Verify strict fail-fast behavior
