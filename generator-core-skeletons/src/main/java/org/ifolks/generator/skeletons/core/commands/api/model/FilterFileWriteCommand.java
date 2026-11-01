@@ -31,7 +31,7 @@ public class FilterFileWriteCommand extends JavaFileWriteCommand {
 				if (property.dataType != null && property.dataType.equals(DataType.ENUM) && property.javaType != null) {
 					Enumeration enumeration = this.bean.myPackage.model.findEnumeration(property.javaType);
 					if (enumeration != null) {
-						javaImports.add("import " + enumeration.myPackage.omPackageName + "." + enumeration.className + ";");
+						javaImports.add("import " + enumeration.myPackage.enumsPackageName + "." + enumeration.className + ";");
 					}
 				}
 			}

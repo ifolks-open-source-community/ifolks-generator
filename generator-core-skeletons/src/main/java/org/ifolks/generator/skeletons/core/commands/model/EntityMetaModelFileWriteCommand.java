@@ -56,8 +56,8 @@ public class EntityMetaModelFileWriteCommand extends JavaFileWriteCommand {
 			}
 			if (property.dataType != null && property.dataType.equals(DataType.ENUM) && property.enumName != null) {
 				Enumeration enumeration = this.bean.myPackage.model.findEnumeration(property.enumName);
-				if (enumeration != null && !enumeration.myPackage.omPackageName.equals(this.bean.myPackage.omPackageName)) {
-					javaImports.add("import " + enumeration.myPackage.omPackageName + "." + enumeration.className + ";");
+				if (enumeration != null) {
+					javaImports.add("import " + enumeration.myPackage.enumsPackageName + "." + enumeration.className + ";");
 				}
 			}
 		}

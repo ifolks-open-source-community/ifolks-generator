@@ -64,7 +64,7 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 			if (viewProperty.dataType != null && viewProperty.dataType.equals(DataType.ENUM) && viewProperty.javaType != null) {
 				Enumeration enumeration = this.bean.myPackage.model.findEnumeration(viewProperty.javaType);
 				if (enumeration != null) {
-					javaImports.add("import " + enumeration.myPackage.omPackageName + "." + enumeration.className + ";");
+					javaImports.add("import " + enumeration.myPackage.enumsPackageName + "." + enumeration.className + ";");
 				}
 			}
 		}
@@ -77,7 +77,7 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 			if (property.dataType != null && property.dataType.equals(DataType.ENUM) && property.enumName != null) {
 				Enumeration enumeration = this.bean.myPackage.model.findEnumeration(property.enumName);
 				if (enumeration != null) {
-					javaImports.add("import " + enumeration.myPackage.omPackageName + "." + enumeration.className + ";");
+					javaImports.add("import " + enumeration.myPackage.enumsPackageName + "." + enumeration.className + ";");
 				}
 			}
 		}

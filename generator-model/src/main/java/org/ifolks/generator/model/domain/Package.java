@@ -31,6 +31,7 @@ public class Package {
 	public String basicViewsPackageName;
 	public String fullViewsPackageName;
 	public String formsPackageName;
+	public String enumsPackageName;
 	
 	public String tsModelsPath;
 	public String tsServicesPath;

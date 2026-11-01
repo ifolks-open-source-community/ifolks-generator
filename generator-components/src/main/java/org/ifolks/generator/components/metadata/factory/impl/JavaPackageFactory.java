@@ -119,6 +119,7 @@ public class JavaPackageFactory implements PackageFactory {
 		myPackage.fullViewsPackageName = model.apiModelPackageName + "." + myPackage.name + ".views.full";
 		myPackage.basicViewsPackageName = model.apiModelPackageName + "." + myPackage.name + ".views.basic";
 		myPackage.formsPackageName = model.apiModelPackageName + "." + myPackage.name + ".forms";
+		myPackage.enumsPackageName = model.apiModelPackageName + "." + myPackage.name + ".enums";
 		myPackage.filtersPackageName = model.apiModelPackageName + "." + myPackage.name + ".filters";
 		myPackage.sortingsPackageName = model.apiModelPackageName + "." + myPackage.name + ".sortings";
 		

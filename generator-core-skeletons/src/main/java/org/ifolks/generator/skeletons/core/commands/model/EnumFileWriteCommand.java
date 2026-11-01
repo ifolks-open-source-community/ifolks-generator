@@ -19,7 +19,7 @@ public class EnumFileWriteCommand extends JavaFileWriteCommand {
 		super(enumeration.myPackage.model.project.workspaceFolder + File.separator
 				+ enumeration.myPackage.model.apiArtefactName + File.separator
 				+ enumeration.myPackage.model.javaSourcesFolder + File.separator
-				+ enumeration.myPackage.omPackageName.replace(".", File.separator), enumeration.className);
+				+ enumeration.myPackage.enumsPackageName.replace(".", File.separator), enumeration.className);
 		this.enumeration = enumeration;
 	}
 
@@ -30,7 +30,7 @@ public class EnumFileWriteCommand extends JavaFileWriteCommand {
 
 	@Override
 	protected void writeContent() throws IOException {
-		writeLine("package " + this.enumeration.myPackage.omPackageName + ";");
+		writeLine("package " + this.enumeration.myPackage.enumsPackageName + ";");
 		skipLine();
 
 		writeImports();

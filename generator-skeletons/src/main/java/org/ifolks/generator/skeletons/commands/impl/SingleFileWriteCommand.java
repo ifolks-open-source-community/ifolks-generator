@@ -74,6 +74,16 @@ public abstract class SingleFileWriteCommand implements FileWriteCommand {
 			fileWriter.flush();
 		}
 	}
+
+	/**
+	 * generates content into memory without writing to disk
+	 * @return generated content
+	 * @throws IOException
+	 */
+	public String generateContent() throws IOException {
+		writeContent();
+		return writer.toString();
+	}
 	
 	/**
 	 * generic method to override to specialize the behavior of the command
