@@ -23,6 +23,7 @@ public class JavaViewPropertiesFactory implements ViewPropertiesFactory {
 			ViewProperty viewProperty = new ViewProperty();
 			viewProperty.name = property.name;
 			viewProperty.capName = property.capName;
+			viewProperty.path = property.name;
 			viewProperty.mappingPath = property.getterName + "()";
 			viewProperty.javaType = property.javaType;
 			viewProperty.tsType = property.tsType;
@@ -57,6 +58,7 @@ public class JavaViewPropertiesFactory implements ViewPropertiesFactory {
 							viewProperty.name = property.name + tempProperty.capName;
 							viewProperty.capName = property.capName + tempProperty.capName;
 						}
+						viewProperty.path = property.name + "." + tempProperty.path;
 						viewProperty.mappingPath = property.getterName + "()." + tempProperty.mappingPath;
 						viewProperty.javaType = tempProperty.javaType;
 						viewProperty.tsType = tempProperty.tsType;
@@ -84,6 +86,7 @@ public class JavaViewPropertiesFactory implements ViewPropertiesFactory {
 						viewProperty.name = property.name + referenceBeanProperty.capName;
 						viewProperty.capName = property.capName + referenceBeanProperty.capName;
 					}
+					viewProperty.path = property.name + "." + referenceBeanProperty.name;
 					viewProperty.mappingPath = property.getterName + "()." + referenceBeanProperty.getterName + "()";
 					viewProperty.javaType = referenceBeanProperty.javaType;
 					viewProperty.tsType = referenceBeanProperty.tsType;
