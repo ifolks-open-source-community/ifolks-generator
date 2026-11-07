@@ -34,6 +34,17 @@ public abstract class JavaFileWriteCommand extends SingleFileWriteCommand {
 		this.javaImports = new TreeSet<String>();
 	}
 
+	/**
+	 * determines whether existing imports should be preserved from disk.
+	 * Only files that support user-defined specific code blocks preserve imports across generations.
+	 * Base classes and other 100% generated classes return false.
+	 * 
+	 * @return true if existing imports should be read from disk
+	 */
+	protected boolean shouldFetchExistingImports() {
+		return supportsSpecificCode();
+	}
+
 	private final void fetchImports() throws IOException {
 		if (Files.exists(filePath)) {
 			List<String> lines = Files.readAllLines(filePath,
@@ -50,7 +61,9 @@ public abstract class JavaFileWriteCommand extends SingleFileWriteCommand {
 	protected abstract void fetchSpecificImports();
 	
 	protected final void writeImports() throws IOException{
-		fetchImports();
+		if (shouldFetchExistingImports()) {
+			fetchImports();
+		}
 		fetchSpecificImports();
 		
 		for (String javaImport:javaImports) {

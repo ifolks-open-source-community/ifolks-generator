@@ -156,6 +156,17 @@ public abstract class SingleFileWriteCommand implements FileWriteCommand {
 		write(content);
 		writeLine(fileType.getSpecificCodeEndMark());
 	}
+
+	/**
+	 * indicates whether this file write command supports user-defined specific code blocks.
+	 * Commands generating 100% managed files (such as base classes, routes, populators)
+	 * should override this to return false.
+	 * 
+	 * @return true if specific code blocks are supported, false otherwise
+	 */
+	public boolean supportsSpecificCode() {
+		return true;
+	}
         
 
 }

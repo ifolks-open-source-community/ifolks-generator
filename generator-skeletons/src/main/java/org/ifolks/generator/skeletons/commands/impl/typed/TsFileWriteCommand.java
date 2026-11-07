@@ -168,8 +168,21 @@ public abstract class TsFileWriteCommand extends SingleFileWriteCommand {
 		return importStatement;
 	}
 
+	/**
+	 * determines whether existing imports should be preserved from disk.
+	 * Only files that support user-defined specific code blocks preserve imports across generations.
+	 * Base classes and other 100% generated classes return false.
+	 * 
+	 * @return true if existing imports should be read from disk
+	 */
+	protected boolean shouldFetchExistingImports() {
+		return supportsSpecificCode();
+	}
+
 	protected final void writeImports() throws IOException {
-		fetchImports();
+		if (shouldFetchExistingImports()) {
+			fetchImports();
+		}
 		fetchSpecificImports();
 
 		List<String> organized = organizeImports(imports);

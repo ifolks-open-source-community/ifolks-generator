@@ -33,6 +33,11 @@ public class TsMenuComponentFileWriteCommand extends TsFileWriteCommand {
 		}		
 	}
 	
+		@Override
+	public boolean supportsSpecificCode() {
+		return false;
+	}
+
 	@Override
 	protected void fetchSpecificImports() {
 		imports.add("import { Component, Input, OnInit } from '@angular/core';");

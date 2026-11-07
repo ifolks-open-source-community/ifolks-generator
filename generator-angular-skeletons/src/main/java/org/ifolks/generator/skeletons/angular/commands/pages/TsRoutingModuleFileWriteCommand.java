@@ -24,6 +24,11 @@ public class TsRoutingModuleFileWriteCommand extends TsFileWriteCommand {
 		
 	}
 	
+		@Override
+	public boolean supportsSpecificCode() {
+		return false;
+	}
+
 	@Override
 	protected void fetchSpecificImports() {
 		imports.add("import { Routes } from '@angular/router';");
