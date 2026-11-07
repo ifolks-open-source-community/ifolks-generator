@@ -61,4 +61,38 @@ public abstract class JavaFileWriteCommand extends SingleFileWriteCommand {
 	
 	
 
+
+	/**
+	 * builds a null-safe getter expression for chained properties (e.g. city.getRegion().getCountry().getCode())
+	 * @param rootObjectName root object name (e.g. "city")
+	 * @param mappingPath dot-separated getter calls (e.g. "getRegion().getCountry().getCode()")
+	 * @return null-safe Java expression
+	 */
+	protected String buildSafeGetterExpression(String rootObjectName, String mappingPath) {
+		if (mappingPath == null || mappingPath.isEmpty()) {
+			return rootObjectName;
+		}
+		String[] getters = mappingPath.split("\\.");
+		if (getters.length <= 1) {
+			return rootObjectName + "." + mappingPath;
+		}
+
+		StringBuilder condition = new StringBuilder();
+		StringBuilder prefix = new StringBuilder(rootObjectName);
+
+		for (int i = 0; i < getters.length - 1; i++) {
+			prefix.append(".").append(getters[i]);
+			if (i > 0) {
+				condition.append(" && ");
+			}
+			condition.append(prefix).append(" != null");
+		}
+
+		String fullAccess = rootObjectName + "." + mappingPath;
+		if (getters.length == 2) {
+			return condition + " ? " + fullAccess + " : null";
+		} else {
+			return "(" + condition + ") ? " + fullAccess + " : null";
+		}
+	}
 }
