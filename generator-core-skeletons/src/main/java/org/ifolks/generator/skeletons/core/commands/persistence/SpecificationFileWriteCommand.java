@@ -237,7 +237,7 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 		writeLine("\t\tList<Sort.Order> orders = new ArrayList<>();");
 		for (ViewProperty property : bean.basicViewBean.properties) {
 			writeLine("\t\tif (sorting.get" + property.capName + "OrderType() != null) {");
-			writeLine("\t\t\torders.add(new Sort.Order(sorting.get" + property.capName + "OrderType() == OrderType.ASC ? Sort.Direction.ASC : Sort.Direction.DESC, \"" + property.name + "\"));");
+			writeLine("\t\t\torders.add(new Sort.Order(sorting.get" + property.capName + "OrderType() == OrderType.ASC ? Sort.Direction.ASC : Sort.Direction.DESC, \"" + property.path + "\"));");
 			writeLine("\t\t}");
 		}
 		writeLine("\t\torders.add(new Sort.Order(Sort.Direction.DESC, \"id\"));");
@@ -251,7 +251,7 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 			writeLine("\t\tList<Sort.Order> orders = new ArrayList<>();");
 			for (ViewProperty property : currentBean.basicViewBean.properties) {
 				writeLine("\t\tif (sorting.get" + property.capName + "OrderType() != null) {");
-				writeLine("\t\t\torders.add(new Sort.Order(sorting.get" + property.capName + "OrderType() == OrderType.ASC ? Sort.Direction.ASC : Sort.Direction.DESC, \"" + property.name + "\"));");
+				writeLine("\t\t\torders.add(new Sort.Order(sorting.get" + property.capName + "OrderType() == OrderType.ASC ? Sort.Direction.ASC : Sort.Direction.DESC, \"" + property.path + "\"));");
 				writeLine("\t\t}");
 			}
 			writeLine("\t\torders.add(new Sort.Order(Sort.Direction.DESC, \"id\"));");
