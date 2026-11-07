@@ -25,6 +25,11 @@ public class SpringRestBaseControllerCommand extends JavaFileWriteCommand {
 		this.bean = bean;
 	}
 
+		@Override
+	public boolean supportsSpecificCode() {
+		return false;
+	}
+
 	@Override
 	protected void fetchSpecificImports() {
 		

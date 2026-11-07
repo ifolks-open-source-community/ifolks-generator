@@ -23,6 +23,11 @@ public class BaseRepositoryInterfaceFileWriteCommand extends JavaFileWriteComman
 		this.bean = bean;
 	}
 
+		@Override
+	public boolean supportsSpecificCode() {
+		return false;
+	}
+
 	@Override
 	protected void fetchSpecificImports() {
 		javaImports.add("import java.util.List;");
