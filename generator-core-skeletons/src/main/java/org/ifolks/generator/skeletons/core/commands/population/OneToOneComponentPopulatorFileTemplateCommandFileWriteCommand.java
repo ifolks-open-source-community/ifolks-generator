@@ -10,12 +10,14 @@ import org.ifolks.generator.skeletons.commands.impl.typed.CsvFileWriteCommand;
 
 public class OneToOneComponentPopulatorFileTemplateCommandFileWriteCommand extends CsvFileWriteCommand {
 
+	private OneToOneComponent oneToOneComponent;
 	private Bean referenceBean;
     private Bean parentBean;
 
     public OneToOneComponentPopulatorFileTemplateCommandFileWriteCommand(OneToOneComponent oneToOneComponent){
     	super(oneToOneComponent.referenceBean.myPackage.model.project.workspaceFolder + File.separator + oneToOneComponent.referenceBean.myPackage.model.commandsArtefactName + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "population" + File.separator + "templates" + File.separator + oneToOneComponent.referenceBean.table.myPackage.name.toUpperCase().replace(".", File.separator),
     			oneToOneComponent.referenceBean.table.originalName);
+    			this.oneToOneComponent = oneToOneComponent;
     			referenceBean = oneToOneComponent.referenceBean;
     			parentBean = oneToOneComponent.parentBean;
     }
@@ -25,17 +27,24 @@ public class OneToOneComponentPopulatorFileTemplateCommandFileWriteCommand exten
 	protected void writeContent() throws IOException {
 		
     	boolean start = true;
+    	String parentPrefix = (oneToOneComponent.referenceProperty != null && oneToOneComponent.referenceProperty.name != null)
+    			? oneToOneComponent.referenceProperty.name + "."
+    			: "";
     	for (ViewProperty property:parentBean.referenceViewProperties) {
 			if (start) {
 				start = false;
 			} else {
 				write(";");
 			}
-			write("\"" + property.rendering + "\"");
+			write("\"" + parentPrefix + property.path + "\"");
 		}
 		for (ViewProperty property:referenceBean.formBean.properties) {
-			write(";");
-			write("\"" + property.rendering + "\"");
+			if (start) {
+				start = false;
+			} else {
+				write(";");
+			}
+			write("\"" + property.path + "\"");
 		}
 	}
 }

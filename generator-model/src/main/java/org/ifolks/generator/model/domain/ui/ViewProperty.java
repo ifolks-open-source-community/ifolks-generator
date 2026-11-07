@@ -10,6 +10,7 @@ public class ViewProperty {
 
 	public String name;
 	public String capName;
+	public String path;
 
 	public DataType dataType;
 	public String javaType;

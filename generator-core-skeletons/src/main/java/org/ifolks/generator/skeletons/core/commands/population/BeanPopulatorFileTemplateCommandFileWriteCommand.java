@@ -30,7 +30,7 @@ public class BeanPopulatorFileTemplateCommandFileWriteCommand extends CsvFileWri
 			} else {
 				write(";");
 			}
-			write("\"" + property.rendering + "\"");
+			write("\"" + property.path + "\"");
 		}
 	}
 }
