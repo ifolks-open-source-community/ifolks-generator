@@ -178,97 +178,31 @@ public class BaseFormMapperFileWriteCommand extends JavaFileWriteCommand {
 		writeLine(" * mapping entity to form");
 		writeLine(" */");
 		writeLine("public " + this.bean.formBean.className + " toForm(" + this.bean.className + " " + this.bean.objectName + ") {");
-		
-		for (Property property : this.bean.properties) {			
-			if (property.visibility.isDetailVisible() && !property.relation.isComponentLink()) {
-				if (property.referenceBean != null) {
-                    if (property.embedded) {
-                        writeMapEmbeddedToView(property);
-                    } else {
-                        writeMapReferenceToView(property);
-                    }					
-                } else {
-                    writeLine(property.javaType + " " + property.name + " = " + this.bean.objectName + "." + property.getterName + "();");
-                }
-			}
+		skipLine();
+
+		for (ViewProperty property : this.bean.formBean.properties) {
+			writeLine(property.javaType + " " + property.name + " = "
+					+ buildSafeGetterExpression(this.bean.objectName, property.mappingPath) + ";");
 		}
 
-        skipLine();
+		skipLine();
 		writeLine("return new " + this.bean.formBean.className + " (");
-        
-        boolean first = true;
-        for (ViewProperty property:this.bean.formBean.properties) {
-        	if (first) {
-        		first = false;
-        	} else {
-        		writeLine(",");
-        	}
-        	write(property.name);
-        }
-        writeLine(");");
+
+		boolean first = true;
+		for (ViewProperty property : this.bean.formBean.properties) {
+			if (first) {
+				first = false;
+			} else {
+				writeLine(",");
+			}
+			write(property.name);
+		}
+		writeLine(");");
 
 		writeLine("}");
 		skipLine();
-		
-	}
-	
-	private void writeMapReferenceToView(Property property) {
-		List<ViewProperty> referencePropertyList = property.referenceBean.referenceViewProperties;
-		if (property.nullable) {
-			for (ViewProperty viewProperty : referencePropertyList) {
-				writeLine(viewProperty.javaType + " " + property.name + viewProperty.capName + " = null;");
-			}
-			writeLine("if (" + this.bean.objectName + "." + property.getterName + "() != null) {");
-			for (ViewProperty viewProperty : referencePropertyList) {
-				writeLine(property.name + viewProperty.capName + " = " + this.bean.objectName + "."
-						+ property.getterName + "()." + viewProperty.mappingPath + ";");
-			}
-			writeLine("}");
 
-		} else {
-			for (ViewProperty viewProperty : referencePropertyList) {
-				writeLine(viewProperty.javaType + " " + property.name + viewProperty.capName + " = "
-						+ this.bean.objectName + "." + property.getterName + "()." + viewProperty.mappingPath + ";");
-			}
-		}
 	}
-	
-	private void writeMapEmbeddedToView(Property property) {
-		Bean embeddedBean = property.referenceBean;
-
-		for (Property embeddedProperty : embeddedBean.properties) {
-			if (embeddedProperty.visibility.isDetailVisible()) {
-				if (embeddedProperty.referenceBean != null) {
-					List<ViewProperty> referencePropertyList = embeddedProperty.referenceBean.referenceViewProperties;
-					if (embeddedProperty.nullable) {
-						for (ViewProperty viewProperty : referencePropertyList) {
-							writeLine(viewProperty.javaType + " " + embeddedProperty.name + viewProperty.capName
-									+ " = null;");
-						}
-						writeLine("if (" + this.bean.objectName + "." + property.getterName + "()."
-								+ embeddedProperty.getterName + "() != null) {");
-						for (ViewProperty viewProperty : referencePropertyList) {
-							writeLine(embeddedProperty.name + viewProperty.capName + " = " + this.bean.objectName + "."
-									+ property.getterName + "()." + embeddedProperty.getterName + "()."
-									+ viewProperty.mappingPath + ";");
-						}
-						writeLine("}");
-
-					} else {
-						for (ViewProperty viewProperty : referencePropertyList) {
-							writeLine(viewProperty.javaType + " " + embeddedProperty.name + viewProperty.capName + " = "
-									+ this.bean.objectName + "." + property.getterName + "()."
-									+ embeddedProperty.getterName + "()." + viewProperty.mappingPath + ";");
-						}
-					}
-				} else {
-					writeLine(embeddedProperty.javaType + " " + embeddedProperty.name + " = " + this.bean.objectName
-							+ "." + property.getterName + "()." + embeddedProperty.getterName + "();");
-				}
-			}
-		}
-	}
-	
 	private void createToEntity() {
 
 		writeLine("/**");
