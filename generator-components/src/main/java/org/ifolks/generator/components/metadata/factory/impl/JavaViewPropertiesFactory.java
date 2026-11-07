@@ -41,84 +41,60 @@ public class JavaViewPropertiesFactory implements ViewPropertiesFactory {
 			result.add(viewProperty);
 		} else {
 			
-			int limit = property.embedded?property.referenceBean.properties.size():property.referenceBean.cardinality;
-			
+			int limit = property.embedded ? property.referenceBean.properties.size() : property.referenceBean.cardinality;
+
 			for (int i = 0; i < limit; i++) {
-				
 				Property referenceBeanProperty = property.referenceBean.properties.get(i);
-				
-				if (referenceBeanProperty.referenceBean != null) {
-					List<ViewProperty> tempPropertyList = getViewProperties(referenceBeanProperty, property.referenceBean);
-					for (ViewProperty tempProperty:tempPropertyList) {
-						ViewProperty viewProperty = new ViewProperty();
-						if (property.embedded) {
-							viewProperty.name = tempProperty.name;
-							viewProperty.capName = tempProperty.capName;
-						} else {
-							viewProperty.name = property.name + tempProperty.capName;
-							viewProperty.capName = property.capName + tempProperty.capName;
-						}
-						viewProperty.path = property.name + "." + tempProperty.path;
-						viewProperty.mappingPath = property.getterName + "()." + tempProperty.mappingPath;
-						viewProperty.javaType = tempProperty.javaType;
-						viewProperty.tsType = tempProperty.tsType;
-						viewProperty.dataType = tempProperty.dataType;
-						viewProperty.enumName = tempProperty.enumName;
-						viewProperty.nullable = property.nullable || tempProperty.nullable;
-						viewProperty.visibility = Visibility.min(property.visibility, tempProperty.visibility);
-						viewProperty.editable = property.embedded?tempProperty.editable:property.editable;
-						viewProperty.filterable = property.embedded?tempProperty.filterable:property.filterable;
-						viewProperty.textFilterType = property.embedded?tempProperty.textFilterType:property.textFilterType;
-						viewProperty.lastPropertyName = tempProperty.lastPropertyName;
-						viewProperty.lastParentBeanClassName = tempProperty.lastParentBeanClassName;
-						viewProperty.joinedAliasName = property.name + JavaClassNaming.getClassNameFromObjectName(tempProperty.joinedAliasName);
-						viewProperty.referenceBean = tempProperty.referenceBean;
-						viewProperty.selectableBean = tempProperty.selectableBean;					
-						viewProperty.rendering = tempProperty.rendering;
-						result.add(viewProperty);
-					}
-				} else {
+				List<ViewProperty> tempPropertyList = getViewProperties(referenceBeanProperty, property.referenceBean);
+
+				for (ViewProperty tempProperty : tempPropertyList) {
 					ViewProperty viewProperty = new ViewProperty();
 					if (property.embedded) {
-						viewProperty.name = referenceBeanProperty.name;
-						viewProperty.capName = referenceBeanProperty.capName;
+						viewProperty.name = tempProperty.name;
+						viewProperty.capName = tempProperty.capName;
 					} else {
-						viewProperty.name = property.name + referenceBeanProperty.capName;
-						viewProperty.capName = property.capName + referenceBeanProperty.capName;
+						viewProperty.name = property.name + tempProperty.capName;
+						viewProperty.capName = property.capName + tempProperty.capName;
 					}
-					viewProperty.path = property.name + "." + referenceBeanProperty.name;
-					viewProperty.mappingPath = property.getterName + "()." + referenceBeanProperty.getterName + "()";
-					viewProperty.javaType = referenceBeanProperty.javaType;
-					viewProperty.tsType = referenceBeanProperty.tsType;
-					viewProperty.dataType = referenceBeanProperty.dataType;
-					viewProperty.enumName = referenceBeanProperty.enumName;
-					viewProperty.nullable = property.nullable || referenceBeanProperty.nullable;
-					viewProperty.visibility = Visibility.min(property.visibility, referenceBeanProperty.visibility);
-					viewProperty.editable = property.embedded?referenceBeanProperty.editable:property.editable;
-					viewProperty.filterable = property.embedded?referenceBeanProperty.filterable:property.filterable;
-					viewProperty.textFilterType = property.embedded?referenceBeanProperty.textFilterType:property.textFilterType;
-					viewProperty.lastPropertyName = referenceBeanProperty.name;
-					viewProperty.lastParentBeanClassName = property.javaType;
-					viewProperty.joinedAliasName = property.name;
-					viewProperty.referenceBean = property.referenceBean;
-					if (property.referenceBean.selectable) {
-						viewProperty.selectableBean = property.referenceBean;
-					}
-					if (property.referenceBean.cardinality == 1) {
-						viewProperty.rendering = property.rendering;
+					viewProperty.path = property.name + "." + tempProperty.path;
+					viewProperty.mappingPath = property.getterName + "()." + tempProperty.mappingPath;
+					viewProperty.javaType = tempProperty.javaType;
+					viewProperty.tsType = tempProperty.tsType;
+					viewProperty.dataType = tempProperty.dataType;
+					viewProperty.enumName = tempProperty.enumName;
+					viewProperty.nullable = property.nullable || tempProperty.nullable;
+					viewProperty.visibility = Visibility.min(property.visibility, tempProperty.visibility);
+					viewProperty.editable = property.embedded ? tempProperty.editable : property.editable;
+					viewProperty.filterable = property.embedded ? tempProperty.filterable : property.filterable;
+					viewProperty.textFilterType = property.embedded ? tempProperty.textFilterType : property.textFilterType;
+					viewProperty.lastPropertyName = tempProperty.lastPropertyName;
+					viewProperty.lastParentBeanClassName = tempProperty.lastParentBeanClassName;
+					viewProperty.joinedAliasName = property.name + JavaClassNaming.getClassNameFromObjectName(tempProperty.joinedAliasName);
+
+					if (tempProperty.referenceBean != null) {
+						viewProperty.referenceBean = tempProperty.referenceBean;
+						viewProperty.selectableBean = tempProperty.selectableBean;
+						viewProperty.rendering = tempProperty.rendering;
 					} else {
-						if (property.embedded) {
-							viewProperty.rendering = referenceBeanProperty.rendering;
+						viewProperty.referenceBean = property.referenceBean;
+						if (property.referenceBean.selectable) {
+							viewProperty.selectableBean = property.referenceBean;
+						}
+						if (property.referenceBean.cardinality == 1) {
+							viewProperty.rendering = property.rendering;
 						} else {
-							viewProperty.rendering = property.rendering + "(" + referenceBeanProperty.rendering + ")";
+							if (property.embedded) {
+								viewProperty.rendering = tempProperty.rendering;
+							} else {
+								viewProperty.rendering = property.rendering + "(" + tempProperty.rendering + ")";
+							}
 						}
 					}
-					
+
 					result.add(viewProperty);
 				}
 			}
 		}
-
 		return result;
 	}
 

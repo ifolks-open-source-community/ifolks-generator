@@ -49,6 +49,9 @@ public class JavaClassNaming {
     
     
 	public static String getClassNameFromObjectName(String arg) {
+		if (arg == null || arg.isEmpty()) {
+			return "";
+		}
 		return arg.substring(0, 1).toUpperCase() + arg.substring(1, arg.length());
     }
 	
