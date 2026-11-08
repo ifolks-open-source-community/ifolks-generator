@@ -2,10 +2,13 @@ package org.ifolks.generator.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -178,5 +181,34 @@ public class TsImportOrganizationTest {
 				"Generated content should preserve Routes import");
 		assertFalse(generated.lines().anyMatch(l -> l.trim().equals("import {")),
 				"Generated content must not contain isolated 'import {' lines");
+	}
+
+	@Test
+	public void testToolchainTemplatesConfiguredForImportOrganization() throws IOException {
+		try (InputStream rootPomStream = getClass().getResourceAsStream("/root/pom.xml.vm")) {
+			assertNotNull(rootPomStream, "root/pom.xml.vm template must exist on classpath");
+			String rootPom = new String(rootPomStream.readAllBytes(), StandardCharsets.UTF_8);
+			assertTrue(rootPom.contains("spotless-maven-plugin"), "Root POM must configure spotless-maven-plugin");
+			assertTrue(rootPom.contains("<removeUnusedImports />"), "Spotless must remove unused Java imports");
+			assertTrue(rootPom.contains("<importOrder>"), "Spotless must enforce deterministic Java import order");
+		}
+
+		try (InputStream packageJsonStream = getClass().getResourceAsStream("/ui/package.json.vm")) {
+			assertNotNull(packageJsonStream, "ui/package.json.vm template must exist on classpath");
+			String packageJson = new String(packageJsonStream.readAllBytes(), StandardCharsets.UTF_8);
+			assertTrue(packageJson.contains("\"prettier\""), "package.json.vm must include prettier");
+			assertTrue(packageJson.contains("\"prettier-plugin-organize-imports\""),
+					"package.json.vm must include prettier-plugin-organize-imports");
+			assertTrue(packageJson.contains("\"format\":"), "package.json.vm must expose format script");
+		}
+
+		try (InputStream prettierrcStream = getClass().getResourceAsStream("/ui/.prettierrc")) {
+			assertNotNull(prettierrcStream, "ui/.prettierrc must exist on classpath");
+			String prettierrc = new String(prettierrcStream.readAllBytes(), StandardCharsets.UTF_8);
+			assertTrue(prettierrc.contains("prettier-plugin-organize-imports"),
+					".prettierrc must activate prettier-plugin-organize-imports");
+			assertTrue(prettierrc.contains("\"singleQuote\": true"),
+					".prettierrc must enforce single quotes matching TsFileWriteCommand");
+		}
 	}
 }
