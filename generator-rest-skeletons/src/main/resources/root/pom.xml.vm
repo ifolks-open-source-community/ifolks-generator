@@ -147,6 +147,14 @@
 						</importOrder>
 					</java>
 				</configuration>
+				<executions>
+					<execution>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>apply</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>		
 	</build>

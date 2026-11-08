@@ -3,9 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "prestart": "npm run format",
     "start": "ng serve",
+    "prebuild": "npm run format",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
+    "pretest": "npm run format",
     "test": "ng test",
     "format": "prettier --write \"src/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\""
