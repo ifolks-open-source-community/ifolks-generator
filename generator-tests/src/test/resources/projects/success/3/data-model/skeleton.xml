@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<metadata:project xmlns:metadata="http://generator.ifolks.org/schema/model/metadata"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://generator.ifolks.org/schema/model/metadata skeleton-metadata-1.3.xsd">
+	<domainName>org.ifolks</domainName>
+	<projectName>demo</projectName>
+	<skeleton>SPRING_REST_ANGULAR</skeleton>
+	<databaseEngine>POSTGRESQL</databaseEngine>
+
+	<supportedLocales defaultLocale="en_US">
+		<locale code="en_US" label="English (US)" />
+		<locale code="fr_FR" label="Français (France)" />
+	</supportedLocales>
+
+	<packages>
+		<package name="REFERENCE">
+			<packages>
+				<package name="LOCALIZATION">
+					<tables>
+						<table name="COUNTRY" idType="SHORT" cardinality="1" listRendering="Countries"
+							detailRendering="Country details" createEnabled="true"
+							updateEnabled="true" deleteEnabled="true">
+							<selectionBehavior selectionMode="DROPDOWN_OPTIONS" labelColumn="LABEL" />
+							<columns>
+								<column name="CODE" dataType="STRING" nullable="false"
+									editable="true" rendering="ISO Code">
+								</column>
+								<column name="LABEL" dataType="STRING" nullable="false" unique="true"
+									editable="true" rendering="Label">
+								</column>
+							</columns>
+						</table>
+					</tables>
+				</package>
+			</packages>
+		</package>
+	</packages>
+</metadata:project>

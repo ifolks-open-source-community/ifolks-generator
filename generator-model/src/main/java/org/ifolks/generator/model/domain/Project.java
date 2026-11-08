@@ -1,5 +1,8 @@
 package org.ifolks.generator.model.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.ifolks.generator.model.metadata.datasources.DataSourceMetaData;
 
 
@@ -23,6 +26,8 @@ public class Project {
 	public String databaseEngine;
 	public String tablesTableSpace;
 	public String indexesTableSpace;
+	public String defaultLocale = "en";
+	public List<Locale> supportedLocales = new ArrayList<>();
 	
 	public DataSourceMetaData dataSource;
     
@@ -80,6 +85,18 @@ public class Project {
 	}
 	public void setIndexesTableSpace(String indexesTableSpace) {
 		this.indexesTableSpace = indexesTableSpace;
+	}
+	public String getDefaultLocale() {
+		return defaultLocale;
+	}
+	public void setDefaultLocale(String defaultLocale) {
+		this.defaultLocale = defaultLocale;
+	}
+	public List<Locale> getSupportedLocales() {
+		return supportedLocales;
+	}
+	public void setSupportedLocales(List<Locale> supportedLocales) {
+		this.supportedLocales = supportedLocales;
 	}
 	public DataSourceMetaData getDataSource() {
 		return dataSource;

@@ -1,5 +1,6 @@
 package org.ifolks.generator.skeletons.angular.layers;
 
+import org.ifolks.generator.model.domain.Locale;
 import org.ifolks.generator.model.domain.Package;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.domain.business.Bean;
@@ -7,6 +8,7 @@ import org.ifolks.generator.model.domain.business.OneToMany;
 import org.ifolks.generator.model.domain.business.OneToManyComponent;
 import org.ifolks.generator.model.domain.business.OneToOneComponent;
 import org.ifolks.generator.skeletons.angular.commands.i18n.I18nModelJsonFileWriteCommand;
+import org.ifolks.generator.skeletons.angular.commands.i18n.I18nOverlayJsonFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.pages.TsAppRoutingModuleFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.pages.TsRoutingModuleFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.pages.details.HtmlDetailsComponentFileWriteCommand;
@@ -52,6 +54,18 @@ public class TypeScriptComponentsLayer extends AbstractLayer {
 		
 		FileWriteCommandTreeNode copyResourcesTreeNode = new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/ui", project.projectName + "-ui"));
 		resourcesTreeNode.add(copyResourcesTreeNode);
+
+		if (project.supportedLocales != null && !project.supportedLocales.isEmpty()) {
+			FileWriteCommandTreeNode i18nOverlaysTreeNode = new FileWriteCommandTreeNode("i18n overlays");
+			resourcesTreeNode.add(i18nOverlaysTreeNode);
+
+			for (Locale locale : project.supportedLocales) {
+				if (project.defaultLocale == null || !locale.code.equalsIgnoreCase(project.defaultLocale)) {
+					i18nOverlaysTreeNode.add(new FileWriteCommandTreeNode(new I18nOverlayJsonFileWriteCommand(project, "model_" + locale.code)));
+					i18nOverlaysTreeNode.add(new FileWriteCommandTreeNode(new I18nOverlayJsonFileWriteCommand(project, "main_" + locale.code)));
+				}
+			}
+		}
 		
 		return resourcesTreeNode;
 	}

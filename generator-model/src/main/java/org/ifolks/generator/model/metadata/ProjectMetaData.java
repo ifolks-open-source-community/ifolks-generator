@@ -41,6 +41,9 @@ public class ProjectMetaData {
 	public String tablesTableSpace;
 	@XmlElement(required=false)
 	public String indexesTableSpace;
+
+	@XmlElement(name="supportedLocales", required=false)
+	private SupportedLocalesMetaData supportedLocales;
 	
 	@XmlTransient
 	private DataSourceMetaData DataSource = new DataSourceMetaData();
@@ -107,6 +110,12 @@ public class ProjectMetaData {
 	}
 	public void setIndexesTableSpace(String indexesTableSpace) {
 		this.indexesTableSpace = indexesTableSpace;
+	}
+	public SupportedLocalesMetaData getSupportedLocales() {
+		return supportedLocales;
+	}
+	public void setSupportedLocales(SupportedLocalesMetaData supportedLocales) {
+		this.supportedLocales = supportedLocales;
 	}
 	public DataSourceMetaData getDataSource() {
 		return DataSource;
