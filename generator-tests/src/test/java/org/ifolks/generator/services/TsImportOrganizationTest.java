@@ -191,6 +191,9 @@ public class TsImportOrganizationTest {
 			assertTrue(rootPom.contains("spotless-maven-plugin"), "Root POM must configure spotless-maven-plugin");
 			assertTrue(rootPom.contains("<removeUnusedImports />"), "Spotless must remove unused Java imports");
 			assertTrue(rootPom.contains("<importOrder>"), "Spotless must enforce deterministic Java import order");
+			assertTrue(rootPom.contains("<phase>process-sources</phase>"),
+					"Spotless must be bound to process-sources phase for automatic execution");
+			assertTrue(rootPom.contains("<goal>apply</goal>"), "Spotless execution must run apply goal automatically");
 		}
 
 		try (InputStream packageJsonStream = getClass().getResourceAsStream("/ui/package.json.vm")) {
@@ -200,6 +203,12 @@ public class TsImportOrganizationTest {
 			assertTrue(packageJson.contains("\"prettier-plugin-organize-imports\""),
 					"package.json.vm must include prettier-plugin-organize-imports");
 			assertTrue(packageJson.contains("\"format\":"), "package.json.vm must expose format script");
+			assertTrue(packageJson.contains("\"prestart\": \"npm run format\""),
+					"package.json.vm must run format automatically before start");
+			assertTrue(packageJson.contains("\"prebuild\": \"npm run format\""),
+					"package.json.vm must run format automatically before build");
+			assertTrue(packageJson.contains("\"pretest\": \"npm run format\""),
+					"package.json.vm must run format automatically before test");
 		}
 
 		try (InputStream prettierrcStream = getClass().getResourceAsStream("/ui/.prettierrc")) {
