@@ -26,7 +26,7 @@ public class Project {
 	public String databaseEngine;
 	public String tablesTableSpace;
 	public String indexesTableSpace;
-	public String defaultLocale = "en";
+	public String defaultLocale;
 	public List<Locale> supportedLocales = new ArrayList<>();
 	
 	public DataSourceMetaData dataSource;

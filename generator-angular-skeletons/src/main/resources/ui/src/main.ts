@@ -8,28 +8,15 @@ import { routes } from './app/app.routes';
 import { environment } from './environments/environment';
 import { RestRequestInterceptor } from './app/core/services/RestRequestInterceptor';
 import { I18nService } from './app/core/services/I18nService';
+import { i18nConfig } from './app/core/services/i18n.config';
 
 if (environment.production) {
   enableProdMode();
 }
 
-#if($project.supportedLocales && !$project.supportedLocales.isEmpty())
 export function initI18n(i18nService: I18nService) {
-  return () => i18nService.init({
-    defaultLocale: '$project.defaultLocale',
-    supportedLocales: [
-#foreach($loc in $project.supportedLocales)
-      { code: '$loc.code', label: '$loc.label' }#if($foreach.hasNext),#end
-
-#end
-    ]
-  });
+  return () => i18nService.init(i18nConfig);
 }
-#else
-export function initI18n(i18nService: I18nService) {
-  return () => i18nService.init();
-}
-#end
 
 bootstrapApplication(AppComponent, {
   providers: [

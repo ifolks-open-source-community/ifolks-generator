@@ -1,5 +1,6 @@
 package org.ifolks.generator.services;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -11,10 +12,10 @@ import java.util.List;
 import org.ifolks.generator.model.domain.Project;
 import org.ifolks.generator.model.metadata.ProjectMetaData;
 import org.ifolks.generator.model.metadata.validation.ProjectValidationReport;
+import org.ifolks.generator.skeletons.angular.commands.i18n.I18nConfigFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.i18n.I18nModelJsonFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.i18n.I18nOverlayJsonFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.layers.TypeScriptComponentsLayer;
-import org.ifolks.generator.skeletons.commands.impl.templatized.TemplatizedReourceCopier;
 import org.ifolks.generator.skeletons.commands.interfaces.FileWriteCommand;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandExecutor;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
@@ -34,54 +35,62 @@ public class SupportedLocalesTest {
 	private ProjectLoader loader;
 
 	@Test
-	public void testLoadProjectWithSupportedLocales() {
+	public void testSupportedLocalesMetadataParsing() {
 		ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/3");
 		Assertions.assertNotNull(projectMetaData);
-
-		ProjectValidationReport report = service.validate(projectMetaData);
-		Assertions.assertFalse(report.hasErrors);
-		Assertions.assertFalse(report.hasWarnings);
-
 		Assertions.assertNotNull(projectMetaData.getSupportedLocales());
 		Assertions.assertEquals("en_US", projectMetaData.getSupportedLocales().getDefaultLocale());
+		Assertions.assertNotNull(projectMetaData.getSupportedLocales().getLocales());
 		Assertions.assertEquals(2, projectMetaData.getSupportedLocales().getLocales().size());
+
 		Assertions.assertEquals("en_US", projectMetaData.getSupportedLocales().getLocales().get(0).getCode());
 		Assertions.assertEquals("English (US)", projectMetaData.getSupportedLocales().getLocales().get(0).getLabel());
 		Assertions.assertEquals("fr_FR", projectMetaData.getSupportedLocales().getLocales().get(1).getCode());
 		Assertions.assertEquals("Français (France)", projectMetaData.getSupportedLocales().getLocales().get(1).getLabel());
 
-		Project project = loader.loadProject(projectMetaData);
-		Assertions.assertNotNull(project);
-		Assertions.assertEquals("en_US", project.getDefaultLocale());
-		Assertions.assertEquals(2, project.getSupportedLocales().size());
-		Assertions.assertEquals("en_US", project.getSupportedLocales().get(0).code);
-		Assertions.assertEquals("English (US)", project.getSupportedLocales().get(0).label);
-		Assertions.assertEquals("fr_FR", project.getSupportedLocales().get(1).code);
-		Assertions.assertEquals("Français (France)", project.getSupportedLocales().get(1).label);
+		ProjectValidationReport report = service.validate(projectMetaData);
+		Assertions.assertFalse(report.hasErrors, "Validation must pass for supportedLocales");
 	}
 
 	@Test
-	public void testLoadProjectWithoutSupportedLocales() {
+	public void testProjectLoaderMapsSupportedLocales() {
+		ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/3");
+		Project project = loader.loadProject(projectMetaData);
+
+		Assertions.assertNotNull(project.supportedLocales);
+		Assertions.assertEquals(2, project.supportedLocales.size());
+		Assertions.assertEquals("en_US", project.defaultLocale);
+
+		Assertions.assertEquals("en_US", project.supportedLocales.get(0).code);
+		Assertions.assertEquals("English (US)", project.supportedLocales.get(0).label);
+		Assertions.assertEquals("fr_FR", project.supportedLocales.get(1).code);
+		Assertions.assertEquals("Français (France)", project.supportedLocales.get(1).label);
+	}
+
+	@Test
+	public void testProjectWithoutSupportedLocales() {
 		ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/2");
-		Assertions.assertNotNull(projectMetaData);
-		Assertions.assertNull(projectMetaData.getSupportedLocales());
-
 		Project project = loader.loadProject(projectMetaData);
-		Assertions.assertNotNull(project);
-		Assertions.assertEquals("en", project.getDefaultLocale());
-		Assertions.assertNotNull(project.getSupportedLocales());
-		Assertions.assertTrue(project.getSupportedLocales().isEmpty());
+
+		Assertions.assertTrue(project.supportedLocales.isEmpty());
+		Assertions.assertNull(project.defaultLocale);
 	}
 
 	@Test
-	public void testTypeScriptComponentsLayerInitializationWithLocales() {
+	public void testTypeScriptComponentsLayerGenerationWithLocales() {
 		ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/3");
 		Project project = loader.loadProject(projectMetaData);
 
 		TypeScriptComponentsLayer layer = new TypeScriptComponentsLayer();
-		FileWriteCommandTreeNode initNode = layer.getInitializationNode(project);
+		FileWriteCommandTreeNode genNode = layer.getGenerationNode(project);
 
-		List<FileWriteCommand> allCommands = collectCommands(initNode);
+		List<FileWriteCommand> allCommands = collectCommands(genNode);
+
+		boolean hasConfigCommand = allCommands.stream().anyMatch(cmd -> cmd instanceof I18nConfigFileWriteCommand);
+		boolean hasModelCommand = allCommands.stream().anyMatch(cmd -> cmd instanceof I18nModelJsonFileWriteCommand);
+
+		Assertions.assertTrue(hasConfigCommand, "I18nConfigFileWriteCommand must be present in generation node");
+		Assertions.assertTrue(hasModelCommand, "I18nModelJsonFileWriteCommand must be present in generation node");
 
 		// Overlay commands should only be created for non-default locales (fr_FR, not en_US)
 		boolean hasModelFr = false;
@@ -107,15 +116,35 @@ public class SupportedLocalesTest {
 			}
 		}
 
-		Assertions.assertTrue(hasModelFr, "model_fr_FR.json overlay command must be present");
-		Assertions.assertTrue(hasMainFr, "main_fr_FR.json overlay command must be present");
+		Assertions.assertTrue(hasModelFr, "model_fr_FR.json overlay command must be present in generation node");
+		Assertions.assertTrue(hasMainFr, "main_fr_FR.json overlay command must be present in generation node");
 		Assertions.assertFalse(hasModelEn, "model_en_US.json overlay command must NOT be present for default locale");
 		Assertions.assertFalse(hasMainEn, "main_en_US.json overlay command must NOT be present for default locale");
 	}
 
 	@Test
-	public void testTypeScriptComponentsLayerInitializationWithoutLocales() {
+	public void testTypeScriptComponentsLayerGenerationWithoutLocales() {
 		ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/2");
+		Project project = loader.loadProject(projectMetaData);
+
+		TypeScriptComponentsLayer layer = new TypeScriptComponentsLayer();
+		FileWriteCommandTreeNode genNode = layer.getGenerationNode(project);
+
+		List<FileWriteCommand> allCommands = collectCommands(genNode);
+
+		boolean hasConfigCommand = allCommands.stream().anyMatch(cmd -> cmd instanceof I18nConfigFileWriteCommand);
+		Assertions.assertTrue(hasConfigCommand, "I18nConfigFileWriteCommand must be present in generation node even without locales");
+
+		long overlayCommandCount = allCommands.stream()
+				.filter(cmd -> cmd instanceof I18nOverlayJsonFileWriteCommand)
+				.count();
+
+		Assertions.assertEquals(0, overlayCommandCount, "No overlay commands should be created without supportedLocales");
+	}
+
+	@Test
+	public void testTypeScriptComponentsLayerInitializationHasNoOverlays() {
+		ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/3");
 		Project project = loader.loadProject(projectMetaData);
 
 		TypeScriptComponentsLayer layer = new TypeScriptComponentsLayer();
@@ -126,24 +155,7 @@ public class SupportedLocalesTest {
 				.filter(cmd -> cmd instanceof I18nOverlayJsonFileWriteCommand)
 				.count();
 
-		Assertions.assertEquals(0, overlayCommandCount, "No overlay commands should be created without supportedLocales");
-	}
-
-	@Test
-	public void testTypeScriptComponentsLayerGenerationDoesNotContainOverlays() {
-		ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/3");
-		Project project = loader.loadProject(projectMetaData);
-
-		TypeScriptComponentsLayer layer = new TypeScriptComponentsLayer();
-		FileWriteCommandTreeNode genNode = layer.getGenerationNode(project);
-
-		List<FileWriteCommand> allCommands = collectCommands(genNode);
-
-		boolean hasModelJson = allCommands.stream().anyMatch(cmd -> cmd instanceof I18nModelJsonFileWriteCommand);
-		boolean hasOverlayJson = allCommands.stream().anyMatch(cmd -> cmd instanceof I18nOverlayJsonFileWriteCommand);
-
-		Assertions.assertTrue(hasModelJson, "model.json command must be present in generation node");
-		Assertions.assertFalse(hasOverlayJson, "Overlay commands must NEVER be present in generation node");
+		Assertions.assertEquals(0, overlayCommandCount, "Initialization node must NEVER contain overlay commands");
 	}
 
 	@Test
@@ -160,12 +172,11 @@ public class SupportedLocalesTest {
 		String customContent = "{\"customKey\": \"Custom Value\"}";
 		Files.writeString(existingFile, customContent, StandardCharsets.UTF_8);
 
-		I18nOverlayJsonFileWriteCommand cmd1 = new I18nOverlayJsonFileWriteCommand(project, "model_fr_FR");
-		cmd1.execute();
+		I18nOverlayJsonFileWriteCommand cmd = new I18nOverlayJsonFileWriteCommand(project, "model_fr_FR");
+		cmd.execute();
 
-		// Content must remain untouched
 		String contentAfter = Files.readString(existingFile, StandardCharsets.UTF_8);
-		Assertions.assertEquals(customContent, contentAfter, "Existing overlay file must NOT be overwritten");
+		Assertions.assertEquals(customContent, contentAfter, "Existing overlay file content must NOT be overwritten");
 
 		// Non-existing overlay file should be created with empty JSON object
 		Path newFile = i18nDir.resolve("main_fr_FR.json");
@@ -180,34 +191,47 @@ public class SupportedLocalesTest {
 	}
 
 	@Test
-	public void testMainTsTemplateWithLocales(@TempDir Path tempDir) throws IOException {
+	public void testI18nConfigFileWriteCommandWithLocales(@TempDir Path tempDir) throws IOException {
 		ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/3");
 		Project project = loader.loadProject(projectMetaData);
+		project.workspaceFolder = tempDir.toString();
 
-		TemplatizedReourceCopier copier = new TemplatizedReourceCopier(project);
-		Path targetMainTs = tempDir.resolve("main.ts");
-		copier.resolveAndCopy("/ui/src/main.ts.vm", targetMainTs);
+		I18nConfigFileWriteCommand cmd = new I18nConfigFileWriteCommand(project);
+		cmd.execute();
 
-		String mainTsContent = Files.readString(targetMainTs, StandardCharsets.UTF_8);
-		Assertions.assertNotNull(mainTsContent);
-		Assertions.assertTrue(mainTsContent.contains("defaultLocale: 'en_US'"));
-		Assertions.assertTrue(mainTsContent.contains("{ code: 'en_US', label: 'English (US)' }"));
-		Assertions.assertTrue(mainTsContent.contains("{ code: 'fr_FR', label: 'Français (France)' }"));
+		Path configFile = tempDir.resolve(project.model.tsUiArtefactName).resolve("src").resolve("app").resolve("core").resolve("services").resolve("i18n.config.ts");
+		Assertions.assertTrue(Files.exists(configFile), "i18n.config.ts must be created");
+
+		String content = Files.readString(configFile, StandardCharsets.UTF_8);
+		Assertions.assertTrue(content.contains("import { I18nConfig } from './I18nService';"));
+		Assertions.assertTrue(content.contains("defaultLocale: 'en_US'"));
+		Assertions.assertTrue(content.contains("{ code: 'en_US', label: 'English (US)' }"));
+		Assertions.assertTrue(content.contains("{ code: 'fr_FR', label: 'Français (France)' }"));
 	}
 
 	@Test
-	public void testMainTsTemplateWithoutLocales(@TempDir Path tempDir) throws IOException {
+	public void testI18nConfigFileWriteCommandWithoutLocales(@TempDir Path tempDir) throws IOException {
 		ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/2");
 		Project project = loader.loadProject(projectMetaData);
+		project.workspaceFolder = tempDir.toString();
 
-		TemplatizedReourceCopier copier = new TemplatizedReourceCopier(project);
-		Path targetMainTs = tempDir.resolve("main.ts");
-		copier.resolveAndCopy("/ui/src/main.ts.vm", targetMainTs);
+		I18nConfigFileWriteCommand cmd = new I18nConfigFileWriteCommand(project);
+		cmd.execute();
 
-		String mainTsContent = Files.readString(targetMainTs, StandardCharsets.UTF_8);
+		Path configFile = tempDir.resolve(project.model.tsUiArtefactName).resolve("src").resolve("app").resolve("core").resolve("services").resolve("i18n.config.ts");
+		Assertions.assertTrue(Files.exists(configFile), "i18n.config.ts must be created");
+
+		String content = Files.readString(configFile, StandardCharsets.UTF_8);
+		Assertions.assertTrue(content.contains("import { I18nConfig } from './I18nService';"));
+		Assertions.assertTrue(content.contains("export const i18nConfig: I18nConfig = {};"));
+	}
+
+	@Test
+	public void testMainTsTemplateUsesI18nConfig() throws IOException {
+		String mainTsContent = readClasspathResource("/ui/src/main.ts");
 		Assertions.assertNotNull(mainTsContent);
-		Assertions.assertTrue(mainTsContent.contains("return () => i18nService.init();"));
-		Assertions.assertFalse(mainTsContent.contains("supportedLocales:"));
+		Assertions.assertTrue(mainTsContent.contains("import { i18nConfig } from './app/core/services/i18n.config';"), "main.ts must import i18nConfig");
+		Assertions.assertTrue(mainTsContent.contains("return () => i18nService.init(i18nConfig);"), "main.ts must pass i18nConfig to i18nService.init");
 	}
 
 	@Test

@@ -7,6 +7,7 @@ import org.ifolks.generator.model.domain.business.Bean;
 import org.ifolks.generator.model.domain.business.OneToMany;
 import org.ifolks.generator.model.domain.business.OneToManyComponent;
 import org.ifolks.generator.model.domain.business.OneToOneComponent;
+import org.ifolks.generator.skeletons.angular.commands.i18n.I18nConfigFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.i18n.I18nModelJsonFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.i18n.I18nOverlayJsonFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.pages.TsAppRoutingModuleFileWriteCommand;
@@ -54,18 +55,6 @@ public class TypeScriptComponentsLayer extends AbstractLayer {
 		
 		FileWriteCommandTreeNode copyResourcesTreeNode = new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/ui", project.projectName + "-ui"));
 		resourcesTreeNode.add(copyResourcesTreeNode);
-
-		if (project.supportedLocales != null && !project.supportedLocales.isEmpty()) {
-			FileWriteCommandTreeNode i18nOverlaysTreeNode = new FileWriteCommandTreeNode("i18n overlays");
-			resourcesTreeNode.add(i18nOverlaysTreeNode);
-
-			for (Locale locale : project.supportedLocales) {
-				if (project.defaultLocale == null || !locale.code.equalsIgnoreCase(project.defaultLocale)) {
-					i18nOverlaysTreeNode.add(new FileWriteCommandTreeNode(new I18nOverlayJsonFileWriteCommand(project, "model_" + locale.code)));
-					i18nOverlaysTreeNode.add(new FileWriteCommandTreeNode(new I18nOverlayJsonFileWriteCommand(project, "main_" + locale.code)));
-				}
-			}
-		}
 		
 		return resourcesTreeNode;
 	}
@@ -79,6 +68,19 @@ public class TypeScriptComponentsLayer extends AbstractLayer {
 		modelTreeNode.add(appRouting);
 		
 		modelTreeNode.add(new FileWriteCommandTreeNode(new I18nModelJsonFileWriteCommand(project)));
+		modelTreeNode.add(new FileWriteCommandTreeNode(new I18nConfigFileWriteCommand(project)));
+
+		if (project.supportedLocales != null && !project.supportedLocales.isEmpty()) {
+			FileWriteCommandTreeNode i18nOverlaysTreeNode = new FileWriteCommandTreeNode("i18n overlays");
+			modelTreeNode.add(i18nOverlaysTreeNode);
+
+			for (Locale locale : project.supportedLocales) {
+				if (project.defaultLocale == null || !locale.code.equalsIgnoreCase(project.defaultLocale)) {
+					i18nOverlaysTreeNode.add(new FileWriteCommandTreeNode(new I18nOverlayJsonFileWriteCommand(project, "model_" + locale.code)));
+					i18nOverlaysTreeNode.add(new FileWriteCommandTreeNode(new I18nOverlayJsonFileWriteCommand(project, "main_" + locale.code)));
+				}
+			}
+		}
 		
 		
 		for (Package myPackage : project.model.packages) {
