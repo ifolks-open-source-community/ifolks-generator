@@ -2,9 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
+export interface SupportedLocale {
+  code: string;
+  label: string;
+}
+
 export interface I18nConfig {
   supportedLangs?: string[];
-  supportedLocales?: string[];
+  supportedLocales?: (string | SupportedLocale)[];
   defaultLang?: string;
   defaultLocale?: string;
 }
@@ -17,7 +22,7 @@ export class I18nService {
   private defaultLang: string = 'en';
   private defaultLocale: string = 'en_US';
   private supportedLangs: string[] = ['en'];
-  private supportedLocales: string[] = ['en_US'];
+  private supportedLocales: SupportedLocale[] = [{ code: 'en_US', label: 'English (US)' }];
   private currentLocale: string = 'en_US';
   private currentLang: string = 'en';
 
@@ -31,12 +36,18 @@ export class I18nService {
     return this.supportedLangs;
   }
 
-  public setSupportedLocales(locales: string[]): void {
-    this.supportedLocales = locales;
+  public setSupportedLocales(locales: (string | SupportedLocale)[]): void {
+    this.supportedLocales = locales.map(loc =>
+      typeof loc === 'string' ? { code: loc, label: loc } : loc
+    );
   }
 
-  public getSupportedLocales(): string[] {
+  public getSupportedLocales(): SupportedLocale[] {
     return this.supportedLocales;
+  }
+
+  public getSupportedLocaleCodes(): string[] {
+    return this.supportedLocales.map(l => l.code);
   }
 
   public getDefaultLang(): string {
@@ -45,6 +56,11 @@ export class I18nService {
 
   public getDefaultLocale(): string {
     return this.defaultLocale;
+  }
+
+  public getCurrentLocaleLabel(): string {
+    const loc = this.supportedLocales.find(l => l.code === this.currentLocale);
+    return loc ? loc.label : this.currentLocale;
   }
 
   public async init(config?: I18nConfig | string[]): Promise<void> {
@@ -57,7 +73,9 @@ export class I18nService {
         this.supportedLangs = config.supportedLangs;
       }
       if (config.supportedLocales && config.supportedLocales.length > 0) {
-        this.supportedLocales = config.supportedLocales;
+        this.supportedLocales = config.supportedLocales.map(loc =>
+          typeof loc === 'string' ? { code: loc, label: loc } : loc
+        );
       }
       if (config.defaultLang) {
         this.defaultLang = config.defaultLang;
@@ -96,14 +114,14 @@ export class I18nService {
 
     // RFC 4647 Lookup Fallback Resolution:
     // Tier 1: Exact Locale Match in supportedLocales
-    const matchedLocale = this.supportedLocales.find(
-      l => l.toLowerCase() === candidateLocale.toLowerCase() ||
-           l.replace('-', '_').toLowerCase() === normalizedCandidate.toLowerCase()
+    const matchedLocaleObj = this.supportedLocales.find(
+      l => l.code.toLowerCase() === candidateLocale.toLowerCase() ||
+           l.code.replace('-', '_').toLowerCase() === normalizedCandidate.toLowerCase()
     );
 
-    if (matchedLocale) {
-      this.currentLocale = matchedLocale;
-      this.currentLang = matchedLocale.split(/[-_]/)[0].toLowerCase();
+    if (matchedLocaleObj) {
+      this.currentLocale = matchedLocaleObj.code;
+      this.currentLang = matchedLocaleObj.code.split(/[-_]/)[0].toLowerCase();
     } else {
       // Tier 2: Base Language Match in supportedLangs
       const matchedLang = this.supportedLangs.find(
@@ -114,9 +132,9 @@ export class I18nService {
         this.currentLang = matchedLang;
         // Check if there is an associated regional locale supported for this language
         const matchingLocale = this.supportedLocales.find(
-          l => l.toLowerCase().startsWith(candidateLang + '_') || l.toLowerCase() === candidateLang
+          l => l.code.toLowerCase().startsWith(candidateLang + '_') || l.code.toLowerCase() === candidateLang
         );
-        this.currentLocale = matchingLocale || matchedLang;
+        this.currentLocale = matchingLocale ? matchingLocale.code : matchedLang;
       } else {
         // Tier 3: Default Fallback
         this.currentLang = this.defaultLang;
@@ -141,10 +159,11 @@ export class I18nService {
       }
 
       // If active locale is different from current language and default locale, load regional overlay
+      const supportedCodes = this.supportedLocales.map(l => l.code);
       if (
         this.currentLocale !== this.currentLang &&
         this.currentLocale !== this.defaultLocale &&
-        this.supportedLocales.includes(this.currentLocale)
+        supportedCodes.includes(this.currentLocale)
       ) {
         promises.push(loadJson(`model_${this.currentLocale}.json`));
         promises.push(loadJson(`main_${this.currentLocale}.json`));

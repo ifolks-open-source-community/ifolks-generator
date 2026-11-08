@@ -13,9 +13,23 @@ if (environment.production) {
   enableProdMode();
 }
 
+#if($project.supportedLocales && !$project.supportedLocales.isEmpty())
+export function initI18n(i18nService: I18nService) {
+  return () => i18nService.init({
+    defaultLocale: '$project.defaultLocale',
+    supportedLocales: [
+#foreach($loc in $project.supportedLocales)
+      { code: '$loc.code', label: '$loc.label' }#if($foreach.hasNext),#end
+
+#end
+    ]
+  });
+}
+#else
 export function initI18n(i18nService: I18nService) {
   return () => i18nService.init();
 }
+#end
 
 bootstrapApplication(AppComponent, {
   providers: [

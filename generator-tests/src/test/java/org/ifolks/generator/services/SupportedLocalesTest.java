@@ -1,6 +1,7 @@
 package org.ifolks.generator.services;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,6 +14,7 @@ import org.ifolks.generator.model.metadata.validation.ProjectValidationReport;
 import org.ifolks.generator.skeletons.angular.commands.i18n.I18nModelJsonFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.commands.i18n.I18nOverlayJsonFileWriteCommand;
 import org.ifolks.generator.skeletons.angular.layers.TypeScriptComponentsLayer;
+import org.ifolks.generator.skeletons.commands.impl.templatized.TemplatizedReourceCopier;
 import org.ifolks.generator.skeletons.commands.interfaces.FileWriteCommand;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandExecutor;
 import org.ifolks.generator.skeletons.tree.FileWriteCommandTreeNode;
@@ -175,6 +177,81 @@ public class SupportedLocalesTest {
 		Assertions.assertTrue(Files.exists(newFile));
 		String createdContent = Files.readString(newFile, StandardCharsets.UTF_8).trim();
 		Assertions.assertEquals("{}", createdContent, "New overlay file must contain empty JSON object");
+	}
+
+	@Test
+	public void testMainTsTemplateWithLocales(@TempDir Path tempDir) throws IOException {
+		ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/3");
+		Project project = loader.loadProject(projectMetaData);
+
+		TemplatizedReourceCopier copier = new TemplatizedReourceCopier(project);
+		Path targetMainTs = tempDir.resolve("main.ts");
+		copier.resolveAndCopy("/ui/src/main.ts.vm", targetMainTs);
+
+		String mainTsContent = Files.readString(targetMainTs, StandardCharsets.UTF_8);
+		Assertions.assertNotNull(mainTsContent);
+		Assertions.assertTrue(mainTsContent.contains("defaultLocale: 'en_US'"));
+		Assertions.assertTrue(mainTsContent.contains("{ code: 'en_US', label: 'English (US)' }"));
+		Assertions.assertTrue(mainTsContent.contains("{ code: 'fr_FR', label: 'Français (France)' }"));
+	}
+
+	@Test
+	public void testMainTsTemplateWithoutLocales(@TempDir Path tempDir) throws IOException {
+		ProjectMetaData projectMetaData = service.loadProjectMetaData("src/test/resources/projects/success/2");
+		Project project = loader.loadProject(projectMetaData);
+
+		TemplatizedReourceCopier copier = new TemplatizedReourceCopier(project);
+		Path targetMainTs = tempDir.resolve("main.ts");
+		copier.resolveAndCopy("/ui/src/main.ts.vm", targetMainTs);
+
+		String mainTsContent = Files.readString(targetMainTs, StandardCharsets.UTF_8);
+		Assertions.assertNotNull(mainTsContent);
+		Assertions.assertTrue(mainTsContent.contains("return () => i18nService.init();"));
+		Assertions.assertFalse(mainTsContent.contains("supportedLocales:"));
+	}
+
+	@Test
+	public void testHeaderTemplatesContainLanguageSwitcher() throws IOException {
+		// Private header
+		String privateHtml = readClasspathResource("/ui/src/app/templates/private/components/header/header.component.html");
+		Assertions.assertTrue(privateHtml.contains("@if (supportedLocales.length > 1)"), "Private header must check supportedLocales.length > 1");
+		Assertions.assertTrue(privateHtml.contains("svgIcon=\"translate\""), "Private header must use translate SVG icon");
+		Assertions.assertTrue(privateHtml.contains("[matMenuTriggerFor]=\"langMenu\""), "Private header must trigger langMenu");
+		Assertions.assertTrue(privateHtml.contains("@for (loc of supportedLocales; track loc.code)"), "Private header must loop over supportedLocales");
+		Assertions.assertTrue(privateHtml.contains("(click)=\"changeLocale(loc.code)\""), "Private header must call changeLocale");
+		Assertions.assertTrue(privateHtml.contains("{{ loc.label }}"), "Private header must display native label");
+
+		String privateTs = readClasspathResource("/ui/src/app/templates/private/components/header/header.component.ts");
+		Assertions.assertTrue(privateTs.contains("I18nService"), "Private header TS must import I18nService");
+		Assertions.assertTrue(privateTs.contains("get supportedLocales()"), "Private header TS must have supportedLocales getter");
+		Assertions.assertTrue(privateTs.contains("changeLocale(locale: string)"), "Private header TS must have changeLocale method");
+
+		String privateScss = readClasspathResource("/ui/src/app/templates/private/components/header/header.component.scss");
+		Assertions.assertTrue(privateScss.contains(".app-language-switcher"), "Private header SCSS must style .app-language-switcher");
+
+		// Public header
+		String publicHtml = readClasspathResource("/ui/src/app/templates/public/components/header/header.component.html");
+		Assertions.assertTrue(publicHtml.contains("@if (supportedLocales.length > 1)"), "Public header must check supportedLocales.length > 1");
+		Assertions.assertTrue(publicHtml.contains("svgIcon=\"translate\""), "Public header must use translate SVG icon");
+		Assertions.assertTrue(publicHtml.contains("[matMenuTriggerFor]=\"langMenu\""), "Public header must trigger langMenu");
+		Assertions.assertTrue(publicHtml.contains("@for (loc of supportedLocales; track loc.code)"), "Public header must loop over supportedLocales");
+		Assertions.assertTrue(publicHtml.contains("(click)=\"changeLocale(loc.code)\""), "Public header must call changeLocale");
+		Assertions.assertTrue(publicHtml.contains("{{ loc.label }}"), "Public header must display native label");
+
+		String publicTs = readClasspathResource("/ui/src/app/templates/public/components/header/header.component.ts");
+		Assertions.assertTrue(publicTs.contains("I18nService"), "Public header TS must import I18nService");
+		Assertions.assertTrue(publicTs.contains("get supportedLocales()"), "Public header TS must have supportedLocales getter");
+		Assertions.assertTrue(publicTs.contains("changeLocale(locale: string)"), "Public header TS must have changeLocale method");
+
+		String publicScss = readClasspathResource("/ui/src/app/templates/public/components/header/header.component.scss");
+		Assertions.assertTrue(publicScss.contains(".app-language-switcher"), "Public header SCSS must style .app-language-switcher");
+	}
+
+	private String readClasspathResource(String location) throws IOException {
+		try (InputStream in = getClass().getResourceAsStream(location)) {
+			Assertions.assertNotNull(in, "Resource not found on classpath: " + location);
+			return new String(in.readAllBytes(), StandardCharsets.UTF_8);
+		}
 	}
 
 	private List<FileWriteCommand> collectCommands(FileWriteCommandTreeNode node) {

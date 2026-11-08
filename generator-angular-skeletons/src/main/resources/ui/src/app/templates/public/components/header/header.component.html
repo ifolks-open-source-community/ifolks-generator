@@ -7,5 +7,19 @@
         <h1>{{ 'appName' | i18n }}</h1>
       </div>
     </a>
+    @if (supportedLocales.length > 1) {
+      <div class="app-language-switcher">
+        <button mat-icon-button [matMenuTriggerFor]="langMenu" class="app-menu-button" aria-label="Change language">
+          <mat-icon svgIcon="translate"></mat-icon>
+        </button>
+        <mat-menu #langMenu="matMenu">
+          @for (loc of supportedLocales; track loc.code) {
+            <button mat-menu-item (click)="changeLocale(loc.code)">
+              <span [class.active-locale]="loc.code === currentLocale">{{ loc.label }}</span>
+            </button>
+          }
+        </mat-menu>
+      </div>
+    }
   </div>
 </div>
