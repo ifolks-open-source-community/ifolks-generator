@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -108,7 +109,7 @@ public abstract class TsFileWriteCommand extends SingleFileWriteCommand {
 	 */
 	public List<String> organizeImports(Set<String> rawImports) {
 		Map<String, SortedSet<String>> namedImports = new TreeMap<>();
-		List<String> otherImports = new ArrayList<>();
+		Set<String> otherImports = new LinkedHashSet<>();
 
 		for (String raw : rawImports) {
 			if (raw == null || raw.trim().isEmpty()) {

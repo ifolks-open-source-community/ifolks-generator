@@ -24,7 +24,7 @@ public class OneToOneComponentPopulatorCommandFileWriteCommand extends JavaFileW
         	    parentBean = oneToOneComponent.parentBean;
     }
 
-		@Override
+	@Override
 	public boolean supportsSpecificCode() {
 		return false;
 	}
