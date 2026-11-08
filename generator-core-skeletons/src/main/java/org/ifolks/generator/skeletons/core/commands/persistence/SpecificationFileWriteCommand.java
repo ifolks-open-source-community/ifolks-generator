@@ -46,7 +46,17 @@ public class SpecificationFileWriteCommand extends JavaFileWriteCommand {
 		javaImports.add("import org.springframework.data.jpa.domain.Specification;");
 		javaImports.add("import org.springframework.data.domain.Sort;");
 		javaImports.add("import org.ifolks.commons.api.model.OrderType;");
-		javaImports.add("import static org.ifolks.commons.jpa.JpaCriteriaUtils.*;");
+		javaImports.add("import static org.ifolks.commons.jpa.JpaCriteriaUtils.addBetweenRestriction;");
+		javaImports.add("import static org.ifolks.commons.jpa.JpaCriteriaUtils.addBooleanRestriction;");
+		javaImports.add("import static org.ifolks.commons.jpa.JpaCriteriaUtils.addEqualsIfNotNullRestriction;");
+		javaImports.add("import static org.ifolks.commons.jpa.JpaCriteriaUtils.addEqualsRestriction;");
+		javaImports.add("import static org.ifolks.commons.jpa.JpaCriteriaUtils.addOrder;");
+		javaImports.add("import static org.ifolks.commons.jpa.JpaCriteriaUtils.addStringContainsRestriction;");
+		javaImports.add("import static org.ifolks.commons.jpa.JpaCriteriaUtils.addStringStartsWithRestriction;");
+		javaImports.add("import static org.ifolks.commons.jpa.JpaCriteriaUtils.addUnaccentuatedStringContainsRestriction;");
+		javaImports.add("import static org.ifolks.commons.jpa.JpaCriteriaUtils.getStringContainsRestriction;");
+		javaImports.add("import static org.ifolks.commons.jpa.JpaCriteriaUtils.getStringStartsWithRestriction;");
+		javaImports.add("import static org.ifolks.commons.jpa.JpaCriteriaUtils.getUnaccentuatedStringContainsRestriction;");
 
 		javaImports.add("import " + this.bean.myPackage.omPackageName + "." + this.bean.className + ";");
 		javaImports.add("import " + this.bean.myPackage.omPackageName + "." + this.bean.className + "_;");

@@ -34,7 +34,9 @@ public class EnumFileWriteCommand extends JavaFileWriteCommand {
 		skipLine();
 
 		writeImports();
-		skipLine();
+		if (!javaImports.isEmpty()) {
+			skipLine();
+		}
 
 		writeLine("/**");
 		writeLine(" * auto generated enumeration class file");

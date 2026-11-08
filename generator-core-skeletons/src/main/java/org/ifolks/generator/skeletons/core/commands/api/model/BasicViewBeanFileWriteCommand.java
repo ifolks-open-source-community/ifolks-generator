@@ -26,14 +26,19 @@ public class BasicViewBeanFileWriteCommand extends JavaFileWriteCommand {
 	
 	@Override
 	protected void fetchSpecificImports() {
-		javaImports.add("import java.time.OffsetDateTime;");
-		javaImports.add("import java.time.LocalDate;");
-		javaImports.add("import java.math.BigDecimal;");
 		for (ViewProperty property : this.bean.basicViewBean.properties) {
-			if (property.dataType != null && property.dataType.equals(DataType.ENUM) && property.javaType != null) {
-				Enumeration enumeration = this.bean.myPackage.model.findEnumeration(property.javaType);
-				if (enumeration != null) {
-					javaImports.add("import " + enumeration.myPackage.enumsPackageName + "." + enumeration.className + ";");
+			if (property.dataType != null) {
+				if (property.dataType.equals(DataType.DATE)) {
+					javaImports.add("import java.time.LocalDate;");
+				} else if (property.dataType.equals(DataType.DATETIME)) {
+					javaImports.add("import java.time.OffsetDateTime;");
+				} else if (property.dataType.equals(DataType.BIG_DECIMAL)) {
+					javaImports.add("import java.math.BigDecimal;");
+				} else if (property.dataType.equals(DataType.ENUM) && property.javaType != null) {
+					Enumeration enumeration = this.bean.myPackage.model.findEnumeration(property.javaType);
+					if (enumeration != null) {
+						javaImports.add("import " + enumeration.myPackage.enumsPackageName + "." + enumeration.className + ";");
+					}
 				}
 			}
 		}
@@ -47,7 +52,9 @@ public class BasicViewBeanFileWriteCommand extends JavaFileWriteCommand {
         skipLine();
 
         writeImports();
-        skipLine();
+        if (!javaImports.isEmpty()) {
+            skipLine();
+        }
 
         writeLine("/**");
         writeLine(" * auto generated basic view record");
