@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<xs:schema version="1.3" targetNamespace="http://generator.ifolks.org/schema/model/metadata" xmlns:metadata="http://generator.ifolks.org/schema/model/metadata" xmlns:tns="http://generator.ifolks.org/schema/model/metadata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema version="1.4" targetNamespace="http://generator.ifolks.org/schema/model/metadata" xmlns:metadata="http://generator.ifolks.org/schema/model/metadata" xmlns:tns="http://generator.ifolks.org/schema/model/metadata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <xs:element name="project" type="tns:project"/>
 

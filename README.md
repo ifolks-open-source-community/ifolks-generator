@@ -50,7 +50,7 @@ cd [project]-tests && mvn clean install
 ## 📦 Distribution & Artifacts
 
 * **CLI Binary**: [`generator-bash-1.3.0-bin.zip`](https://repo1.maven.org/maven2/org/ifolks/generator/generator-bash/1.3.0/generator-bash-1.3.0-bin.zip) on Maven Central.
-* **Metadata Schema**: `skeleton-metadata-1.3.xsd` under `generator-model`.
+* **Metadata Schema**: `skeleton-metadata-1.4.xsd` under `generator-model`.
 
 ---
 
