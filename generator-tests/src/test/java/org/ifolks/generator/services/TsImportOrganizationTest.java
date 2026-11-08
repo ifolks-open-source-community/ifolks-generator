@@ -191,6 +191,8 @@ public class TsImportOrganizationTest {
 			assertTrue(rootPom.contains("spotless-maven-plugin"), "Root POM must configure spotless-maven-plugin");
 			assertTrue(rootPom.contains("<removeUnusedImports />"), "Spotless must remove unused Java imports");
 			assertTrue(rootPom.contains("<importOrder>"), "Spotless must enforce deterministic Java import order");
+			assertTrue(rootPom.contains("<order>java,javax,jakarta,,${project.domainName}.${project.projectName},\\#</order>"),
+					"Spotless must use Spring-style import grouping isolating project root package");
 			assertTrue(rootPom.contains("<phase>process-sources</phase>"),
 					"Spotless must be bound to process-sources phase for automatic execution");
 			assertTrue(rootPom.contains("<goal>apply</goal>"), "Spotless execution must run apply goal automatically");

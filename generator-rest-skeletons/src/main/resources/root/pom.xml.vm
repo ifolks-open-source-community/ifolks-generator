@@ -143,7 +143,7 @@
 					<java>
 						<removeUnusedImports />
 						<importOrder>
-							<order>java,javax,jakarta,org,com</order>
+							<order>java,javax,jakarta,,${project.domainName}.${project.projectName},\#</order>
 						</importOrder>
 					</java>
 				</configuration>
