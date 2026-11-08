@@ -25,7 +25,7 @@ public class BaseServiceImplFileWriteCommand extends JavaFileWriteCommand {
 		this.bean = bean;
 	}
 
-		@Override
+	@Override
 	public boolean supportsSpecificCode() {
 		return false;
 	}

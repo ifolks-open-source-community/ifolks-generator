@@ -22,7 +22,7 @@ public class BaseStateManagerImplFileWriteCommand extends JavaFileWriteCommand {
 		this.bean = bean;
 	}
 
-		@Override
+	@Override
 	public boolean supportsSpecificCode() {
 		return false;
 	}

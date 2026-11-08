@@ -104,6 +104,43 @@ public class TsImportOrganizationTest {
 	}
 
 	@Test
+	public void testOtherImportsDeduplicatedAfterQuoteNormalization() {
+		DummyTsCommand cmd = new DummyTsCommand("test", "test");
+		Set<String> rawImports = new HashSet<>(Arrays.asList(
+				"import 'zone.js';",
+				"import \"zone.js\"",
+				"import * as moment from \"moment\";",
+				"import * as moment from 'moment';"
+		));
+
+		List<String> organized = cmd.organizeImports(rawImports);
+
+		assertEquals(2, organized.size(), "Side-effect and namespace imports must be deduplicated after quote normalization");
+		assertTrue(organized.contains("import * as moment from 'moment';"));
+		assertTrue(organized.contains("import 'zone.js';"));
+	}
+
+	@Test
+	public void testMixedDefaultAndTypeImportsDocumentedBehavior() {
+		DummyTsCommand cmd = new DummyTsCommand("test", "test");
+		Set<String> rawImports = new HashSet<>(Arrays.asList(
+				"import Foo, { Bar } from \"./foo\";",
+				"import { Baz } from './foo';",
+				"import type { MyType } from './types';",
+				"import { MyVal } from './types';"
+		));
+
+		List<String> organized = cmd.organizeImports(rawImports);
+
+		// Mixed default + named import falls into otherImports (normalized but kept separate from pure named import)
+		assertTrue(organized.contains("import Foo, { Bar } from './foo';"));
+		assertTrue(organized.contains("import { Baz } from './foo';"));
+
+		// 'import type { A }' is merged into standard named imports for the same module
+		assertTrue(organized.contains("import { MyType, MyVal } from './types';"));
+	}
+
+	@Test
 	public void testMultilineImportFileReading(@TempDir Path tempDir) throws IOException {
 		String initialContent = String.join("\n",
 				"/**",

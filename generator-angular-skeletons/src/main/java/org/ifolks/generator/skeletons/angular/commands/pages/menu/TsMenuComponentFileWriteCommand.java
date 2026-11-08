@@ -33,7 +33,7 @@ public class TsMenuComponentFileWriteCommand extends TsFileWriteCommand {
 		}		
 	}
 	
-		@Override
+	@Override
 	public boolean supportsSpecificCode() {
 		return false;
 	}

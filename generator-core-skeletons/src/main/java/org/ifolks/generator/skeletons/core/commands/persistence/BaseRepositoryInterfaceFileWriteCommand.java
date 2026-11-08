@@ -23,7 +23,7 @@ public class BaseRepositoryInterfaceFileWriteCommand extends JavaFileWriteComman
 		this.bean = bean;
 	}
 
-		@Override
+	@Override
 	public boolean supportsSpecificCode() {
 		return false;
 	}
