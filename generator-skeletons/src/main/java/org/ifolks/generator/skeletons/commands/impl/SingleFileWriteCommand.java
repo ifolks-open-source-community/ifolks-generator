@@ -121,7 +121,7 @@ public abstract class SingleFileWriteCommand implements FileWriteCommand {
 	 * @return
 	 * @throws IOException
 	 */
-	private final String getNotOverridableContent() throws IOException {
+	protected final String getNotOverridableContent() throws IOException {
 
 		if (Files.exists(filePath)) {
 			List<String> lines = Files.readAllLines(filePath,

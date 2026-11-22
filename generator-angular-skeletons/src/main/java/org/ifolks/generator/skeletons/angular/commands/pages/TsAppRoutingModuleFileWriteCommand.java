@@ -2,6 +2,8 @@ package org.ifolks.generator.skeletons.angular.commands.pages;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.ifolks.generator.model.domain.Package;
 import org.ifolks.generator.model.domain.Project;
@@ -42,19 +44,28 @@ public class TsAppRoutingModuleFileWriteCommand extends TsFileWriteCommand {
         writeLine(" */");
         skipLine();
         
-        writeLine("export const routes: Routes = [");
-        boolean start = true;
+        List<Bean> routedBeans = new ArrayList<>();
         for (Package myPackage : project.model.packages) {
 			for (Bean bean : myPackage.beans) {
 				if (!bean.isComponent) {
-					if (start) {
-						start = false;
-					} else {
-						write(",");
-					}
-					writeLine("{path:'" + bean.urlPiece + "', loadChildren:()=>import('" + bean.myPackage.tsComponentsSourcePath + "/" + bean.urlPiece + "/" + bean.urlPiece + ".routes').then(m=>m.routes), canActivate: [AuthGuard] }");
+					routedBeans.add(bean);
 				}
 			}
+        }
+        
+        /*
+         * Each generated route ends with a trailing comma, so that formatters such as Prettier
+         * and the next generation agree on the same layout (no comma moved across the specific code mark).
+         * Specific code blocks written with the legacy leading-comma convention are still supported:
+         * in that case, the last generated route is written without trailing comma to avoid an array hole.
+         */
+        boolean legacyLeadingComma = getNotOverridableContent().trim().startsWith(",");
+        
+        writeLine("export const routes: Routes = [");
+        for (int i = 0; i < routedBeans.size(); i++) {
+        	Bean bean = routedBeans.get(i);
+        	boolean last = i == routedBeans.size() - 1;
+        	writeLine("{path:'" + bean.urlPiece + "', loadChildren:()=>import('" + bean.myPackage.tsComponentsSourcePath + "/" + bean.urlPiece + "/" + bean.urlPiece + ".routes').then(m=>m.routes), canActivate: [AuthGuard] }" + (last && legacyLeadingComma ? "" : ","));
         }
         writeNotOverridableContent();
         writeLine("];");
