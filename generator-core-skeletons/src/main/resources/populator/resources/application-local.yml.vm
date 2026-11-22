@@ -1,0 +1,7 @@
+# Logger settings
+log:
+  level: INFO
+
+# DB engine used by the populator database builder
+db:
+  engine: ${project.databaseEngine}

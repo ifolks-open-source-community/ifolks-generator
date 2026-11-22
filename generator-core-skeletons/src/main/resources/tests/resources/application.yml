@@ -1,0 +1,9 @@
+# JUnit test application configuration
+# Business components configuration is imported from the components module.
+# Profile-specific overrides live in application-junit.yml.
+spring:
+  profiles:
+    active: junit
+  config:
+    import:
+      - classpath:components.yml

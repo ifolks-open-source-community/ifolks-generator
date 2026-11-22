@@ -1,0 +1,17 @@
+# Persistence configuration for the local profile
+
+# DB
+db:
+  driverClassName: ${project.dataSource.driverClassName}
+  url: "${project.dataSource.url}"
+  userName: "${project.dataSource.userName}"
+  password: "${project.dataSource.password}"
+  maximumPoolSize: 10
+  minimumIdle: 5
+  idleTimeout: 300000
+  connectionTimeout: 20000
+
+# Hibernate settings
+hibernate:
+  showSql: false
+  dialect: ${project.dataSource.dialect}

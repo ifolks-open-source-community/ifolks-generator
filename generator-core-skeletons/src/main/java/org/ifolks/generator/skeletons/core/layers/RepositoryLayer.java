@@ -23,6 +23,7 @@ public class RepositoryLayer extends AbstractLayer {
 		
 		String persistencePackagePath = project.model.persistencePackageName.replace('.', '/');
 		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/persistence/java", project.projectName + "-persistence/" + project.model.javaSourcesFolder + "/" + persistencePackagePath)));
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/persistence/resources", project.projectName + "-persistence/" + project.model.resourcesFolder)));
 		return initTreeNode;
 	}
 

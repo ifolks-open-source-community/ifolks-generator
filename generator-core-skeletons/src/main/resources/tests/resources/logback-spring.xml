@@ -2,7 +2,7 @@
 <!DOCTYPE xml>
 <configuration>
 
-	<property resource="application.properties" />
+	<springProperty scope="context" name="LOG_LEVEL" source="log.level" defaultValue="INFO"/>
 
 	<!-- Console Appender for Technical / Infrastructure Logs -->
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -30,7 +30,7 @@
 	</logger>
 
 	<!-- Root Logger for Technical Logs -->
-	<root level="${log.level}">
+	<root level="${LOG_LEVEL}">
 		<appender-ref ref="STDOUT" />
 	</root>
 

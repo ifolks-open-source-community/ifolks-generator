@@ -1,0 +1,9 @@
+# Populator application configuration
+# Business components and persistence configurations are owned by their own modules
+# and imported below. Profile specific variants (components-<profile>.yml, persistence-<profile>.yml)
+# are loaded automatically by Spring Boot for the active profiles.
+spring:
+  config:
+    import:
+      - classpath:components.yml
+      - classpath:persistence.yml

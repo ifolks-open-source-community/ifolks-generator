@@ -32,6 +32,7 @@ public class BusinessComponentLayer extends AbstractLayer {
 		
 		String componentsPackagePath = project.model.componentsPackageName.replace('.', '/');
 		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/components/java", project.projectName + "-components/" + project.model.javaSourcesFolder + "/" + componentsPackagePath)));
+		initTreeNode.add(new FileWriteCommandTreeNode(new DirectoryResourceCopyCommand(project, "/components/resources", project.projectName + "-components/" + project.model.resourcesFolder)));
 		return initTreeNode;
 	}
 	

@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.boot.test.context.SpringBootTest;
 
 
-@SpringJUnitConfig(ApplicationConfig.class)
+@SpringBootTest(classes = ApplicationConfig.class)
 public class SetupTest {
 
 	/*

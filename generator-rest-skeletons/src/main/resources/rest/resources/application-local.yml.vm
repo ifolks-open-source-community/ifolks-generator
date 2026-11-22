@@ -1,0 +1,8 @@
+# Logger settings
+log:
+  level: INFO
+
+# Access logs settings (incoming REST requests)
+accessLog:
+  traceRequestBody: true
+  traceResponseBody: true

@@ -1,0 +1,8 @@
+# Business components configuration for the local profile
+# e.g. web service clients settings (urls, timeouts...). Never put credentials here.
+
+# Access logs settings (outgoing calls and error logging)
+accessLog:
+  traceSentBody: true
+  traceReceivedBody: true
+  printErrorStack: true

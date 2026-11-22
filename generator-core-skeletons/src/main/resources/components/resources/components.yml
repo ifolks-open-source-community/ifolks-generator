@@ -1,0 +1,2 @@
+# Business components configuration, common to all profiles
+# e.g. web service clients settings (urls, timeouts...). Never put credentials here.

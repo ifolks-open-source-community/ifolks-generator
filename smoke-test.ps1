@@ -175,10 +175,10 @@ try {
     }
 
     Write-Step "6. Compile, Run Backend Tests, Build & Populate DB, Build & Test UI"
-    Write-Host "-> Running Backend Maven Clean Test (Spotless + SetupTest + DemoFunctionalTest)..." -ForegroundColor Yellow
-    mvn -f (Join-Path $DemoRoot "pom.xml") clean test
+    Write-Host "-> Running Backend Maven Clean Install (Spotless + SetupTest + DemoFunctionalTest)..." -ForegroundColor Yellow
+    mvn -f (Join-Path $DemoRoot "pom.xml") clean install
     if ($LASTEXITCODE -ne 0) {
-        throw "Backend 'mvn clean test' failed on generated demo project."
+        throw "Backend 'mvn clean install' failed on generated demo project."
     }
 
     if (-not $SkipPopulator) {

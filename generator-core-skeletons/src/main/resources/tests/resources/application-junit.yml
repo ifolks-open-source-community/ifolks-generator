@@ -1,0 +1,15 @@
+# Logger settings
+log:
+  level: INFO
+
+# Access logs settings
+accessLog:
+  traceRequestBody: true
+  traceResponseBody: true
+  traceSentBody: true
+  traceReceivedBody: true
+  printErrorStack: true
+
+# Hibernate settings
+hibernate:
+  showSql: false
